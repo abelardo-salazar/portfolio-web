@@ -1,3 +1,5 @@
+"use client";
+import { Button } from "@abelardo-salazar/core-ui-design-system";
 import Image from "next/image";
 
 export default function Home() {
@@ -58,6 +60,7 @@ export default function Home() {
           >
             Documentation
           </a>
+          <Button>Click me</Button>
         </div>
       </main>
     </div>
