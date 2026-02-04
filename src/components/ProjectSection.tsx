@@ -13,6 +13,7 @@ import {
   Badge,
   Button,
 } from "@abelardo-salazar/core-ui-design-system";
+import { MotionReveal } from "./MotionReveal";
 
 const PROJECTS = [
   {
@@ -35,42 +36,43 @@ export const ProjectSection = () => {
   return (
     <section id="proyectos" className="py-20 bg-base-200/50">
       <Container size="lg">
-        <div className="mb-12">
-          <Heading level="h2">Proyectos Destacados</Heading>
-          <Text size="muted">
-            Selección de trabajos recientes y herramientas open-source.
-          </Text>
-        </div>
+        <MotionReveal>
+          <div className="mb-12">
+            <Heading level="h2">Proyectos Destacados</Heading>
+            <Text size="muted">
+              Selección de trabajos recientes y herramientas open-source.
+            </Text>
+          </div>
+        </MotionReveal>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {PROJECTS.map((project, index) => (
-            <Card key={index} className="flex flex-col h-full">
-              <CardHeader>
-                <div className="flex justify-between items-start">
+            <MotionReveal key={index} delay={index * 0.1}>
+              <Card className="flex flex-col h-full hover:shadow-lg transition-shadow">
+                <CardHeader>
                   <CardTitle>{project.title}</CardTitle>
-                  <Badge variant="outline">Project</Badge>
-                </div>
-                <CardDescription>{project.description}</CardDescription>
-              </CardHeader>
-              <CardContent className="flex-grow">
-                <div className="flex gap-2 flex-wrap">
-                  {project.tags.map((tag) => (
-                    <Badge
-                      key={tag}
-                      variant="secondary"
-                      className="text-[10px]"
-                    >
-                      {tag}
-                    </Badge>
-                  ))}
-                </div>
-              </CardContent>
-              <CardFooter>
-                <Button variant="primary" fullWidth asChild>
-                  <a href={project.link}>Ver detalles</a>
-                </Button>
-              </CardFooter>
-            </Card>
+                  <CardDescription>{project.description}</CardDescription>
+                </CardHeader>
+                <CardContent className="flex-grow">
+                  <div className="flex gap-2 flex-wrap">
+                    {project.tags.map((tag) => (
+                      <Badge
+                        key={tag}
+                        variant="secondary"
+                        className="text-[10px]"
+                      >
+                        {tag}
+                      </Badge>
+                    ))}
+                  </div>
+                </CardContent>
+                <CardFooter>
+                  <Button variant="primary" fullWidth>
+                    Ver detalles
+                  </Button>
+                </CardFooter>
+              </Card>
+            </MotionReveal>
           ))}
         </div>
       </Container>
