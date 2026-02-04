@@ -13,6 +13,7 @@ import {
   Separator,
 } from "@abelardo-salazar/core-ui-design-system";
 import { Github, Linkedin, Settings } from "lucide-react";
+import { ThemeSwitcher } from "./ThemeSwitcher";
 
 export const Footer = () => {
   return (
@@ -58,7 +59,12 @@ export const Footer = () => {
                     </Button>
                   </div>
                 </div>
-
+                <div className="space-y-4">
+                  <Text size="sm" weight="medium">
+                    Apariencia
+                  </Text>
+                  <ThemeSwitcher />
+                </div>
                 <Separator />
 
                 <div className="space-y-2">
