@@ -10,7 +10,7 @@ import {
   Badge,
   Button,
 } from "@abelardo-salazar/core-ui-design-system";
-import { MotionReveal } from "./MotionReveal";
+import { MotionReveal } from "../MotionReveal";
 
 export const ProjectCard = ({
   project,

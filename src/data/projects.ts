@@ -18,4 +18,21 @@ export const PROJECTS: Project[] = [
     featured: true,
     link: "https://github.com/abelardo-salazar",
   },
+  {
+    id: "proj-2",
+    slug: "personal-portfolio",
+    year: "2025",
+    title: {
+      es: "Portafolio Personal",
+      en: "Personal Portfolio",
+    },
+    description: {
+      es: "Mi sitio web personal construido con Next.js y Tailwind CSS.",
+      en: "My personal website built with Next.js and Tailwind CSS.",
+    },
+    tags: ["Next.js 14", "Tailwind CSS", "TypeScript"],
+    image: "/projects/portfolio.jpg",
+    featured: true,
+    link: "https://abelardo-salazar.dev",
+  },
 ];

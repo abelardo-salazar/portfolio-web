@@ -12,6 +12,15 @@
     "title": "Professional Experience",
     "subtitle": "My journey building scalable technical solutions."
   },
+  "Projects": {
+    "title": "Projects",
+    "description": "A selection of my most recent work and technical experiments.",
+    "searchPlaceholder": "Search by name or technology...",
+    "clearFilters": "Clear",
+    "noResults": "No projects found matching those criteria.",
+    "metaTitle": "My Projects",
+    "metaDescription": "Explore Abelardo Salazar's portfolio: design systems, scalable applications, and more."
+  },
   "Metadata": {
     "title": "Senior Frontend Engineer",
     "description": "Professional portfolio specialized in React ecosystems."
