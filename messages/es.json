@@ -12,6 +12,15 @@
     "title": "Experiencia Profesional",
     "subtitle": "Mi trayectoria construyendo soluciones técnicas escalables."
   },
+  "Projects": {
+    "title": "Proyectos",
+    "description": "Una selección de mis trabajos más recientes y experimentos técnicos.",
+    "searchPlaceholder": "Buscar por nombre o tecnología...",
+    "clearFilters": "Limpiar",
+    "noResults": "No se encontraron proyectos con esos criterios.",
+    "metaTitle": "Mis Proyectos",
+    "metaDescription": "Explora el portafolio de Abelardo Salazar: sistemas de diseño, aplicaciones escalables y más."
+  },
   "Metadata": {
     "title": "Senior Frontend Engineer",
     "description": "Portafolio profesional especializado en ecosistemas React."
