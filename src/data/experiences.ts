@@ -22,4 +22,25 @@ export const EXPERIENCES: Experience[] = [
     },
     skills: ["Next.js", "TypeScript", "Tailwind CSS"],
   },
+  {
+    id: "exp-2",
+    company: "Startup Innovadora",
+    role: {
+      es: "Frontend Engineer",
+      en: "Frontend Engineer",
+    },
+    period: "2021 - 2024",
+    current: false,
+    description: {
+      es: [
+        "Desarrollo de interfaces escalables con React y Redux.",
+        "Implementación de pruebas unitarias y de integración.",
+      ],
+      en: [
+        "Built scalable interfaces with React and Redux.",
+        "Implemented unit and integration testing.",
+      ],
+    },
+    skills: ["React", "Redux", "Jest"],
+  },
 ];

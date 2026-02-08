@@ -1,5 +1,6 @@
 "use client";
 import { ContactSection } from "@/components/ContactSection";
+import { ExperienceSection } from "@/components/ExperienceSection";
 import { HeroSection } from "@/components/HeroSection";
 import { ProjectSection } from "@/components/ProjectSection";
 import { siteConfig } from "@/config/site";
@@ -22,6 +23,7 @@ export default function Home() {
       />
       <main className="min-h-screen bg-base-100">
         <HeroSection />
+        <ExperienceSection />
         <ProjectSection />
         <ContactSection />
       </main>
