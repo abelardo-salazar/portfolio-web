@@ -1,0 +1,11 @@
+{
+  "Navbar": {
+    "projects": "Proyectos",
+    "experience": "Experiencia",
+    "contact": "Contacto"
+  },
+  "Hero": {
+    "title": "Ingeniería de Interfaz de alto impacto",
+    "description": "Senior Frontend Engineer especializado en ecosistemas de React. Actualmente desarrollando sistemas de diseño privados y arquitecturas de alto rendimiento."
+  }
+}

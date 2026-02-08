@@ -1,3 +1,4 @@
+import { useTranslations } from "next-intl";
 import {
   Badge,
   Button,
@@ -7,6 +8,7 @@ import {
 } from "@abelardo-salazar/core-ui-design-system";
 
 export const HeroSection = () => {
+  const t = useTranslations("Hero");
   return (
     <section className="py-20 md:py-32">
       <Container size="lg" className="text-center space-y-6">
@@ -18,15 +20,12 @@ export const HeroSection = () => {
           level="h1"
           className="text-5xl md:text-7xl font-extrabold tracking-tight"
         >
-          Building scalable products with{" "}
-          <span className="text-primary">refined code</span>.
+          {t("title")}
         </Heading>
 
         <Container size="sm">
           <Text size="lead" className="text-base-content/70">
-            Senior Frontend Engineer especializado en ecosistemas de React.
-            Actualmente desarrollando sistemas de diseño privados y
-            arquitecturas de alto rendimiento.
+            {t("description")}
           </Text>
         </Container>
 

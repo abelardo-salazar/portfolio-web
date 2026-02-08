@@ -14,6 +14,7 @@ import {
 } from "@abelardo-salazar/core-ui-design-system";
 import { Github, Linkedin, Settings } from "lucide-react";
 import { ThemeSwitcher } from "./ThemeSwitcher";
+import { LanguageSwitcher } from "./LanguageSwitcher";
 
 export const Footer = () => {
   return (
@@ -51,12 +52,7 @@ export const Footer = () => {
                     Idioma / Language
                   </Text>
                   <div className="flex gap-2">
-                    <Button variant="secondary" size="sm" fullWidth>
-                      Español
-                    </Button>
-                    <Button variant="outline" size="sm" fullWidth>
-                      English
-                    </Button>
+                    <LanguageSwitcher />
                   </div>
                 </div>
                 <div className="space-y-4">
