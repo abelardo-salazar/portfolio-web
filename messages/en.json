@@ -1,0 +1,11 @@
+{
+  "Navbar": {
+    "projects": "Projects",
+    "experience": "Experience",
+    "contact": "Contact"
+  },
+  "Hero": {
+    "title": "High-impact Interface Engineering",
+    "description": "Specialist in React and scalable architectures."
+  }
+}
