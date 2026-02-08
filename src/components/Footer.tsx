@@ -48,9 +48,6 @@ export const Footer = () => {
 
               <div className="py-6 space-y-6">
                 <div className="space-y-2">
-                  <Text size="sm" weight="medium">
-                    Idioma / Language
-                  </Text>
                   <div className="flex gap-2">
                     <LanguageSwitcher />
                   </div>
