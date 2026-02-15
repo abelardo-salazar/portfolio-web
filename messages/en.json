@@ -6,8 +6,11 @@
     "contact": "Contact"
   },
   "Hero": {
+    "available": "Available for new projects",
     "title": "High-impact Interface Engineering",
-    "description": "Specialist in React and scalable architectures."
+    "description": "Specialist in React and scalable architectures.",
+    "projects": "See Projects",
+    "cv": "Download CV"
   },
   "Experience": {
     "title": "Professional Experience",

@@ -13,7 +13,7 @@ export const HeroSection = () => {
     <section className="py-20 md:py-32">
       <Container size="lg" className="text-center space-y-6">
         <Badge variant="secondary" className="mb-4">
-          Disponible para nuevos proyectos
+          {t("available")}
         </Badge>
 
         <Heading
@@ -31,10 +31,10 @@ export const HeroSection = () => {
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
           <Button size="lg" className="px-8">
-            Ver Proyectos
+            {t("projects")}
           </Button>
           <Button variant="outline" size="lg" className="px-8">
-            Descargar CV
+            {t("cv")}
           </Button>
         </div>
       </Container>

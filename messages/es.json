@@ -6,8 +6,11 @@
     "contact": "Contacto"
   },
   "Hero": {
+    "available": "Disponible para nuevos proyectos",
     "title": "Ingeniería de Interfaz de alto impacto",
-    "description": "Senior Frontend Engineer especializado en ecosistemas de React. Actualmente desarrollando sistemas de diseño privados y arquitecturas de alto rendimiento."
+    "description": "Senior Frontend Engineer especializado en ecosistemas de React. Actualmente desarrollando sistemas de diseño privados y arquitecturas de alto rendimiento.",
+    "projects": "Ver Proyectos",
+    "cv": "Descargar CV"
   },
   "Experience": {
     "title": "Experiencia Profesional",
