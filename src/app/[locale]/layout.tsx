@@ -4,7 +4,7 @@ import { Geist_Mono } from "next/font/google";
 import "@abelardo-salazar/core-ui-design-system/style.css";
 import "../globals.css";
 import { Navbar } from "@/components/navigation/Navbar";
-import { Footer } from "@/components/Footer";
+import { Footer } from "@/components/navigation/Footer";
 import { ThemeProvider } from "@/providers/ThemeProvider";
 import { getMessages, getTranslations } from "next-intl/server";
 import { siteConfig } from "@/config/site";

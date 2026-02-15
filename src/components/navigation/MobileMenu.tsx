@@ -15,6 +15,7 @@ import {
 import { Menu } from "lucide-react";
 import { navLinks } from "@/config/navigation";
 import Link from "next/link";
+import { SystemSettings } from "./SystemSettings";
 
 export const MobileMenu = () => {
   const [open, setOpen] = useState(false);
@@ -55,37 +56,34 @@ export const MobileMenu = () => {
       <SheetContent side="right" className="flex flex-col gap-6">
         <SheetHeader className="text-left">
           <SheetTitle className="text-xl font-bold tracking-tighter uppercase">
-            Menú
+            {t("menu")}
           </SheetTitle>
         </SheetHeader>
 
         <Separator />
 
-        <div className="flex flex-col gap-2">
-          {navLinks.map((link) => {
-            const fullHref =
-              link.type === "section"
-                ? `/${locale}${link.href}`
-                : `/${locale}${link.href}`;
-            const isActive =
-              pathname === `/${locale}${link.href === "/" ? "" : link.href}`;
-
-            return (
+        <div className="flex-1 overflow-y-auto py-6 space-y-8">
+          <nav className="flex flex-col gap-2">
+            {navLinks.map((link) => (
               <Button
                 key={link.href}
-                variant={isActive ? "secondary" : "ghost"}
+                variant={pathname.includes(link.href) ? "secondary" : "ghost"}
                 className="justify-start text-lg h-12"
                 asChild
               >
                 <Link
-                  href={fullHref}
+                  href={`/${locale}${link.href}`}
                   onClick={(e) => handleNavClick(e, link.href, link.type)}
                 >
                   {t(link.labelKey)}
                 </Link>
               </Button>
-            );
-          })}
+            ))}
+          </nav>
+
+          <Separator />
+
+          <SystemSettings />
         </div>
       </SheetContent>
     </Sheet>
