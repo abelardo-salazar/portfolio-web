@@ -1,6 +1,6 @@
 "use client";
 import { Project } from "@/types/data";
-import { useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import {
   Card,
   CardHeader,
@@ -19,6 +19,7 @@ export const ProjectCard = ({
   project: Project;
   index: number;
 }) => {
+  const t = useTranslations("Projects");
   const locale = useLocale() as "es" | "en";
 
   return (
@@ -29,7 +30,9 @@ export const ProjectCard = ({
             <span className="text-xs font-mono text-base-content/50">
               {project.year}
             </span>
-            {project.featured && <Badge variant="secondary">Featured</Badge>}
+            {project.featured && (
+              <Badge variant="secondary">{t("featured")}</Badge>
+            )}
           </div>
           <CardTitle>{project.title[locale]}</CardTitle>
           <CardDescription>{project.description[locale]}</CardDescription>
@@ -43,7 +46,7 @@ export const ProjectCard = ({
             ))}
           </div>
           <Button variant="ghost" size="sm" fullWidth asChild>
-            <a href={project.link || project.github}>Ver más</a>
+            <a href={project.link || project.github}>{t("more")}</a>
           </Button>
         </CardContent>
       </Card>

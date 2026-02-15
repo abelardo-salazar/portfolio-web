@@ -19,6 +19,8 @@
   },
   "Projects": {
     "title": "Projects",
+    "featured": "Featured",
+    "more": "See More",
     "description": "A selection of my most recent work and technical experiments.",
     "searchPlaceholder": "Search by name or technology...",
     "clearFilters": "Clear",
