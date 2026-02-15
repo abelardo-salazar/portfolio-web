@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import {
   Container,
@@ -13,12 +13,19 @@ import {
 import { PROJECTS } from "@/data/projects";
 import { ProjectCard } from "./ProjectCard";
 import { Search, X } from "lucide-react";
+import { ProjectCardSkeleton } from "./ProjectCardSkeleton";
 
 export const ProjectBrowser = () => {
   const t = useTranslations("Projects");
   const locale = useLocale() as "es" | "en";
   const [search, setSearch] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
   const [activeTag, setActiveTag] = useState<string | null>(null);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setIsLoading(false), 1200);
+    return () => clearTimeout(timer);
+  }, []);
 
   const allTags = useMemo(() => {
     const tags = PROJECTS.flatMap((p) => p.tags);
@@ -79,17 +86,22 @@ export const ProjectBrowser = () => {
           </div>
         </div>
 
-        {filteredProjects.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pt-8">
-            {filteredProjects.map((project, index) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pt-8">
+          {isLoading ? (
+            // Mostramos 6 esqueletos durante la carga
+            Array.from({ length: 6 }).map((_, i) => (
+              <ProjectCardSkeleton key={i} />
+            ))
+          ) : filteredProjects.length > 0 ? (
+            filteredProjects.map((project, index) => (
               <ProjectCard key={project.id} project={project} index={index} />
-            ))}
-          </div>
-        ) : (
-          <div className="py-20 text-center border rounded-xl border-dashed">
-            <Text className="text-base-content/50">{t("noResults")}</Text>
-          </div>
-        )}
+            ))
+          ) : (
+            <div className="col-span-full py-20 text-center border rounded-xl border-dashed">
+              <Text className="text-base-content/50">{t("noResults")}</Text>
+            </div>
+          )}
+        </div>
       </div>
     </Container>
   );
