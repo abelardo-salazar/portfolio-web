@@ -7,6 +7,8 @@ import { navLinks } from "@/config/navigation";
 import { NavLink } from "./NavLink";
 import { siteConfig } from "@/config/site";
 import { usePathname } from "next/navigation";
+import { MobileMenu } from "./MobileMenu";
+import Link from "next/link";
 
 export const Navbar = () => {
   const pathname = usePathname();
@@ -46,9 +48,14 @@ export const Navbar = () => {
       }`}
     >
       <Container size="xl" className="flex items-center justify-between">
-        <Text weight="bold" size="lg" className="tracking-tighter uppercase">
-          {siteConfig.name}
-        </Text>
+        <Link
+          href={`/${locale}`}
+          className="hover:opacity-80 transition-opacity"
+        >
+          <Text weight="bold" size="lg" className="tracking-tighter uppercase">
+            {siteConfig.name}
+          </Text>
+        </Link>
 
         <div className="hidden md:flex items-center gap-2">
           {navLinks.map((link) => (
@@ -63,6 +70,7 @@ export const Navbar = () => {
             </NavLink>
           ))}
         </div>
+        <MobileMenu />
       </Container>
     </nav>
   );
