@@ -35,5 +35,9 @@
     "settingsDescription": "Customize your visual experience in my portfolio",
     "language": "Language",
     "appearance": "Appearance"
+  },
+  "ThemeSwitcher": {
+    "light": "Light Theme",
+    "dark": "Dark Theme"
   }
 }
