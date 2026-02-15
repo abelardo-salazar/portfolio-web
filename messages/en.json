@@ -3,7 +3,8 @@
     "home": "Home",
     "projects": "Projects",
     "experience": "Experience",
-    "contact": "Contact"
+    "contact": "Contact",
+    "menu": "Menu"
   },
   "Hero": {
     "available": "Available for new projects",
