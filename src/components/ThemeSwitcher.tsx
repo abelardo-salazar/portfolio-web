@@ -4,8 +4,10 @@ import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import { Switch, Text } from "@abelardo-salazar/core-ui-design-system";
 import { Moon, Sun } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 export const ThemeSwitcher = () => {
+  const t = useTranslations("ThemeSwitcher");
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
@@ -24,7 +26,7 @@ export const ThemeSwitcher = () => {
       />
       <Moon className="w-4 h-4 text-base-content/50" />
       <Text size="sm" className="ml-2 hidden md:block">
-        Modo {isDark ? "Oscuro" : "Claro"}
+        {isDark ? t("dark") : t("light")}
       </Text>
     </div>
   );

@@ -35,5 +35,9 @@
     "settingsDescription": "Personaliza tu experiencia visual en mi portafolio",
     "language": "Idioma",
     "appearance": "Apariencia"
+  },
+  "ThemeSwitcher": {
+    "light": "Modo Claro",
+    "dark": "Modo Oscuro"
   }
 }
