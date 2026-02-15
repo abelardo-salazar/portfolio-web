@@ -25,5 +25,12 @@
   "Metadata": {
     "title": "Senior Frontend Engineer",
     "description": "Portafolio profesional especializado en ecosistemas React."
+  },
+  "Footer": {
+    "settingsTitle": "Configuración",
+    "preferences": "Preferencias",
+    "settingsDescription": "Personaliza tu experiencia visual en mi portafolio",
+    "language": "Idioma",
+    "appearance": "Apariencia"
   }
 }
