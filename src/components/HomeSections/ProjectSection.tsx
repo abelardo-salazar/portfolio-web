@@ -5,8 +5,8 @@ import {
   Heading,
   Text,
 } from "@abelardo-salazar/core-ui-design-system";
-import { MotionReveal } from "./MotionReveal";
-import { ProjectCard } from "./projects/ProjectCard";
+import { MotionReveal } from "../MotionReveal";
+import { ProjectCard } from "../projects/ProjectCard";
 import { PROJECTS } from "@/data/projects";
 
 export const ProjectSection = () => {

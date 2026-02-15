@@ -1,8 +1,8 @@
 "use client";
-import { ContactSection } from "@/components/ContactSection";
-import { ExperienceSection } from "@/components/ExperienceSection";
-import { HeroSection } from "@/components/HeroSection";
-import { ProjectSection } from "@/components/ProjectSection";
+import { ContactSection } from "@/components/HomeSections/ContactSection";
+import { ExperienceSection } from "@/components/HomeSections/ExperienceSection";
+import { HeroSection } from "@/components/HomeSections/HeroSection";
+import { ProjectSection } from "@/components/HomeSections/ProjectSection";
 import { siteConfig } from "@/config/site";
 
 export default function Home() {
