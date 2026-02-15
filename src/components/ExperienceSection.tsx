@@ -12,7 +12,7 @@ export const ExperienceSection = () => {
   const t = useTranslations("Experience");
 
   return (
-    <section id="experiencia" className="py-24">
+    <section id="experience" className="py-24">
       <Container size="md">
         <div className="mb-16 text-center md:text-left">
           <Heading level="h2" className="mb-4">

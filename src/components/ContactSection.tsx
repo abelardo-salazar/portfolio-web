@@ -32,7 +32,7 @@ export const ContactSection = () => {
   };
 
   return (
-    <section className="py-20 bg-base-100">
+    <section id="contact" className="py-20 bg-base-100">
       <Toast position="bottom-right" richColors closeButton />
 
       <Container size="sm">
