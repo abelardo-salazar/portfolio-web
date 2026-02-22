@@ -26,7 +26,12 @@
     "clearFilters": "Limpiar",
     "noResults": "No se encontraron proyectos con esos criterios.",
     "metaTitle": "Mis Proyectos",
-    "metaDescription": "Explora el portafolio de Abelardo Salazar: sistemas de diseño, aplicaciones escalables y más."
+    "metaDescription": "Explora el portafolio de Abelardo Salazar: sistemas de diseño, aplicaciones escalables y más.",
+    "home": {
+      "title": "Proyectos Destacados",
+      "description": "Selección de trabajos recientes y herramientas open-source.",
+      "viewAll": "Ver Todos"
+    }
   },
   "Metadata": {
     "title": "Senior Frontend Engineer",
