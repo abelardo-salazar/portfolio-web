@@ -47,11 +47,13 @@ export const ContactSection = () => {
   };
 
   return (
-    <section id="contacto" className="py-24 scroll-mt-20">
+    <section id="contact" className="py-24 scroll-mt-20">
       <Container size="sm">
         <div className="text-center mb-12">
-          <Heading level="h2">{t("title")}</Heading>
-          <Text size="muted">{t("subtitle")}</Text>
+          <Heading level="h2" className="mb-4">
+            {t("title")}
+          </Heading>
+          <Text size="lead">{t("subtitle")}</Text>
         </div>
 
         <Card>
