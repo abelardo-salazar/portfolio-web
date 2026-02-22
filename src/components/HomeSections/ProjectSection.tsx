@@ -13,7 +13,7 @@ import { useLocale } from "next-intl";
 export const ProjectSection = () => {
   const locale = useLocale() as "es" | "en";
   return (
-    <section id="proyectos" className="py-20 bg-base-200/50">
+    <section id="projects" className="py-20 bg-base-200/50">
       <Container size="lg">
         <MotionReveal>
           <div className="mb-12">
