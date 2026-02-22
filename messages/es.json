@@ -42,5 +42,23 @@
   "ThemeSwitcher": {
     "light": "Modo Claro",
     "dark": "Modo Oscuro"
+  },
+  "Contact": {
+    "title": "¿Tienes un proyecto en mente?",
+    "subtitle": "Hablemos sobre cómo puedo ayudarte a construir productos digitales excepcionales.",
+    "label_name": "Nombre",
+    "placeholder_name": "Tu nombre completo",
+    "label_email": "Correo electrónico",
+    "label_message": "Mensaje",
+    "placeholder_message": "¿En qué puedo ayudarte?",
+    "submit_button": "Enviar mensaje",
+    "success_title": "¡Mensaje enviado!",
+    "success_message": "Gracias por escribir. Te responderé lo antes posible.",
+    "error_generic": "Hubo un error al enviar. Por favor, intenta de nuevo.",
+    "errors": {
+      "name_min": "El nombre debe tener al menos 2 caracteres.",
+      "email_invalid": "Introduce un correo electrónico válido.",
+      "message_min": "El mensaje debe tener al menos 10 caracteres."
+    }
   }
 }
