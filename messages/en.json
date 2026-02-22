@@ -41,7 +41,8 @@
   },
   "ThemeSwitcher": {
     "light": "Light Theme",
-    "dark": "Dark Theme"
+    "dark": "Dark Theme",
+    "toggle_theme": "Toggle theme"
   },
   "Contact": {
     "title": "Do you have a project in mind?",
