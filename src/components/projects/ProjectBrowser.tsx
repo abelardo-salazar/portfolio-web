@@ -1,6 +1,5 @@
 "use client";
 
-import { useState, useMemo, useEffect } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import {
   Container,
@@ -12,35 +11,24 @@ import {
 } from "@abelardo-salazar/core-ui-design-system";
 import { PROJECTS } from "@/data/projects";
 import { ProjectCard } from "./ProjectCard";
-import { Search, X } from "lucide-react";
 import { ProjectCardSkeleton } from "./ProjectCardSkeleton";
+import { Search, X } from "lucide-react";
+import { useProjectFilters } from "@/hooks/use-project-filters";
 
 export const ProjectBrowser = () => {
   const t = useTranslations("Projects");
   const locale = useLocale() as "es" | "en";
-  const [search, setSearch] = useState("");
-  const [isLoading, setIsLoading] = useState(true);
-  const [activeTag, setActiveTag] = useState<string | null>(null);
 
-  useEffect(() => {
-    const timer = setTimeout(() => setIsLoading(false), 1200);
-    return () => clearTimeout(timer);
-  }, []);
-
-  const allTags = useMemo(() => {
-    const tags = PROJECTS.flatMap((p) => p.tags);
-    return Array.from(new Set(tags));
-  }, []);
-
-  const filteredProjects = PROJECTS.filter((project) => {
-    const matchesSearch =
-      project.title[locale].toLowerCase().includes(search.toLowerCase()) ||
-      project.tags.some((tag) =>
-        tag.toLowerCase().includes(search.toLowerCase()),
-      );
-    const matchesTag = activeTag ? project.tags.includes(activeTag) : true;
-    return matchesSearch && matchesTag;
-  });
+  const {
+    search,
+    setSearch,
+    activeTag,
+    setActiveTag,
+    isLoading,
+    allTags,
+    filteredProjects,
+    hasFilters,
+  } = useProjectFilters(PROJECTS, locale);
 
   return (
     <Container size="lg" className="py-12">
@@ -67,18 +55,18 @@ export const ProjectBrowser = () => {
               <Badge
                 key={tag}
                 variant={activeTag === tag ? "default" : "outline"}
-                className="cursor-pointer transition-all hover:border-primary"
+                className="cursor-pointer"
                 onClick={() => setActiveTag(activeTag === tag ? null : tag)}
               >
                 {tag}
               </Badge>
             ))}
-            {activeTag && (
+            {hasFilters && (
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={() => setActiveTag(null)}
-                className="h-7 px-2"
+                className="h-7"
               >
                 <X className="w-3 h-3 mr-1" /> {t("clearFilters")}
               </Button>
@@ -88,13 +76,17 @@ export const ProjectBrowser = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pt-8">
           {isLoading ? (
-            // Mostramos 6 esqueletos durante la carga
             Array.from({ length: 6 }).map((_, i) => (
               <ProjectCardSkeleton key={i} />
             ))
           ) : filteredProjects.length > 0 ? (
             filteredProjects.map((project, index) => (
-              <ProjectCard key={project.id} project={project} index={index} />
+              <ProjectCard
+                key={project.id}
+                project={project}
+                index={index}
+                locale={locale}
+              />
             ))
           ) : (
             <div className="col-span-full py-20 text-center border rounded-xl border-dashed">
