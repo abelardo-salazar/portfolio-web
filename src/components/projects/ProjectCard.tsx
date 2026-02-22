@@ -1,6 +1,6 @@
 "use client";
 import { Project } from "@/types/data";
-import { useLocale, useTranslations } from "next-intl";
+import { useTranslations } from "next-intl";
 import {
   Card,
   CardHeader,
@@ -12,15 +12,14 @@ import {
 } from "@abelardo-salazar/core-ui-design-system";
 import { MotionReveal } from "../MotionReveal";
 
-export const ProjectCard = ({
-  project,
-  index,
-}: {
+interface ProjectCardProps {
   project: Project;
   index: number;
-}) => {
+  locale: "es" | "en";
+}
+
+export const ProjectCard = ({ project, index, locale }: ProjectCardProps) => {
   const t = useTranslations("Projects");
-  const locale = useLocale() as "es" | "en";
 
   return (
     <MotionReveal delay={index * 0.1}>
@@ -45,7 +44,7 @@ export const ProjectCard = ({
               </Badge>
             ))}
           </div>
-          <Button variant="ghost" size="sm" fullWidth asChild>
+          <Button variant="primary" size="sm" fullWidth asChild>
             <a href={project.link || project.github}>{t("more")}</a>
           </Button>
         </CardContent>
