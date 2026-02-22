@@ -1,5 +1,6 @@
 "use client";
-import { useTranslations } from "next-intl";
+
+import { useTranslations, useLocale } from "next-intl";
 import {
   Container,
   Heading,
@@ -10,9 +11,10 @@ import { ExperienceItem } from "./ExperienceItem";
 
 export const ExperienceSection = () => {
   const t = useTranslations("Experience");
+  const locale = useLocale() as "es" | "en";
 
   return (
-    <section id="experience" className="py-24">
+    <section id="experience" className="py-24 scroll-mt-20">
       <Container size="md">
         <div className="mb-16 text-center md:text-left">
           <Heading level="h2" className="mb-4">
@@ -27,9 +29,14 @@ export const ExperienceSection = () => {
           {EXPERIENCES.map((exp, index) => (
             <ExperienceItem
               key={exp.id}
-              exp={exp}
               index={index}
               isLast={index === EXPERIENCES.length - 1}
+              role={exp.role[locale]}
+              company={exp.company}
+              period={exp.period}
+              current={exp.current}
+              description={exp.description[locale]}
+              skills={exp.skills}
             />
           ))}
         </div>
