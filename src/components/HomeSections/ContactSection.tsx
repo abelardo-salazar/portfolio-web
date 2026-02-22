@@ -47,7 +47,7 @@ export const ContactSection = () => {
   };
 
   return (
-    <section id="contact" className="py-24 scroll-mt-20">
+    <section id="contact" className="py-10 md:py-32 scroll-mt-20">
       <Container size="sm">
         <div className="text-center mb-12">
           <Heading level="h2" className="mb-4">
