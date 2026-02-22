@@ -41,7 +41,8 @@
   },
   "ThemeSwitcher": {
     "light": "Modo Claro",
-    "dark": "Modo Oscuro"
+    "dark": "Modo Oscuro",
+    "toggle_theme": "Cambiar tema"
   },
   "Contact": {
     "title": "¿Tienes un proyecto en mente?",
