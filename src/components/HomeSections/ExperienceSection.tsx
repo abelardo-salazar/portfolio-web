@@ -14,7 +14,7 @@ export const ExperienceSection = () => {
   const locale = useLocale() as "es" | "en";
 
   return (
-    <section id="experience" className="py-24 scroll-mt-20">
+    <section id="experience" className="py-10 md:py-32 scroll-mt-20">
       <Container size="md">
         <div className="mb-16 text-center md:text-left">
           <Heading level="h2" className="mb-4">
