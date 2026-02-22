@@ -16,6 +16,7 @@ import { Menu } from "lucide-react";
 import { navLinks } from "@/config/navigation";
 import Link from "next/link";
 import { SystemSettings } from "./SystemSettings";
+import { isLocalSection, scrollToSection } from "@/lib/navigation-utils";
 
 export const MobileMenu = () => {
   const [open, setOpen] = useState(false);
@@ -23,24 +24,13 @@ export const MobileMenu = () => {
   const locale = useLocale();
   const pathname = usePathname();
 
-  const handleNavClick = (
+  const onNavClick = (
     e: React.MouseEvent<HTMLAnchorElement>,
     href: string,
     type: string,
   ) => {
-    const isHomePage = pathname === `/${locale}` || pathname === `/${locale}/`;
-
-    if (type === "section" && isHomePage) {
-      e.preventDefault();
-      setOpen(false);
-
-      const id = href.replace("#", "");
-      const element = document.getElementById(id);
-      if (element) {
-        setTimeout(() => {
-          element.scrollIntoView({ behavior: "smooth" });
-        }, 500);
-      }
+    if (isLocalSection(pathname, locale, type)) {
+      scrollToSection(e, href, () => setOpen(false));
     } else {
       setOpen(false);
     }
@@ -73,7 +63,7 @@ export const MobileMenu = () => {
               >
                 <Link
                   href={`/${locale}${link.href}`}
-                  onClick={(e) => handleNavClick(e, link.href, link.type)}
+                  onClick={(e) => onNavClick(e, link.href, link.type)}
                 >
                   {t(link.labelKey)}
                 </Link>
