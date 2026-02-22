@@ -1,6 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import { useTranslations } from "next-intl";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useTransition } from "react";
 import {
   Container,
   Heading,
@@ -10,58 +13,69 @@ import {
   Input,
   Textarea,
   Button,
-  Toast,
   toast,
 } from "@abelardo-salazar/core-ui-design-system";
+import { contactSchema, ContactFormData } from "@/schemas/contact";
+import { sendContactAction } from "@/actions/send-contact";
 
 export const ContactSection = () => {
-  const [isPending, setIsPending] = useState(false);
+  const t = useTranslations("Contact");
+  const [isPending, startTransition] = useTransition();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsPending(true);
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<ContactFormData>({
+    resolver: zodResolver(contactSchema),
+  });
 
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+  const onSubmit = (data: ContactFormData) => {
+    startTransition(async () => {
+      const result = await sendContactAction(data);
 
-    toast.success("¡Mensaje enviado!", {
-      description: "Gracias por escribir, Te responderé pronto.",
+      if (result.success) {
+        toast.success(t("success_title"), {
+          description: t("success_message"),
+        });
+        reset();
+      } else {
+        toast.error(t("error_generic"));
+      }
     });
-
-    setIsPending(false);
-    (e.target as HTMLFormElement).reset();
   };
 
   return (
-    <section id="contact" className="py-20 bg-base-100">
-      <Toast position="bottom-right" richColors closeButton />
-
+    <section id="contacto" className="py-24 scroll-mt-20">
       <Container size="sm">
-        <div className="text-center mb-10">
-          <Heading level="h2">¿Tienes un proyecto en mente?</Heading>
-          <Text size="muted">
-            Hablemos sobre cómo puedo ayudarte a construir productos digitales
-            excepcionales.
-          </Text>
+        <div className="text-center mb-12">
+          <Heading level="h2">{t("title")}</Heading>
+          <Text size="muted">{t("subtitle")}</Text>
         </div>
 
         <Card>
-          <CardContent className="pt-6">
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <Input label="Nombre" placeholder="Tu nombre" required />
+          <CardContent className="pt-8">
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
               <Input
-                label="Email"
-                type="email"
-                placeholder="tu@email.com"
-                required
+                label={t("label_name")}
+                {...register("name")}
+                error={errors.name ? t(`errors.${errors.name.message}`) : ""}
+              />
+              <Input
+                label={t("label_email")}
+                {...register("email")}
+                error={errors.email ? t(`errors.${errors.email.message}`) : ""}
               />
               <Textarea
-                label="Mensaje"
-                placeholder="¿En qué puedo ayudarte?"
-                rows={5}
-                required
+                label={t("label_message")}
+                {...register("message")}
+                error={
+                  errors.message ? t(`errors.${errors.message.message}`) : ""
+                }
               />
               <Button type="submit" fullWidth isLoading={isPending}>
-                Enviar mensaje
+                {t("submit_button")}
               </Button>
             </form>
           </CardContent>

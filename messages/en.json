@@ -42,5 +42,23 @@
   "ThemeSwitcher": {
     "light": "Light Theme",
     "dark": "Dark Theme"
+  },
+  "Contact": {
+    "title": "Do you have a project in mind?",
+    "subtitle": "Let's talk about how I can help you build exceptional digital products.",
+    "label_name": "Name",
+    "placeholder_name": "Your full name",
+    "label_email": "Email",
+    "label_message": "Message",
+    "placeholder_message": "What can I help you with?",
+    "submit_button": "Send Message",
+    "success_title": "Message Sent!",
+    "success_message": "Thank you for writing. I'll get back to you as soon as possible.",
+    "error_generic": "There was an error sending your message. Please try again.",
+    "errors": {
+      "name_min": "The name must be at least 2 characters long.",
+      "email_invalid": "Please enter a valid email address.",
+      "message_min": "The message must be at least 10 characters long."
+    }
   }
 }
