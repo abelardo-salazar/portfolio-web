@@ -1,41 +1,29 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { useLocale, useTranslations } from "next-intl";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
 import { Container, Text } from "@abelardo-salazar/core-ui-design-system";
 import { navLinks } from "@/config/navigation";
-import { NavLink } from "./NavLink";
 import { siteConfig } from "@/config/site";
-import { usePathname } from "next/navigation";
+import { NavLink } from "./NavLink";
 import { MobileMenu } from "./MobileMenu";
-import Link from "next/link";
+import { useScroll } from "@/hooks/use-scroll";
+import { scrollToSection, isLocalSection } from "@/lib/navigation-utils";
 
 export const Navbar = () => {
   const pathname = usePathname();
   const locale = useLocale();
   const t = useTranslations("Navbar");
-  const [isScrolled, setIsScrolled] = useState(false);
+  const isScrolled = useScroll(20);
 
-  useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  const handleNavClick = (
+  const onNavClick = (
     e: React.MouseEvent<HTMLElement>,
     href: string,
     type: string,
   ) => {
-    const isHomePage = pathname === `/${locale}` || pathname === `/${locale}/`;
-
-    if (type === "section" && isHomePage) {
-      e.preventDefault();
-      const id = href.replace("#", "");
-      const element = document.getElementById(id);
-      if (element) {
-        element.scrollIntoView({ behavior: "smooth" });
-      }
+    if (isLocalSection(pathname, locale, type)) {
+      scrollToSection(e, href);
     }
   };
 
@@ -64,12 +52,13 @@ export const Navbar = () => {
               href={link.href}
               pathname={pathname}
               locale={locale}
-              onClick={(e) => handleNavClick(e, link.href, link.type)}
+              onClick={(e) => onNavClick(e, link.href, link.type)}
             >
               {t(link.labelKey)}
             </NavLink>
           ))}
         </div>
+
         <MobileMenu />
       </Container>
     </nav>
