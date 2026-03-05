@@ -26,7 +26,7 @@ export const ProjectCard = ({ project, index, locale }: ProjectCardProps) => {
       <Card className="h-full flex flex-col hover:border-primary/50 transition-colors">
         <CardHeader>
           <div className="flex justify-between items-start mb-2">
-            <span className="text-xs font-mono text-base-content/50">
+            <span className="text-xs font-mono text-base-content/50 mb-8">
               {project.year}
             </span>
             {project.featured && (
