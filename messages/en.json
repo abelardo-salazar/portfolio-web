@@ -27,6 +27,12 @@
     "noResults": "No projects found matching those criteria.",
     "metaTitle": "My Projects",
     "metaDescription": "Explore Abelardo Salazar's portfolio: design systems, scalable applications, and more.",
+    "backToProjects": "Back to Projects",
+    "visitLive": "Visit Live Site",
+    "overview": "Project Overview",
+    "technologies": "Technologies Used",
+    "keyFeatures": "Key Features",
+    "technicalChallenges": "Technical Challenges Overcome",
     "home": {
       "title": "Featured Projects",
       "description": "Selection of recent work and open-source tools.",

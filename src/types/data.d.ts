@@ -7,8 +7,10 @@ export interface Project {
   tags: string[];
   link?: string;
   github?: string;
-  image: string;
+  images: string[];
   featured: boolean;
+  features?: Record<"es" | "en", string[]>;
+  challenges?: Record<"es" | "en", string[]>;
 }
 
 export interface Experience {
