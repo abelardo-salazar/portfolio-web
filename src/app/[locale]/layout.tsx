@@ -8,6 +8,7 @@ import { Footer } from "@/components/navigation/Footer";
 import { ThemeProvider } from "@/providers/ThemeProvider";
 import { getMessages, getTranslations } from "next-intl/server";
 import { siteConfig } from "@/config/site";
+import { Toast } from "@/components/ui-wrapper";
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
@@ -71,6 +72,7 @@ export default async function RootLayout({
           <ThemeProvider>
             <Navbar />
             <main className="flex-grow">{children}</main>
+            <Toast />
             <Footer />
           </ThemeProvider>
         </NextIntlClientProvider>
