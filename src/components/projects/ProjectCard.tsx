@@ -45,7 +45,7 @@ export const ProjectCard = ({ project, index, locale }: ProjectCardProps) => {
             ))}
           </div>
           <Button variant="primary" size="sm" fullWidth asChild>
-            <a href={project.link || project.github}>{t("more")}</a>
+            <a href={`/${locale}/projects/${project.slug}`}>{t("more")}</a>
           </Button>
         </CardContent>
       </Card>
