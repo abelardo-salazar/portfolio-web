@@ -16,7 +16,7 @@ import { Menu } from "lucide-react";
 import { navLinks } from "@/config/navigation";
 import Link from "next/link";
 import { SystemSettings } from "./SystemSettings";
-import { isLocalSection, scrollToSection } from "@/lib/navigation-utils";
+import { isLocalSection, scrollToSection } from "@/utils/scroll-to-section";
 
 export const MobileMenu = () => {
   const [open, setOpen] = useState(false);

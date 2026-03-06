@@ -16,7 +16,7 @@ import {
   toast,
 } from "@abelardo-salazar/core-ui-design-system";
 import { contactSchema, ContactFormData } from "@/schemas/contact";
-import { sendContactAction } from "@/actions/send-contact";
+import { sendContactAction } from "@/utils/send-contact";
 
 export const ContactSection = () => {
   const t = useTranslations("Contact");
