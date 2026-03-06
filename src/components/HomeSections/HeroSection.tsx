@@ -1,6 +1,6 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import {
   Badge,
   Button,
@@ -10,10 +10,14 @@ import {
 } from "@/components/ui-wrapper";
 import { FileText } from "lucide-react";
 import { MotionReveal } from "../MotionReveal"; // Importando tu componente
+import { downloadCV } from "@/utils/download-cv";
 
 export const HeroSection = () => {
   const t = useTranslations("Hero");
-
+  const locale = useLocale() as "es" | "en";
+  const handleCVDownlodad = () => {
+    downloadCV(locale);
+  };
   return (
     <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden py-20">
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_50%_50%,rgba(var(--primary-rgb),0.04),transparent_70%)]" />
@@ -45,6 +49,7 @@ export const HeroSection = () => {
                 variant="outline"
                 size="lg"
                 className="px-10 rounded-full gap-2"
+                onClick={handleCVDownlodad}
               >
                 <FileText className="w-4 h-4" />
                 {t("cv")}
