@@ -11,6 +11,7 @@ import {
 import { FileText } from "lucide-react";
 import { MotionReveal } from "../MotionReveal"; // Importando tu componente
 import { downloadCV } from "@/utils/download-cv";
+import { ScrollIndicator } from "../navigation/ScrollIndicator";
 
 export const HeroSection = () => {
   const t = useTranslations("Hero");
@@ -58,6 +59,7 @@ export const HeroSection = () => {
           </div>
         </MotionReveal>
       </Container>
+      <ScrollIndicator targetId="experience" />
     </section>
   );
 };
