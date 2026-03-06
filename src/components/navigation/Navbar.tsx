@@ -9,7 +9,7 @@ import { siteConfig } from "@/config/site";
 import { NavLink } from "./NavLink";
 import { MobileMenu } from "./MobileMenu";
 import { useScroll } from "@/hooks/use-scroll";
-import { scrollToSection, isLocalSection } from "@/lib/navigation-utils";
+import { scrollToSection, isLocalSection } from "@/utils/scroll-to-section";
 
 export const Navbar = () => {
   const pathname = usePathname();
