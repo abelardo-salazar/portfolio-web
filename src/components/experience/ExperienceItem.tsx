@@ -8,7 +8,7 @@ import {
   Badge,
   Separator,
 } from "@abelardo-salazar/core-ui-design-system";
-import { MotionReveal } from "../MotionReveal";
+import { MotionReveal } from "../ui/MotionReveal";
 
 interface ExperienceItemProps {
   role: string;

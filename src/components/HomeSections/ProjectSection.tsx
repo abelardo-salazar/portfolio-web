@@ -6,7 +6,7 @@ import {
   Heading,
   Text,
 } from "@abelardo-salazar/core-ui-design-system";
-import { MotionReveal } from "../MotionReveal";
+import { MotionReveal } from "../ui/MotionReveal";
 import { ProjectCard } from "../projects/ProjectCard";
 import { PROJECTS } from "@/data/projects";
 import { useLocale, useTranslations } from "next-intl";

@@ -7,9 +7,9 @@ import {
   Container,
   Heading,
   Text,
-} from "@/components/ui-wrapper";
+} from "@/components/ui/ui-wrapper";
 import { FileText } from "lucide-react";
-import { MotionReveal } from "../MotionReveal"; // Importando tu componente
+import { MotionReveal } from "../ui/MotionReveal"; // Importando tu componente
 import { downloadCV } from "@/utils/download-cv";
 import { ScrollIndicator } from "../navigation/ScrollIndicator";
 

@@ -1,6 +1,6 @@
 "use client";
 import { CheckCircle2, AlertCircle } from "lucide-react";
-import { Heading, Text } from "@/components/ui-wrapper";
+import { Heading, Text } from "@/components/ui/ui-wrapper";
 
 interface SectionProps {
   title: string;
