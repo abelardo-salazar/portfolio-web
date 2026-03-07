@@ -13,7 +13,7 @@ import {
   SheetDescription,
 } from "@abelardo-salazar/core-ui-design-system";
 import { siteConfig } from "@/config/site";
-import { SystemSettings } from "./SystemSettings";
+import { SystemSettings } from "../preferences/SystemSettings";
 import { Settings } from "lucide-react";
 
 export const Footer = () => {

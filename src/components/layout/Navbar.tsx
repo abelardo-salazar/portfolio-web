@@ -6,8 +6,8 @@ import Link from "next/link";
 import { Container, Text } from "@abelardo-salazar/core-ui-design-system";
 import { navLinks } from "@/config/navigation";
 import { siteConfig } from "@/config/site";
-import { NavLink } from "./NavLink";
-import { MobileMenu } from "./MobileMenu";
+import { NavLink } from "../navigation/NavLink";
+import { MobileMenu } from "../navigation/MobileMenu";
 import { useScroll } from "@/hooks/use-scroll";
 import { scrollToSection, isLocalSection } from "@/utils/scroll-to-section";
 

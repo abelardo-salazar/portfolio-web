@@ -7,7 +7,7 @@ import {
   Text,
 } from "@abelardo-salazar/core-ui-design-system";
 import { EXPERIENCES } from "@/data/experiences";
-import { ExperienceItem } from "./ExperienceItem";
+import { ExperienceItem } from "../experience/ExperienceItem";
 
 export const ExperienceSection = () => {
   const t = useTranslations("Experience");

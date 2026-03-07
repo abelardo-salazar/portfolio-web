@@ -3,12 +3,12 @@ import { NextIntlClientProvider } from "next-intl";
 import { Geist_Mono } from "next/font/google";
 import "@abelardo-salazar/core-ui-design-system/style.css";
 import "../globals.css";
-import { Navbar } from "@/components/navigation/Navbar";
-import { Footer } from "@/components/navigation/Footer";
+import { Navbar } from "@/components/layout/Navbar";
+import { Footer } from "@/components/layout/Footer";
 import { ThemeProvider } from "@/providers/ThemeProvider";
 import { getMessages, getTranslations } from "next-intl/server";
 import { siteConfig } from "@/config/site";
-import { Toast } from "@/components/ui-wrapper";
+import { Toast } from "@/components/ui/ui-wrapper";
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
