@@ -1,4 +1,5 @@
 import { ProjectBrowser } from "@/components/projects/ProjectBrowser";
+import { getProjects } from "@/sanity/lib/api";
 import { getTranslations } from "next-intl/server";
 
 export async function generateMetadata({
@@ -15,10 +16,11 @@ export async function generateMetadata({
   };
 }
 
-export default function ProjectsPage() {
+export default async function ProjectsPage() {
+  const projects = await getProjects();
   return (
     <main className="min-h-screen bg-base-100 mt-4">
-      <ProjectBrowser />
+      <ProjectBrowser projects={projects} />
     </main>
   );
 }
