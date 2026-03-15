@@ -8,7 +8,6 @@ import {
   Button,
   Separator,
 } from "@/components/ui/ui-wrapper";
-import { PROJECTS } from "@/data/projects";
 import { ArrowLeft, ExternalLink, Github } from "lucide-react";
 import Link from "next/link";
 import { getProjectBySlug } from "@/services/projects";
@@ -17,15 +16,18 @@ import {
   ProjectFeatures,
 } from "@/components/projects/ProjectDetails";
 import { ProjectGallery } from "@/components/projects/ProjectGallery";
+import { getProjects } from "@/sanity/lib/api";
 
 interface ProjectPageProps {
   params: Promise<{ locale: string; slug: string }>;
 }
 
 export async function generateStaticParams() {
+  const projects = await getProjects();
   const locales = ["en", "es"];
+
   return locales.flatMap((locale) =>
-    PROJECTS.map((project) => ({
+    projects.map((project) => ({
       locale,
       slug: project.slug,
     })),
@@ -34,7 +36,7 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: ProjectPageProps) {
   const { slug, locale } = await params;
-  const project = PROJECTS.find((p) => p.slug === slug);
+  const project = await getProjectBySlug(slug);
   if (!project) return {};
 
   return {
