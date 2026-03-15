@@ -1,11 +1,15 @@
-"use client";
 import { ContactSection } from "@/components/HomeSections/ContactSection";
 import { ExperienceSection } from "@/components/HomeSections/ExperienceSection";
 import { HeroSection } from "@/components/HomeSections/HeroSection";
 import { ProjectSection } from "@/components/HomeSections/ProjectSection";
 import { siteConfig } from "@/config/site";
+import { getExperiences, getFeaturedProjects } from "@/sanity/lib/api";
 
-export default function Home() {
+export default async function Home() {
+  const [experiences, featuredProjects] = await Promise.all([
+    getExperiences(),
+    getFeaturedProjects(),
+  ]);
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Person",
@@ -23,8 +27,8 @@ export default function Home() {
       />
       <main className="min-h-screen bg-base-100">
         <HeroSection />
-        <ExperienceSection />
-        <ProjectSection />
+        <ExperienceSection experiences={experiences} />
+        <ProjectSection projects={featuredProjects} />
         <ContactSection />
       </main>
     </>
