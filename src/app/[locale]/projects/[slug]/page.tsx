@@ -10,13 +10,12 @@ import {
 } from "@/components/ui/ui-wrapper";
 import { ArrowLeft, ExternalLink, Github } from "lucide-react";
 import Link from "next/link";
-import { getProjectBySlug } from "@/services/projects";
 import {
   ProjectChallenges,
   ProjectFeatures,
 } from "@/components/projects/ProjectDetails";
 import { ProjectGallery } from "@/components/projects/ProjectGallery";
-import { getProjects } from "@/sanity/lib/api";
+import { getProjects, getProjectBySlug } from "@/sanity/lib/api";
 
 interface ProjectPageProps {
   params: Promise<{ locale: string; slug: string }>;
