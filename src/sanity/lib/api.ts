@@ -4,22 +4,27 @@ import { experiencesQuery, projectsQuery } from "./queries";
 import { groq } from "next-sanity";
 import { Project, Experience } from "@/types/data";
 
-export const getExperiences = cache(async (): Promise<Experience[]> => {
-  return await client.fetch(experiencesQuery);
-});
+export const getExperiences = async (): Promise<Experience[]> => {
+  return await client.fetch(
+    experiencesQuery,
+    {},
+    { next: { tags: ["experience"] } },
+  );
+};
 
-export const getProjects = cache(async (): Promise<Project[]> => {
-  return await client.fetch(projectsQuery);
-});
+export const getProjects = async (): Promise<Project[]> => {
+  return await client.fetch(projectsQuery, {}, { next: { tags: ["project"] } });
+};
 
-export const getFeaturedProjects = cache(async (): Promise<Project[]> => {
+export const getFeaturedProjects = async (): Promise<Project[]> => {
   const projects = await getProjects();
   return projects.filter((project) => project.featured);
-});
+};
 
-export const getProjectBySlug = cache(
-  async (slug: string): Promise<Project | null> => {
-    const query = groq`*[_type == "project" && slug.current == $slug][0] {
+export const getProjectBySlug = async (
+  slug: string,
+): Promise<Project | null> => {
+  const query = groq`*[_type == "project" && slug.current == $slug][0] {
     "id": _id,
     "slug": slug.current,
     year,
@@ -34,6 +39,9 @@ export const getProjectBySlug = cache(
     challenges
   }`;
 
-    return await client.fetch(query, { slug });
-  },
-);
+  return await client.fetch(
+    query,
+    { slug },
+    { next: { tags: ["project", `project-${slug}`] } },
+  );
+};
