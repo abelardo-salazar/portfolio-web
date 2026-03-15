@@ -57,7 +57,7 @@ export const MobileMenu = () => {
             {navLinks.map((link) => (
               <Button
                 key={link.href}
-                variant={pathname.includes(link.href) ? "secondary" : "ghost"}
+                variant={"ghost"}
                 className="justify-start text-lg h-12"
                 asChild
               >

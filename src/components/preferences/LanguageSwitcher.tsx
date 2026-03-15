@@ -11,7 +11,7 @@ export const LanguageSwitcher = () => {
       <Text size="sm" weight="medium" className="opacity-70">
         Idioma / Language
       </Text>
-      <div className="flex gap-2">
+      <div className=" md:flex mdgap-2 gap-4 grid">
         {locales.map((locale) => (
           <Button
             key={locale.id}
