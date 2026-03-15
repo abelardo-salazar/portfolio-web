@@ -6,10 +6,14 @@ import {
   Heading,
   Text,
 } from "@abelardo-salazar/core-ui-design-system";
-import { EXPERIENCES } from "@/data/experiences";
 import { ExperienceItem } from "../experience/ExperienceItem";
+import { Experience } from "@/types/data";
 
-export const ExperienceSection = () => {
+export const ExperienceSection = ({
+  experiences,
+}: {
+  experiences: Experience[];
+}) => {
   const t = useTranslations("Experience");
   const locale = useLocale() as "es" | "en";
 
@@ -26,11 +30,11 @@ export const ExperienceSection = () => {
         </div>
 
         <div className="max-w-3xl mx-auto md:mx-0">
-          {EXPERIENCES.map((exp, index) => (
+          {experiences.map((exp, index) => (
             <ExperienceItem
               key={exp.id}
               index={index}
-              isLast={index === EXPERIENCES.length - 1}
+              isLast={index === experiences.length - 1}
               role={exp.role[locale]}
               company={exp.company}
               period={exp.period}

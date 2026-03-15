@@ -8,11 +8,11 @@ import {
 } from "@abelardo-salazar/core-ui-design-system";
 import { MotionReveal } from "../ui/MotionReveal";
 import { ProjectCard } from "../projects/ProjectCard";
-import { PROJECTS } from "@/data/projects";
 import { useLocale, useTranslations } from "next-intl";
 import Link from "next/link";
+import { Project } from "@/types/data";
 
-export const ProjectSection = () => {
+export const ProjectSection = ({ projects }: { projects: Project[] }) => {
   const t = useTranslations("Projects.home");
   const locale = useLocale() as "es" | "en";
   return (
@@ -28,7 +28,7 @@ export const ProjectSection = () => {
         </MotionReveal>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {PROJECTS.map(
+          {projects.map(
             (project, index) =>
               project.featured && (
                 <ProjectCard
