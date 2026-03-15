@@ -9,13 +9,13 @@ import {
   Badge,
   Button,
 } from "@abelardo-salazar/core-ui-design-system";
-import { PROJECTS } from "@/data/projects";
 import { ProjectCard } from "./ProjectCard";
 import { ProjectCardSkeleton } from "./ProjectCardSkeleton";
 import { Search, X } from "lucide-react";
 import { useProjectFilters } from "@/hooks/use-project-filters";
+import { Project } from "@/types/data";
 
-export const ProjectBrowser = () => {
+export const ProjectBrowser = ({ projects }: { projects: Project[] }) => {
   const t = useTranslations("Projects");
   const locale = useLocale() as "es" | "en";
 
@@ -28,7 +28,7 @@ export const ProjectBrowser = () => {
     allTags,
     filteredProjects,
     hasFilters,
-  } = useProjectFilters(PROJECTS, locale);
+  } = useProjectFilters(projects, locale);
 
   return (
     <Container size="lg" className="py-12">
