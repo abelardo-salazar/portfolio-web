@@ -31,7 +31,7 @@ export const ProjectBrowser = ({ projects }: { projects: Project[] }) => {
   } = useProjectFilters(projects, locale);
 
   return (
-    <Container size="lg" className="py-12">
+    <Container size="md" className="py-24">
       <div className="flex flex-col gap-8">
         <div className="space-y-4">
           <Heading level="h1">{t("title")}</Heading>

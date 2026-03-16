@@ -17,7 +17,7 @@ export const ProjectSection = ({ projects }: { projects: Project[] }) => {
   const locale = useLocale() as "es" | "en";
   return (
     <section id="projects" className="py-10 md:py-32 scroll-mt-20">
-      <Container size="lg">
+      <Container size="md">
         <MotionReveal>
           <div className="mb-12">
             <Heading level="h2" className="mb-4">
