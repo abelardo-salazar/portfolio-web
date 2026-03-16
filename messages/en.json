@@ -4,6 +4,7 @@
     "projects": "Projects",
     "experience": "Experience",
     "contact": "Contact",
+    "skills": "Skills",
     "menu": "Menu"
   },
   "Hero": {
@@ -71,6 +72,28 @@
       "name_min": "The name must be at least 2 characters long.",
       "email_invalid": "Please enter a valid email address.",
       "message_min": "The message must be at least 10 characters long."
+    }
+  },
+  "Skills": {
+    "title": "Skills",
+    "subtitle": "My toolkit and competencies",
+    "technical": "Technical",
+    "soft": "Soft Skills",
+    "languages": "Languages",
+    "levels": {
+      "expert": "Expert",
+      "proficient": "Proficient",
+      "competent": "Competent",
+      "beginner": "Advanced Beginner",
+      "novice": "Novice"
+    },
+    "language_levels": {
+      "native": "Native",
+      "c1": "C1 Advanced",
+      "b2": "B2 Upper Intermediate",
+      "b1": "B1 Intermediate",
+      "a2": "A2 Elementary",
+      "a1": "A1 Beginner"
     }
   }
 }
