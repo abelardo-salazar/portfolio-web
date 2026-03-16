@@ -22,3 +22,15 @@ export interface Experience {
   description: Record<"es" | "en", string[]>;
   skills: string[];
 }
+
+export interface SkillData {
+  technical: {
+    name: string;
+    level: string;
+  }[];
+  soft: Record<"es" | "en", string>[];
+  languages: {
+    name: Record<"es" | "en", string>;
+    level: string;
+  }[];
+}
