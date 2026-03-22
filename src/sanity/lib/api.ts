@@ -1,7 +1,7 @@
 import { client } from "./client";
 import { experiencesQuery, projectsQuery } from "./queries";
 import { groq } from "next-sanity";
-import { Project, Experience, SkillData } from "@/types/data";
+import { Project, Experience, SkillData, ProfileData } from "@/types/data";
 
 export const getExperiences = async (): Promise<Experience[]> => {
   return await client.fetch(
@@ -53,4 +53,13 @@ export const skillsQuery = groq`*[_type == "skills"][0] {
 
 export const getSkills = async (): Promise<SkillData | null> => {
   return await client.fetch(skillsQuery, {}, { next: { tags: ["skills"] } });
+};
+
+export const profileQuery = groq`*[_type == "profile"][0] {
+  bio,
+  "image": image.asset->url
+}`;
+
+export const getProfile = async (): Promise<ProfileData | null> => {
+  return await client.fetch(profileQuery, {}, { next: { tags: ["profile"] } });
 };
