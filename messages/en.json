@@ -7,6 +7,9 @@
     "skills": "Skills",
     "menu": "Menu"
   },
+  "About": {
+    "title": "About Me"
+  },
   "Hero": {
     "available": "Available for new projects",
     "title": "High-impact Interface Engineering",

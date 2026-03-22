@@ -7,6 +7,9 @@
     "skills": "Habilidades",
     "menu": "Menú"
   },
+  "About": {
+    "title": "Sobre mí"
+  },
   "Hero": {
     "available": "Disponible para nuevos proyectos",
     "title": "Ingeniería de Interfaz de alto impacto",

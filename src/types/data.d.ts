@@ -34,3 +34,8 @@ export interface SkillData {
     level: string;
   }[];
 }
+
+export interface ProfileData {
+  bio: Record<"es" | "en", string[]>;
+  image?: string;
+}
