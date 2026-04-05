@@ -3,6 +3,7 @@ _id: exp-aiesec-venezuela
 _type: experience
 company: "AIESEC in Venezuela"
 period: "Feb 2020 - Jul 2021"
+startDate: "2020-02"
 current: false
 role:
   es: "Coordinador de Desarrollo Organizacional"

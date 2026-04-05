@@ -71,7 +71,7 @@ export const getProfile = async (): Promise<ProfileData | null> => {
 };
 
 export const getCertifications = async (): Promise<CertificationData[]> => {
-  const query = groq`*[_type == "certification"] | order(date desc) {
+  const query = groq`*[_type == "certification"] | order(date desc, startDate desc) {
     _id,
     title,
     issuer,

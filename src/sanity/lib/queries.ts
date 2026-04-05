@@ -15,7 +15,7 @@ export const projectsQuery = groq`*[_type == "project"] | order(year desc) {
   challenges
 }`;
 
-export const experiencesQuery = groq`*[_type == "experience"] | order(period desc) {
+export const experiencesQuery = groq`*[_type == "experience"] | order(period desc, startDate desc) {
   "id": _id,
   company,
   role,
