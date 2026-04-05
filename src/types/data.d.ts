@@ -47,4 +47,6 @@ export interface CertificationData {
   date: string;
   credentialId?: string;
   url?: string;
+  description?: Record<"es" | "en", string>;
+  skills?: string[];
 }

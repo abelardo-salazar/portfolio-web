@@ -36,6 +36,22 @@ export const certificationType = defineType({
       title: "Credential URL",
       type: "url",
     }),
+    defineField({
+      name: "description",
+      title: "Brief Description",
+      type: "object",
+      fields: [
+        { name: "es", title: "Spanish", type: "text" },
+        { name: "en", title: "English", type: "text" },
+      ],
+    }),
+    defineField({
+      name: "skills",
+      title: "Acquired Skills",
+      type: "array",
+      of: [{ type: "string" }],
+      description: "Ej: Serverless, CI/CD, React Performance",
+    }),
   ],
   preview: {
     select: {
