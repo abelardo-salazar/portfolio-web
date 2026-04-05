@@ -1,21 +1,17 @@
 ---
 _id: singleton-profile
 _type: profile
-title: "Perfil Profesional - Abelardo Salazar"
+title: "Perfil Profesional"
 ---
 
 ## es
 
-Hola, soy Abelardo Salazar, un desarrollador de software apasionado por la creación de sistemas robustos y experiencias digitales excepcionales. Mi enfoque se centra en la arquitectura frontend, el código limpio y la optimización de rendimiento utilizando tecnologías modernas como React y Next.js.
+Ingeniero de Computación con un enfoque sólido en la **Ingeniería de Interfaz de alto impacto**. Especializado en el ecosistema de React, Next.js y TypeScript, combino rigor técnico con una visión estratégica de producto.
 
-Me encanta construir herramientas que faciliten la vida de otros desarrolladores, como sistemas de diseño privados y flujos de automatización. Creo firmemente que la tecnología debe ser una extensión natural de la creatividad humana.
-
-Cuando no estoy frente al teclado, suelo perderme en la lectura de novelas de misterio o no-ficción. También soy un gran seguidor del fútbol, donde disfruto analizando la intensidad defensiva y el orden táctico de jugadores de élite.
+Mi experiencia se centra en construir sistemas de diseño escalables, optimizar el rendimiento de aplicaciones móviles y liderar procesos de transformación técnica que generan resultados de negocio medibles.
 
 ## en
 
-Hi, I'm Abelardo Salazar, a software developer passionate about building robust systems and exceptional digital experiences. My focus is on frontend architecture, clean code, and performance optimization using modern technologies like React and Next.js.
+Computer Engineer focused on **High-impact Interface Engineering**. Specialized in the React ecosystem, Next.js, and TypeScript, I combine technical rigor with a strategic product vision.
 
-I love building tools that make other developers' lives easier, such as private design systems and automation workflows. I firmly believe that technology should be a natural extension of human creativity.
-
-When I'm away from the keyboard, I usually get lost in mystery or non-fiction novels. I'm also a big football fan, where I enjoy analyzing the defensive intensity and tactical order of elite players.
+My experience centers on building scalable design systems, optimizing mobile application performance, and leading technical transformation processes that deliver measurable business results.

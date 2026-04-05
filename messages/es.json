@@ -1,107 +1,107 @@
 {
   "Navbar": {
-    "home": "Inicio",
-    "projects": "Proyectos",
-    "experience": "Experiencia",
-    "contact": "Contacto",
-    "skills": "Habilidades",
-    "menu": "Menú"
+    "home": "Home",
+    "projects": "Projects",
+    "experience": "Experience",
+    "contact": "Contact",
+    "skills": "Skills",
+    "menu": "Menu"
   },
   "About": {
-    "title": "Sobre mí"
+    "title": "About Me"
   },
   "Hero": {
-    "available": "Disponible para nuevos proyectos",
-    "title": "Ingeniería de Interfaz de alto impacto",
-    "description": "Senior Frontend Engineer especializado en ecosistemas de React. Actualmente desarrollando sistemas de diseño privados y arquitecturas de alto rendimiento.",
-    "projects": "Ver Proyectos",
-    "cv": "Descargar CV"
+    "available": "Available for new projects",
+    "title": "High-Impact Interface Engineering",
+    "description": "Senior Frontend Engineer specializing in the React ecosystem, Next.js, and TypeScript. Focused on building scalable architectures and robust UI design systems.",
+    "projects": "See Projects",
+    "cv": "Download CV"
   },
   "Experience": {
-    "title": "Experiencia Profesional",
-    "subtitle": "Mi trayectoria construyendo soluciones técnicas escalables."
+    "title": "Professional Experience",
+    "subtitle": "A proven track record of architecting high-performance web and mobile interfaces."
   },
   "Projects": {
-    "title": "Proyectos",
-    "featured": "Destacado",
-    "more": "Ver Más",
-    "description": "Una selección de mis trabajos más recientes y experimentos técnicos.",
-    "searchPlaceholder": "Buscar por nombre o tecnología...",
-    "clearFilters": "Limpiar",
-    "noResults": "No se encontraron proyectos con esos criterios.",
-    "metaTitle": "Mis Proyectos",
-    "metaDescription": "Explora el portafolio de Abelardo Salazar: sistemas de diseño, aplicaciones escalables y más.",
-    "backToProjects": "Volver a proyectos",
-    "visitLive": "Visitar sitio",
-    "overview": "Resumen del proyecto",
-    "technologies": "Tecnologías utilizadas",
-    "keyFeatures": "Características principales",
-    "technicalChallenges": "Retos técnicos superados",
+    "title": "Projects",
+    "featured": "Featured",
+    "more": "See More",
+    "description": "An overview of my engineering work, from custom UI component libraries to enterprise-level web applications.",
+    "searchPlaceholder": "Search by name or technology...",
+    "clearFilters": "Clear",
+    "noResults": "No projects found matching those criteria.",
+    "metaTitle": "My Projects",
+    "metaDescription": "Explore Abelardo Salazar's portfolio: UI design systems, scalable Next.js applications, and advanced frontend architectures.",
+    "backToProjects": "Back to Projects",
+    "visitLive": "Visit Live Site",
+    "overview": "Project Overview",
+    "technologies": "Technologies Used",
+    "keyFeatures": "Key Features",
+    "technicalChallenges": "Technical Challenges Overcome",
     "home": {
-      "title": "Proyectos Destacados",
-      "description": "Selección de trabajos recientes y herramientas open-source.",
-      "viewAll": "Ver Todos"
+      "title": "Featured Projects",
+      "description": "A selection of recent engineering work and scalable tools.",
+      "viewAll": "View All"
     }
   },
   "Metadata": {
     "title": "Senior Frontend Engineer",
-    "description": "Portafolio profesional especializado en ecosistemas React."
+    "description": "Professional portfolio of Abelardo Salazar, a Senior Frontend Engineer specializing in React, Next.js, and scalable web architectures."
   },
   "Footer": {
-    "settingsTitle": "Configuración",
-    "preferences": "Preferencias",
-    "settingsDescription": "Personaliza tu experiencia visual en mi portafolio",
-    "language": "Idioma",
-    "appearance": "Apariencia"
+    "settingsTitle": "Settings",
+    "preferences": "Preferences",
+    "settingsDescription": "Customize your visual experience in my portfolio",
+    "language": "Language",
+    "appearance": "Appearance"
   },
   "ThemeSwitcher": {
-    "light": "Modo Claro",
-    "dark": "Modo Oscuro",
-    "toggle_theme": "Cambiar tema"
+    "light": "Light Theme",
+    "dark": "Dark Theme",
+    "toggle_theme": "Toggle theme"
   },
   "Contact": {
-    "title": "¿Tienes un proyecto en mente?",
-    "subtitle": "Hablemos sobre cómo puedo ayudarte a construir productos digitales excepcionales.",
-    "label_name": "Nombre",
-    "placeholder_name": "Tu nombre completo",
-    "label_email": "Correo electrónico",
-    "label_message": "Mensaje",
-    "placeholder_message": "¿En qué puedo ayudarte?",
-    "submit_button": "Enviar mensaje",
-    "success_title": "¡Mensaje enviado!",
-    "success_message": "Gracias por escribir. Te responderé lo antes posible.",
-    "error_generic": "Hubo un error al enviar. Por favor, intenta de nuevo.",
+    "title": "Do you have a project in mind?",
+    "subtitle": "Let's discuss how my expertise in frontend architecture can drive your next digital product.",
+    "label_name": "Name",
+    "placeholder_name": "Your full name",
+    "label_email": "Email",
+    "label_message": "Message",
+    "placeholder_message": "What can I help you build?",
+    "submit_button": "Send Message",
+    "success_title": "Message Sent!",
+    "success_message": "Thank you for reaching out. I will get back to you as soon as possible.",
+    "error_generic": "There was an error sending your message. Please try again.",
     "errors": {
-      "name_min": "El nombre debe tener al menos 2 caracteres.",
-      "email_invalid": "Introduce un correo electrónico válido.",
-      "message_min": "El mensaje debe tener al menos 10 caracteres."
+      "name_min": "The name must be at least 2 characters long.",
+      "email_invalid": "Please enter a valid email address.",
+      "message_min": "The message must be at least 10 characters long."
     }
   },
   "Certifications": {
-    "title": "Certificaciones",
-    "subtitle": "Aprendizaje continuo y validación de la industria",
-    "verify": "Verificar credencial"
+    "title": "Certifications",
+    "subtitle": "Continuous learning and industry validation",
+    "verify": "Verify credential"
   },
   "Skills": {
-    "title": "Habilidades",
-    "subtitle": "Mi caja de herramientas y competencias",
-    "technical": "Técnicas",
-    "soft": "Transversales",
-    "languages": "Idiomas",
+    "title": "Skills",
+    "subtitle": "My engineering toolkit and competencies",
+    "technical": "Technical",
+    "soft": "Soft Skills",
+    "languages": "Languages",
     "levels": {
-      "expert": "Experto",
-      "proficient": "Proficiente",
-      "competent": "Competente",
-      "beginner": "Principiante Avanzado",
-      "novice": "Novato"
+      "expert": "Expert",
+      "proficient": "Proficient",
+      "competent": "Competent",
+      "beginner": "Advanced Beginner",
+      "novice": "Novice"
     },
     "language_levels": {
-      "native": "Nativo",
-      "c1": "C1 Avanzado",
-      "b2": "B2 Intermedio Alto",
-      "b1": "B1 Intermedio",
-      "a2": "A2 Elemental",
-      "a1": "A1 Principiante"
+      "native": "Native",
+      "c1": "C1 Advanced",
+      "b2": "B2 Upper Intermediate",
+      "b1": "B1 Intermediate",
+      "a2": "A2 Elementary",
+      "a1": "A1 Beginner"
     }
   }
 }

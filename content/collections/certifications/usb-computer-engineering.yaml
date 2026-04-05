@@ -1,0 +1,18 @@
+_id: cert-usb-ce
+_type: certification
+title:
+  es: "Ingeniería de Computación"
+  en: "Computer Engineering"
+issuer: "Universidad Simón Bolívar"
+date: "2022-07-01"
+credentialId: ""
+url: ""
+description:
+  es: "Formación académica de alto nivel centrada en los fundamentos de la computación. Incluye el dominio de estructuras de datos complejas, análisis de complejidad algorítmica y gestión de proyectos de software bajo estándares internacionales."
+  en: "High-level academic training focused on computer science fundamentals. Includes mastery of complex data structures, algorithmic complexity analysis, and software project management under international standards."
+skills:
+  - Data Structures
+  - Algorithm Analysis
+  - Database Management
+  - Project Management
+  - Software Architecture
