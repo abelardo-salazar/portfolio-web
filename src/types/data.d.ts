@@ -39,3 +39,12 @@ export interface ProfileData {
   bio: Record<"es" | "en", string[]>;
   image?: string;
 }
+
+export interface CertificationData {
+  _id: string;
+  title: Record<"es" | "en", string>;
+  issuer: string;
+  date: string;
+  credentialId?: string;
+  url?: string;
+}
