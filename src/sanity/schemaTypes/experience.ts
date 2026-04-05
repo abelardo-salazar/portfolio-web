@@ -27,6 +27,12 @@ export const experienceType = defineType({
       description: "e.g., '2021 - Present' or 'Jan 2020 - Dec 2021'",
     }),
     defineField({
+      name: "startDate",
+      title: "Start Date (For sorting only)",
+      type: "date",
+      options: { dateFormat: "YYYY-MM" },
+    }),
+    defineField({
       name: "current",
       title: "Current Job",
       type: "boolean",

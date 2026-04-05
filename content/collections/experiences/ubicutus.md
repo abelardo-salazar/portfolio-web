@@ -2,7 +2,8 @@
 _id: exp-ubicutus
 _type: experience
 company: "Ubicutus"
-period: "2021 - 2022"
+period: "Jul 2021 - Sep 2022"
+startDate: "2021-07"
 current: false
 role:
   es: "Frontend Developer & Mobile Lead"

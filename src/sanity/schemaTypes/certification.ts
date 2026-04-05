@@ -4,6 +4,7 @@ export const certificationType = defineType({
   name: "certification",
   title: "Certifications",
   type: "document",
+
   fields: [
     defineField({
       name: "title",
@@ -23,6 +24,12 @@ export const certificationType = defineType({
     defineField({
       name: "date",
       title: "Issue Date",
+      type: "date",
+      options: { dateFormat: "YYYY-MM" },
+    }),
+    defineField({
+      name: "startDate",
+      title: "Start Date (For sorting only)",
       type: "date",
       options: { dateFormat: "YYYY-MM" },
     }),

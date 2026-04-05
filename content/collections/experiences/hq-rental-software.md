@@ -2,7 +2,8 @@
 _id: exp-hq-rental
 _type: experience
 company: "HQ Rental Software"
-period: "2022 - Present"
+period: "Sep 2022 - Present"
+startDate: "2022-09"
 current: true
 role:
   es: "Senior Website Support Specialist"
