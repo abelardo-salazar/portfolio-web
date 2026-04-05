@@ -1,0 +1,17 @@
+_id: cert-platzi-html-css
+_type: certification
+title:
+  es: "HTML y CSS en Profundidad"
+  en: "HTML and CSS in Depth"
+issuer: "Platzi"
+date: "2023-03-15"
+credentialId: "PLATZI-HTML-CSS-2023"
+url: "https://platzi.com/p/abelardo-salazar/"
+description:
+  es: "Validación de competencias avanzadas en maquetación. Incluye el uso de metodologías modernas de CSS, animaciones complejas y el uso de preprocesadores y frameworks de utilidad como Tailwind CSS y Sass."
+  en: "Validation of advanced layout competencies. Includes the use of modern CSS methodologies, complex animations, and the use of preprocessors and utility frameworks like Tailwind CSS and Sass."
+skills:
+  - Tailwind CSS
+  - Sass / SCSS
+  - CSS Animations
+  - Semantic HTML

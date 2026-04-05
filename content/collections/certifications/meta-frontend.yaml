@@ -1,0 +1,17 @@
+_id: cert-meta-frontend
+_type: certification
+title:
+  es: "Meta Front-End Developer Professional Certificate"
+  en: "Meta Front-End Developer Professional Certificate"
+issuer: "Coursera / Meta"
+date: "2023-11-15"
+credentialId: "META-FE-COURSERA"
+url: "https://www.coursera.org/verify/professional-cert/..."
+description:
+  es: "Certificación profesional que valida habilidades de diseño de experiencia de usuario (UX), desarrollo con React y la implementación de pruebas unitarias con Jest para asegurar la calidad del software."
+  en: "Professional certification validating UI/UX design skills, React development, and the implementation of unit testing with Jest to ensure software quality."
+skills:
+  - Unit Testing (Jest)
+  - UI/UX Principles
+  - Responsive Web Design
+  - Version Control (Git)

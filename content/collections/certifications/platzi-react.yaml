@@ -1,0 +1,17 @@
+_id: cert-platzi-react
+_type: certification
+title:
+  es: "Frontend con React.js"
+  en: "Frontend with React.js"
+issuer: "Platzi"
+date: "2024-02-15"
+credentialId: "PLATZI-REACT-2024"
+url: "https://platzi.com/p/abelardo-salazar/"
+description:
+  es: "Especialización en la creación de interfaces de alto rendimiento. Cubre el ciclo de vida completo de aplicaciones React, desde la gestión de estado compleja hasta estrategias de renderizado en el servidor (SSR) y optimización de bundles."
+  en: "Specialization in building high-performance interfaces. Covers the full lifecycle of React applications, from complex state management to server-side rendering (SSR) strategies and bundle optimization."
+skills:
+  - React Hooks
+  - Next.js
+  - Performance Optimization
+  - Component Pattern Design

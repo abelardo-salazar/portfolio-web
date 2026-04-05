@@ -4,15 +4,25 @@ title: "Mis Habilidades"
 technical:
   - name: Next.js
     level: expert
-  - name: TypeScript
-    level: proficient # Ajustado a tus nuevas claves
   - name: React
     level: expert
+  - name: TypeScript
+    level: expert
+  - name: React Native
+    level: proficient
+  - name: Tailwind CSS
+    level: expert
+  - name: Node.js
+    level: competent
+  - name: Sanity
+    level: proficient
 soft:
-  - es: Liderazgo Técnico
-    en: Technical Leadership
-  - es: Comunicación Asertiva
-    en: Assertive Communication
+  - es: Liderazgo de Equipos Técnicos
+    en: Technical Team Leadership
+  - es: Pensamiento Estratégico de Producto
+    en: Strategic Product Thinking
+  - es: Comunicación Efectiva
+    en: Effective Communication
 languages:
   - name:
       es: Español

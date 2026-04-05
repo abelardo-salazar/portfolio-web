@@ -12,25 +12,25 @@
   },
   "Hero": {
     "available": "Available for new projects",
-    "title": "High-impact Interface Engineering",
-    "description": "Specialist in React and scalable architectures.",
+    "title": "High-Impact Interface Engineering",
+    "description": "Senior Frontend Engineer specializing in the React ecosystem, Next.js, and TypeScript. Focused on building scalable architectures and robust UI design systems.",
     "projects": "See Projects",
     "cv": "Download CV"
   },
   "Experience": {
     "title": "Professional Experience",
-    "subtitle": "My journey building scalable technical solutions."
+    "subtitle": "A proven track record of architecting high-performance web and mobile interfaces."
   },
   "Projects": {
     "title": "Projects",
     "featured": "Featured",
     "more": "See More",
-    "description": "A selection of my most recent work and technical experiments.",
+    "description": "An overview of my engineering work, from custom UI component libraries to enterprise-level web applications.",
     "searchPlaceholder": "Search by name or technology...",
     "clearFilters": "Clear",
     "noResults": "No projects found matching those criteria.",
     "metaTitle": "My Projects",
-    "metaDescription": "Explore Abelardo Salazar's portfolio: design systems, scalable applications, and more.",
+    "metaDescription": "Explore Abelardo Salazar's portfolio: UI design systems, scalable Next.js applications, and advanced frontend architectures.",
     "backToProjects": "Back to Projects",
     "visitLive": "Visit Live Site",
     "overview": "Project Overview",
@@ -39,13 +39,13 @@
     "technicalChallenges": "Technical Challenges Overcome",
     "home": {
       "title": "Featured Projects",
-      "description": "Selection of recent work and open-source tools.",
+      "description": "A selection of recent engineering work and scalable tools.",
       "viewAll": "View All"
     }
   },
   "Metadata": {
     "title": "Senior Frontend Engineer",
-    "description": "Professional portfolio specialized in React ecosystems."
+    "description": "Professional portfolio of Abelardo Salazar, a Senior Frontend Engineer specializing in React, Next.js, and scalable web architectures."
   },
   "Footer": {
     "settingsTitle": "Settings",
@@ -61,15 +61,15 @@
   },
   "Contact": {
     "title": "Do you have a project in mind?",
-    "subtitle": "Let's talk about how I can help you build exceptional digital products.",
+    "subtitle": "Let's discuss how my expertise in frontend architecture can drive your next digital product.",
     "label_name": "Name",
     "placeholder_name": "Your full name",
     "label_email": "Email",
     "label_message": "Message",
-    "placeholder_message": "What can I help you with?",
+    "placeholder_message": "What can I help you build?",
     "submit_button": "Send Message",
     "success_title": "Message Sent!",
-    "success_message": "Thank you for writing. I'll get back to you as soon as possible.",
+    "success_message": "Thank you for reaching out. I will get back to you as soon as possible.",
     "error_generic": "There was an error sending your message. Please try again.",
     "errors": {
       "name_min": "The name must be at least 2 characters long.",
@@ -84,7 +84,7 @@
   },
   "Skills": {
     "title": "Skills",
-    "subtitle": "My toolkit and competencies",
+    "subtitle": "My engineering toolkit and competencies",
     "technical": "Technical",
     "soft": "Soft Skills",
     "languages": "Languages",

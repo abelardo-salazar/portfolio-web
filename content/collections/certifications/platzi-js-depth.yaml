@@ -1,0 +1,17 @@
+_id: cert-platzi-js
+_type: certification
+title:
+  es: "JavaScript en Profundidad"
+  en: "JavaScript in Depth"
+issuer: "Platzi"
+date: "2023-12-15"
+credentialId: "PLATZI-JS-2023"
+url: "https://platzi.com/p/abelardo-salazar/"
+description:
+  es: "Dominio avanzado del lenguaje. Profundización en el Event Loop, clausuras (closures), prototipos y programación asíncrona avanzada para construir aplicaciones web robustas y escalables."
+  en: "Advanced language mastery. Deep dive into the Event Loop, closures, prototypes, and advanced asynchronous programming to build robust and scalable web applications."
+skills:
+  - Asynchronous JS
+  - Memory Management
+  - ES6+ Features
+  - Functional Programming
