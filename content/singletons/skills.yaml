@@ -1,0 +1,22 @@
+_id: singleton-skills
+_type: skills
+title: "Mis Habilidades"
+technical:
+  - name: Next.js
+    level: expert
+  - name: TypeScript
+    level: advanced
+soft:
+  - es: Liderazgo Técnico
+    en: Technical Leadership
+  - es: Comunicación Asertiva
+    en: Assertive Communication
+languages:
+  - name:
+      es: Español
+      en: Spanish
+    level: native
+  - name:
+      es: Inglés
+      en: English
+    level: b2
