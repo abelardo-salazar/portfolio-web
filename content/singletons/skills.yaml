@@ -5,7 +5,9 @@ technical:
   - name: Next.js
     level: expert
   - name: TypeScript
-    level: advanced
+    level: proficient # Ajustado a tus nuevas claves
+  - name: React
+    level: expert
 soft:
   - es: Liderazgo Técnico
     en: Technical Leadership

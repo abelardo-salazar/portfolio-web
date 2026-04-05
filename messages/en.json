@@ -77,6 +77,11 @@
       "message_min": "The message must be at least 10 characters long."
     }
   },
+  "Certifications": {
+    "title": "Certifications",
+    "subtitle": "Continuous learning and industry validation",
+    "verify": "Verify credential"
+  },
   "Skills": {
     "title": "Skills",
     "subtitle": "My toolkit and competencies",
