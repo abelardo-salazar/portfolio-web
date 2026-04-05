@@ -1,0 +1,9 @@
+_id: cert-aws-developer
+_type: certification
+title:
+  es: "AWS Certified Developer - Associate"
+  en: "AWS Certified Developer - Associate"
+issuer: "Amazon Web Services"
+date: "2025-08-15"
+credentialId: "AWS-123456"
+url: "https://www.credly.com/badges/tu-id-aqui"
