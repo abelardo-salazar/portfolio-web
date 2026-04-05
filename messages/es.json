@@ -77,6 +77,11 @@
       "message_min": "El mensaje debe tener al menos 10 caracteres."
     }
   },
+  "Certifications": {
+    "title": "Certificaciones",
+    "subtitle": "Aprendizaje continuo y validación de la industria",
+    "verify": "Verificar credencial"
+  },
   "Skills": {
     "title": "Habilidades",
     "subtitle": "Mi caja de herramientas y competencias",
