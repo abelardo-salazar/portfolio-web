@@ -77,7 +77,9 @@ export const getCertifications = async (): Promise<CertificationData[]> => {
     issuer,
     date,
     credentialId,
-    url
+    url,
+    description,
+    skills
   }`;
 
   return await client.fetch(query, {}, { next: { tags: ["certification"] } });

@@ -7,3 +7,11 @@ issuer: "Amazon Web Services"
 date: "2025-08-15"
 credentialId: "AWS-123456"
 url: "https://www.credly.com/badges/tu-id-aqui"
+description:
+  es: "Validación de experiencia técnica en desarrollo, despliegue y mantenimiento de aplicaciones nativas de la nube en la plataforma AWS."
+  en: "Validation of technical expertise in developing, deploying, and maintaining cloud-native applications on the AWS platform."
+skills:
+  - Serverless Architecture
+  - DynamoDB
+  - CI/CD Pipelines
+  - AWS Lambda
