@@ -3,19 +3,29 @@
 import { useLocale, useTranslations } from "next-intl";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { Container, Text } from "@abelardo-salazar/core-ui-design-system";
+import { Container } from "@abelardo-salazar/core-ui-design-system";
 import { navLinks } from "@/config/navigation";
 import { siteConfig } from "@/config/site";
 import { NavLink } from "../navigation/NavLink";
 import { MobileMenu } from "../navigation/MobileMenu";
 import { useScroll } from "@/hooks/use-scroll";
 import { scrollToSection, isLocalSection } from "@/utils/scroll-to-section";
+import Image from "next/image";
+import { useThemeManager } from "@/hooks/use-theme-manager";
+import { useEffect, useState } from "react";
 
 export const Navbar = () => {
   const pathname = usePathname();
   const locale = useLocale();
   const t = useTranslations("Navbar");
   const isScrolled = useScroll(20);
+  const { isDark } = useThemeManager();
+
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const onNavClick = (
     e: React.MouseEvent<HTMLElement>,
@@ -40,9 +50,27 @@ export const Navbar = () => {
           href={`/${locale}`}
           className="hover:opacity-80 transition-opacity"
         >
-          <Text weight="bold" size="lg" className="tracking-tighter uppercase">
-            {siteConfig.name}
-          </Text>
+          {!mounted ? (
+            <div className="h-10 w-[192px]" /> // Placeholder invisible para evitar Layout Shift
+          ) : isDark ? (
+            <Image
+              src="/logo-dark.png"
+              alt={siteConfig.name}
+              width={384}
+              height={75}
+              className="h-10 w-auto"
+              priority
+            />
+          ) : (
+            <Image
+              src="/logo-light.png"
+              alt={siteConfig.name}
+              width={384}
+              height={75}
+              className="h-10 w-auto"
+              priority
+            />
+          )}
         </Link>
 
         <div className="hidden md:flex items-center gap-2">
