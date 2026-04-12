@@ -8,8 +8,8 @@ export const siteConfig = {
     en: "Professional portfolio of Abelardo Salazar, specialized in React, Next.js, and Design Systems.",
   },
   links: {
-    github: "https://github.com/tu-usuario",
-    linkedin: "https://linkedin.com/in/tu-usuario",
+    github: "https://github.com/abelardo-salazar",
+    linkedin: "https://www.linkedin.com/in/abelardo-salazar/",
   },
   keywords: ["React", "Next.js", "TypeScript", "Design Systems"],
 };

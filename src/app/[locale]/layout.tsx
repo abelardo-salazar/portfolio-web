@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
 import { NextIntlClientProvider } from "next-intl";
 import { Ubuntu } from "next/font/google";
-import "@abelardo-salazar/core-ui-design-system/style.css";
-import "../globals.css";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { ThemeProvider } from "@/providers/ThemeProvider";
 import { getMessages, getTranslations } from "next-intl/server";
 import { siteConfig } from "@/config/site";
 import { Toast } from "@/components/ui/ui-wrapper";
+import "@abelardo-salazar/core-ui-design-system/style.css";
+import "../globals.css";
 
 const ubuntu = Ubuntu({
   subsets: ["latin"],
@@ -43,14 +43,14 @@ export async function generateMetadata({
       locale: locale === "es" ? "es_VE" : "en_US",
       url: `${siteConfig.url}/${locale}`,
       siteName: siteConfig.name,
-      // images: [
-      //   {
-      //     url: "/og-image.png",
-      //     width: 1200,
-      //     height: 630,
-      //     alt: "Abelardo Salazar Portfolio",
-      //   },
-      // ],
+      images: [
+        {
+          url: "/logo-light.png",
+          width: 1200,
+          height: 630,
+          alt: "Abelardo Salazar Portfolio",
+        },
+      ],
     },
   };
 }
@@ -67,6 +67,7 @@ export default async function RootLayout({
   return (
     <html lang={locale} suppressHydrationWarning>
       <body
+        suppressHydrationWarning
         className={`${ubuntu.className} antialiased flex flex-col min-h-screen`}
       >
         <NextIntlClientProvider messages={messages} locale={locale}>
