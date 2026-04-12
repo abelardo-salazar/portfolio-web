@@ -39,7 +39,12 @@ export const MobileMenu = () => {
   return (
     <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
-        <Button variant="ghost" size="icon" className="md:hidden">
+        <Button
+          variant="ghost"
+          size="icon"
+          className="md:hidden"
+          aria-label={`${t("menu")}`}
+        >
           <Menu className="w-5 h-5" />
         </Button>
       </SheetTrigger>
