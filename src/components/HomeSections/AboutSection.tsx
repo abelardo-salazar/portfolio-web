@@ -34,7 +34,7 @@ export const AboutSection = ({ profile }: AboutSectionProps) => {
                 {t("title")}
               </Heading>
 
-              <div className="space-y-4 text-base-content/80">
+              <div className="space-y-4 text-base-content">
                 {paragraphs.map((paragraph, index) => (
                   <Text key={index} className="leading-relaxed text-lg">
                     {paragraph}

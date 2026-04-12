@@ -37,10 +37,7 @@ export const HeroSection = () => {
             </Heading>
 
             <Container size="sm" className="px-0">
-              <Text
-                size="lead"
-                className="text-base-content/60 leading-relaxed"
-              >
+              <Text size="lead" className="text-base-content leading-relaxed">
                 {t("description")}
               </Text>
             </Container>

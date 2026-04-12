@@ -31,7 +31,7 @@ export const Footer = () => {
           <Text weight="bold" className="text-lg">
             {siteConfig.name}
           </Text>
-          <Text size="sm" className="text-base-content/60">
+          <Text size="sm" className="text-base-content">
             © {currentYear} • Senior Frontend Engineer
           </Text>
         </div>

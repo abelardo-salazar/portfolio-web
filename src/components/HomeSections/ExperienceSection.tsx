@@ -24,7 +24,7 @@ export const ExperienceSection = ({
           <Heading level="h2" className="mb-4">
             {t("title")}
           </Heading>
-          <Text size="lead" className="text-base-content/60">
+          <Text size="lead" className="text-base-content">
             {t("subtitle")}
           </Text>
         </div>

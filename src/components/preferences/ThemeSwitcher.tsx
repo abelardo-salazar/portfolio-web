@@ -20,7 +20,7 @@ export const ThemeSwitcher = () => {
   return (
     <div className="flex items-center gap-3">
       <Sun
-        className={`w-4 h-4 transition-colors ${!isDark ? "text-primary" : "text-base-content/30"}`}
+        className={`w-4 h-4 transition-colors ${!isDark ? "text-primary" : "text-base-content"}`}
       />
       <Switch
         checked={isDark}
@@ -28,7 +28,7 @@ export const ThemeSwitcher = () => {
         aria-label={t("toggle_theme")}
       />
       <Moon
-        className={`w-4 h-4 transition-colors ${isDark ? "text-primary" : "text-base-content/30"}`}
+        className={`w-4 h-4 transition-colors ${isDark ? "text-primary" : "text-base-content"}`}
       />
 
       <Text size="sm" className="ml-2 font-medium">

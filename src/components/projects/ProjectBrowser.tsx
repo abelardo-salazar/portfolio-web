@@ -35,7 +35,7 @@ export const ProjectBrowser = ({ projects }: { projects: Project[] }) => {
       <div className="flex flex-col gap-8">
         <div className="space-y-4">
           <Heading level="h1">{t("title")}</Heading>
-          <Text size="lead" className="text-base-content/60">
+          <Text size="lead" className="text-base-content">
             {t("description")}
           </Text>
         </div>
@@ -90,7 +90,7 @@ export const ProjectBrowser = ({ projects }: { projects: Project[] }) => {
             ))
           ) : (
             <div className="col-span-full py-20 text-center border rounded-xl border-dashed">
-              <Text className="text-base-content/50">{t("noResults")}</Text>
+              <Text className="text-base-content">{t("noResults")}</Text>
             </div>
           )}
         </div>
