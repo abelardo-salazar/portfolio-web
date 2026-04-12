@@ -24,7 +24,7 @@
   "Projects": {
     "title": "Projects",
     "featured": "Featured",
-    "more": "See More",
+    "more": "Project Details",
     "description": "An overview of my engineering work, from custom UI component libraries to enterprise-level web applications.",
     "searchPlaceholder": "Search by name or technology...",
     "clearFilters": "Clear",
