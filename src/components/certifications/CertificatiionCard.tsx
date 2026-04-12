@@ -55,10 +55,11 @@ export const CertificationCard = ({
 
           <div className="mt-auto pt-4 border-t border-base-content/10 flex items-center justify-between">
             <Text size="sm" className="text-base-content/60">
-              {new Date(certification.date).toLocaleDateString(locale, {
+              {new Intl.DateTimeFormat(locale, {
                 year: "numeric",
                 month: "long",
-              })}
+                timeZone: "UTC",
+              }).format(new Date(`${certification.date}T12:00:00Z`))}
             </Text>
 
             {certification.url && (
