@@ -58,7 +58,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
       <Container size="md">
         <Link
           href={`/${locale}/projects`}
-          className="flex items-center gap-2 text-sm text-base-content/60 hover:text-primary transition-colors mb-8 group"
+          className="flex items-center gap-2 text-sm text-base-content hover:text-primary transition-colors mb-8 group"
         >
           <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
           {t("backToProjects")}
@@ -109,7 +109,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
               <Heading level="h3" className="mb-4 text-xl">
                 {t("overview")}
               </Heading>
-              <Text size="lg" className="leading-relaxed text-base-content/80">
+              <Text size="lg" className="leading-relaxed text-base-content">
                 {project.description[l]}
               </Text>
             </section>

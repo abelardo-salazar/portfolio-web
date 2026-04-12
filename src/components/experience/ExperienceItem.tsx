@@ -67,7 +67,7 @@ export const ExperienceItem = ({
                 {description.map((achievement, i) => (
                   <li
                     key={i}
-                    className="text-sm text-base-content/70 leading-relaxed flex gap-2"
+                    className="text-sm text-base-content leading-relaxed flex gap-2"
                   >
                     <span className="text-primary">•</span>
                     {achievement}

@@ -38,7 +38,7 @@ export const CertificationCard = ({
           </Heading>
 
           {certification.description && (
-            <Text size="sm" className="text-base-content/80 mb-6 flex-grow">
+            <Text size="sm" className="text-base-content mb-6 flex-grow">
               {certification.description[locale]}
             </Text>
           )}
@@ -54,7 +54,7 @@ export const CertificationCard = ({
           )}
 
           <div className="mt-auto pt-4 border-t border-base-content/10 flex items-center justify-between">
-            <Text size="sm" className="text-base-content/60">
+            <Text size="sm" className="text-base-content">
               {new Intl.DateTimeFormat(locale, {
                 year: "numeric",
                 month: "long",

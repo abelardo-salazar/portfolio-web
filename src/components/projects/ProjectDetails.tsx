@@ -40,7 +40,7 @@ export const ProjectChallenges = ({ title, items }: SectionProps) => (
       {items.map((challenge, i) => (
         <li key={i} className="flex gap-4">
           <span className="font-mono text-primary font-bold">0{i + 1}.</span>
-          <Text className="text-base-content/80 italic">{challenge}</Text>
+          <Text className="text-base-content italic">{challenge}</Text>
         </li>
       ))}
     </ul>
