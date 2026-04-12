@@ -60,6 +60,7 @@ export const Navbar = () => {
               height={75}
               className="h-10 w-auto"
               priority
+              sizes="(max-width: 768px) 100vw, 50vw"
             />
           ) : (
             <Image
@@ -69,6 +70,7 @@ export const Navbar = () => {
               height={75}
               className="h-10 w-auto"
               priority
+              sizes="(max-width: 768px) 100vw, 50vw"
             />
           )}
         </Link>
