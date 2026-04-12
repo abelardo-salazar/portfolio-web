@@ -43,14 +43,14 @@ export async function generateMetadata({
       locale: locale === "es" ? "es_VE" : "en_US",
       url: `${siteConfig.url}/${locale}`,
       siteName: siteConfig.name,
-      images: [
-        {
-          url: "/logo-light.png",
-          width: 1200,
-          height: 630,
-          alt: "Abelardo Salazar Portfolio",
-        },
-      ],
+      // images: [
+      //   {
+      //     url: "/og-image.png",
+      //     width: 1200,
+      //     height: 630,
+      //     alt: "Abelardo Salazar Portfolio",
+      //   },
+      // ],
     },
   };
 }
