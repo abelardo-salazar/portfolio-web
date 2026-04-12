@@ -10,7 +10,7 @@
     "sync": "node --env-file=.env.local scripts/sync-content.mjs"
   },
   "dependencies": {
-    "@abelardo-salazar/core-ui-design-system": "^0.3.7",
+    "@abelardo-salazar/core-ui-design-system": "^0.3.8",
     "@hookform/resolvers": "^5.2.2",
     "@sanity/client": "^7.20.0",
     "@sanity/image-url": "^1.2.0",
