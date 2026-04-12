@@ -16,7 +16,7 @@ const ubuntu = Ubuntu({
   variable: "--font-ubuntu", // Ideal si usas Tailwind
   display: "swap",
 });
-
+const baseUrl = siteConfig.url;
 export async function generateMetadata({
   params,
 }: {
@@ -32,10 +32,10 @@ export async function generateMetadata({
     },
     description: t("description"),
     alternates: {
-      canonical: `/${locale}`,
+      canonical: `${baseUrl}/${locale}`,
       languages: {
-        "es-VE": "/es",
-        "en-US": "/en",
+        "es-VE": `${baseUrl}/es`,
+        "en-US": `${baseUrl}/en`,
       },
     },
     openGraph: {

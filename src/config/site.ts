@@ -1,6 +1,6 @@
 export const siteConfig = {
   name: "Abelardo Salazar",
-  url: "https://tu-dominio.com",
+  url: "https://portfolio-web-rouge-tau.vercel.app/",
   ogImage: "https://tu-dominio.com/og-image.png",
   email: "abelardosalazar94@gmail.com",
   description: {

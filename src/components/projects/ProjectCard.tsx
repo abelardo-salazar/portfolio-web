@@ -45,7 +45,12 @@ export const ProjectCard = ({ project, index, locale }: ProjectCardProps) => {
             ))}
           </div>
           <Button variant="primary" size="sm" fullWidth asChild>
-            <a href={`/${locale}/projects/${project.slug}`}>{t("more")}</a>
+            <a
+              aria-label={`${t("more")} ${project.title[locale]}`}
+              href={`/${locale}/projects/${project.slug}`}
+            >
+              {t("more")}
+            </a>
           </Button>
         </CardContent>
       </Card>
