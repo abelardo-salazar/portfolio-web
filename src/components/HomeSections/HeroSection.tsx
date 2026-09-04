@@ -7,7 +7,7 @@ import {
   Container,
   Heading,
   Text,
-} from "@/components/ui/ui-wrapper";
+} from "@abelardo-salazar/core-ui-design-system";
 import { FileText } from "lucide-react";
 import { downloadCV } from "@/utils/download-cv";
 import { ScrollIndicator } from "../navigation/ScrollIndicator";

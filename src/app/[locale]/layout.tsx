@@ -6,7 +6,7 @@ import { Footer } from "@/components/layout/Footer";
 import { ThemeProvider } from "@/providers/ThemeProvider";
 import { getMessages, getTranslations } from "next-intl/server";
 import { siteConfig } from "@/config/site";
-import { Toast } from "@/components/ui/ui-wrapper";
+import { Toast } from "@abelardo-salazar/core-ui-design-system";
 import "@abelardo-salazar/core-ui-design-system/style.css";
 import "../globals.css";
 
