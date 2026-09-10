@@ -5,7 +5,7 @@ import {
   Heading,
   Text,
   Badge,
-  Button,
+  buttonVariants,
   Separator,
 } from "@abelardo-salazar/core-ui-design-system";
 import { ArrowLeft, ExternalLink, Github } from "lucide-react";
@@ -71,18 +71,24 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
             </Badge>
             <div className="flex gap-3">
               {project.github && (
-                <Button variant="ghost" size="sm" asChild>
-                  <a href={project.github} target="_blank">
-                    <Github className="w-5 h-5" />
-                  </a>
-                </Button>
+                <a
+                  href={project.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={buttonVariants({ variant: "ghost", size: "sm" })}
+                >
+                  <Github className="w-5 h-5" />
+                </a>
               )}
               {project.link && (
-                <Button variant="outline" size="sm" asChild className="gap-2">
-                  <a href={project.link} target="_blank">
-                    {t("visitLive")} <ExternalLink className="w-4 h-4" />
-                  </a>
-                </Button>
+                <a
+                  href={project.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={buttonVariants({ variant: "outline", size: "sm" })}
+                >
+                  {t("visitLive")} <ExternalLink className="w-4 h-4" />
+                </a>
               )}
             </div>
           </div>
