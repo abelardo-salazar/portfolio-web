@@ -7,7 +7,7 @@ import {
   Badge,
   Button,
   Separator,
-} from "@/components/ui/ui-wrapper";
+} from "@abelardo-salazar/core-ui-design-system";
 import { ArrowLeft, ExternalLink, Github } from "lucide-react";
 import Link from "next/link";
 import {
