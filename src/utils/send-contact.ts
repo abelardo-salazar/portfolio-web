@@ -6,6 +6,17 @@ import { siteConfig } from "@/config/site";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
+// name/message llegan del formulario público y se interpolan directo en el
+// HTML del correo enviado a siteConfig.email - sin esto, un remitente podía
+// inyectar markup arbitrario (links falsos, imágenes de tracking) en el
+// correo que recibe el dueño del sitio.
+const escapeHtml = (value: string) =>
+  value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+
 export async function sendContactAction(data: ContactFormData) {
   const validatedFields = contactSchema.safeParse(data);
 
@@ -27,11 +38,11 @@ export async function sendContactAction(data: ContactFormData) {
       html: `
         <div style="font-family: sans-serif; padding: 20px; color: #333;">
           <h2 style="color: #000;">Has recibido un nuevo mensaje</h2>
-          <p><strong>Nombre:</strong> ${name}</p>
-          <p><strong>Email:</strong> ${email}</p>
+          <p><strong>Nombre:</strong> ${escapeHtml(name)}</p>
+          <p><strong>Email:</strong> ${escapeHtml(email)}</p>
           <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;" />
           <p><strong>Mensaje:</strong></p>
-          <p style="white-space: pre-wrap;">${message}</p>
+          <p style="white-space: pre-wrap;">${escapeHtml(message)}</p>
         </div>
       `,
     });
