@@ -4,8 +4,8 @@ _type: project
 slug: portfolio-personal-2026
 year: "2026"
 featured: true
-link: "https://tu-dominio.vercel.app"
-github: "https://github.com/abelardo-salazar/portfolio-2026"
+link: "https://portfolio-web-rouge-tau.vercel.app"
+github: "https://github.com/abelardo-salazar/portfolio-web"
 tags:
   - Next.js
   - TypeScript
