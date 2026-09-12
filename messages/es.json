@@ -103,5 +103,10 @@
       "a2": "A2 Elemental",
       "a1": "A1 Principiante"
     }
+  },
+  "NotFound": {
+    "title": "Página no encontrada",
+    "description": "El contenido que buscás no existe o fue movido.",
+    "backHome": "Volver al inicio"
   }
 }

@@ -1,10 +1,16 @@
 import type { Metadata } from "next";
-import { NextIntlClientProvider } from "next-intl";
+import { hasLocale, NextIntlClientProvider } from "next-intl";
+import { notFound } from "next/navigation";
 import { Ubuntu } from "next/font/google";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { ThemeProvider } from "@/providers/ThemeProvider";
-import { getMessages, getTranslations } from "next-intl/server";
+import {
+  getMessages,
+  getTranslations,
+  setRequestLocale,
+} from "next-intl/server";
+import { routing } from "@/i18n/routing";
 import { siteConfig } from "@/config/site";
 import { Toast } from "@abelardo-salazar/core-ui-design-system";
 import "@abelardo-salazar/core-ui-design-system/style.css";
@@ -23,6 +29,10 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
+  if (!hasLocale(routing.locales, locale)) {
+    notFound();
+  }
+  setRequestLocale(locale);
   const t = await getTranslations({ locale, namespace: "Metadata" });
 
   return {
@@ -63,6 +73,10 @@ export default async function RootLayout({
   params: Promise<{ locale: string }>;
 }>) {
   const { locale } = await params;
+  if (!hasLocale(routing.locales, locale)) {
+    notFound();
+  }
+  setRequestLocale(locale);
   const messages = await getMessages({ locale });
   return (
     <html lang={locale} suppressHydrationWarning>

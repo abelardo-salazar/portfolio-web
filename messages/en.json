@@ -103,5 +103,10 @@
       "a2": "A2 Elementary",
       "a1": "A1 Beginner"
     }
+  },
+  "NotFound": {
+    "title": "Page not found",
+    "description": "The content you're looking for doesn't exist or was moved.",
+    "backHome": "Back home"
   }
 }
