@@ -1,7 +1,9 @@
+const SITE_URL = "https://portfolio-web-rouge-tau.vercel.app";
+
 export const siteConfig = {
   name: "Abelardo Salazar",
-  url: "https://portfolio-web-rouge-tau.vercel.app",
-  ogImage: "https://tu-dominio.com/og-image.png",
+  url: SITE_URL,
+  ogImage: `${SITE_URL}/og-image.png`,
   email: "abelardosalazar94@gmail.com",
   description: {
     es: "Portafolio profesional de Abelardo Salazar, especializado en React, Next.js y Sistemas de Diseño.",
