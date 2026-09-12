@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
+import { routing } from "@/i18n/routing";
 import {
   Container,
   Heading,
@@ -23,9 +24,8 @@ interface ProjectPageProps {
 
 export async function generateStaticParams() {
   const projects = await getProjects();
-  const locales = ["en", "es"];
 
-  return locales.flatMap((locale) =>
+  return routing.locales.flatMap((locale) =>
     projects.map((project) => ({
       locale,
       slug: project.slug,
@@ -46,6 +46,7 @@ export async function generateMetadata({ params }: ProjectPageProps) {
 
 export default async function ProjectPage({ params }: ProjectPageProps) {
   const { slug, locale } = await params;
+  setRequestLocale(locale);
   const project = await getProjectBySlug(slug);
   const t = await getTranslations({ locale, namespace: "Projects" });
 
