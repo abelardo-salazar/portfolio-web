@@ -1,11 +1,18 @@
 import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
+
+const noopSubscribe = () => () => {};
 
 export const useThemeManager = () => {
   const { theme, setTheme, resolvedTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => setMounted(true), []);
+  // false during SSR and hydration, true afterwards: resolvedTheme is only
+  // known on the client, so callers must not render theme-dependent markup
+  // until then.
+  const mounted = useSyncExternalStore(
+    noopSubscribe,
+    () => true,
+    () => false,
+  );
 
   const toggleTheme = (checked: boolean) => {
     setTheme(checked ? "dark" : "light");

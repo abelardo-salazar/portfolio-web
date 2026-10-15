@@ -12,20 +12,13 @@ import { useScroll } from "@/hooks/use-scroll";
 import { scrollToSection, isLocalSection } from "@/utils/scroll-to-section";
 import Image from "next/image";
 import { useThemeManager } from "@/hooks/use-theme-manager";
-import { useEffect, useState } from "react";
 
 export const Navbar = () => {
   const pathname = usePathname();
   const locale = useLocale();
   const t = useTranslations("Navbar");
   const isScrolled = useScroll(20);
-  const { isDark } = useThemeManager();
-
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const { isDark, isMounted } = useThemeManager();
 
   const onNavClick = (
     e: React.MouseEvent<HTMLElement>,
@@ -50,7 +43,7 @@ export const Navbar = () => {
           href={`/${locale}`}
           className="hover:opacity-80 transition-opacity"
         >
-          {!mounted ? (
+          {!isMounted ? (
             <div className="h-10 w-[192px]" /> // Placeholder invisible para evitar Layout Shift
           ) : isDark ? (
             <Image

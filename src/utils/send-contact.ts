@@ -4,8 +4,6 @@ import { Resend } from "resend";
 import { contactSchema, ContactFormData } from "@/schemas/contact";
 import { siteConfig } from "@/config/site";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 // name/message llegan del formulario público y se interpolan directo en el
 // HTML del correo enviado a siteConfig.email - sin esto, un remitente podía
 // inyectar markup arbitrario (links falsos, imágenes de tracking) en el
@@ -30,6 +28,9 @@ export async function sendContactAction(data: ContactFormData) {
   const { name, email, message } = validatedFields.data;
 
   try {
+    // Created per call: the constructor throws without an API key, and at
+    // module scope that breaks page loads and builds, not just sending.
+    const resend = new Resend(process.env.RESEND_API_KEY);
     const { data: resendData, error } = await resend.emails.send({
       from: "Portfolio Contact <onboarding@resend.dev>",
       to: [siteConfig.email],
