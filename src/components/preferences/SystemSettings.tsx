@@ -37,12 +37,20 @@ export const SystemSettings = () => {
       <div className="space-y-3">
         <div className="grid grid-cols-1 gap-2 md:flex md:justify-around">
           <Button variant="ghost" className="justify-start gap-3" asChild>
-            <a href={siteConfig.links.github} target="_blank">
+            <a
+              href={siteConfig.links.github}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <Github className="w-4 h-4" /> Github
             </a>
           </Button>
           <Button variant="ghost" className="justify-start gap-3" asChild>
-            <a href={siteConfig.links.linkedin} target="_blank">
+            <a
+              href={siteConfig.links.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               <Linkedin className="w-4 h-4" /> LinkedIn
             </a>
           </Button>

@@ -2,10 +2,10 @@
 
 import { Resend } from "resend";
 import { contactSchema, ContactFormData } from "@/schemas/contact";
-import { siteConfig } from "@/config/site";
+import { getContactRecipient } from "@/config/contact.server";
 
 // name/message llegan del formulario público y se interpolan directo en el
-// HTML del correo enviado a siteConfig.email - sin esto, un remitente podía
+// HTML del correo enviado a CONTACT_EMAIL - sin esto, un remitente podía
 // inyectar markup arbitrario (links falsos, imágenes de tracking) en el
 // correo que recibe el dueño del sitio.
 const escapeHtml = (value: string) =>
@@ -27,13 +27,19 @@ export async function sendContactAction(data: ContactFormData) {
 
   const { name, email, message } = validatedFields.data;
 
+  const recipient = getContactRecipient();
+  if (!recipient) {
+    console.error("Contact form: CONTACT_EMAIL is not set, cannot send.");
+    return { success: false, error: "Error interno del servidor." };
+  }
+
   try {
     // Created per call: the constructor throws without an API key, and at
     // module scope that breaks page loads and builds, not just sending.
     const resend = new Resend(process.env.RESEND_API_KEY);
     const { data: resendData, error } = await resend.emails.send({
       from: "Portfolio Contact <onboarding@resend.dev>",
-      to: [siteConfig.email],
+      to: [recipient],
       subject: `Nuevo mensaje de contacto de ${name}`,
       replyTo: email,
       html: `
