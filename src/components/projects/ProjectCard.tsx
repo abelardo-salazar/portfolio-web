@@ -39,7 +39,7 @@ export const ProjectCard = ({ project, index, locale }: ProjectCardProps) => {
         <CardContent className="mt-auto">
           <div className="flex flex-wrap gap-2 mb-4">
             {project.tags.map((tag) => (
-              <Badge key={tag} variant="outline" className="text-[10px]">
+              <Badge key={tag} variant="outline">
                 {tag}
               </Badge>
             ))}

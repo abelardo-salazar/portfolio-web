@@ -15,7 +15,7 @@ export const SystemSettings = () => {
   const t = useTranslations("Footer");
 
   return (
-    <div className="space-y-8 py-4">
+    <div className="space-y-8">
       <div className="space-y-3">
         <Text size="sm" weight="medium">
           {t("language")}

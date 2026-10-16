@@ -8,6 +8,7 @@ import {
   Sheet,
   SheetContent,
   SheetHeader,
+  SheetBody,
   SheetTitle,
   SheetTrigger,
   Separator,
@@ -48,7 +49,7 @@ export const MobileMenu = () => {
           <Menu className="w-5 h-5" />
         </Button>
       </SheetTrigger>
-      <SheetContent side="right" className="flex flex-col gap-6">
+      <SheetContent side="right">
         <SheetHeader className="text-left">
           <SheetTitle className="text-xl font-bold tracking-tighter uppercase">
             {t("menu")}
@@ -57,13 +58,15 @@ export const MobileMenu = () => {
 
         <Separator />
 
-        <div className="flex-1 overflow-y-auto py-6 space-y-8">
+        <SheetBody className="space-y-8">
           <nav className="flex flex-col gap-2">
             {navLinks.map((link) => (
               <Button
                 key={link.href}
                 variant={"ghost"}
-                className="justify-start text-lg h-12"
+                size="lg"
+                // lg brings px-8; keep md's inset so links align with the settings below.
+                className="justify-start text-lg px-4"
                 asChild
               >
                 <Link
@@ -79,7 +82,7 @@ export const MobileMenu = () => {
           <Separator />
 
           <SystemSettings />
-        </div>
+        </SheetBody>
       </SheetContent>
     </Sheet>
   );

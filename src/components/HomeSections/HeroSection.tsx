@@ -25,7 +25,7 @@ export const HeroSection = () => {
       <Container size="lg">
         <div className="text-center space-y-8">
           <div className="flex justify-center">
-            <Badge variant="secondary" className="px-4 py-1.5 gap-2 ">
+            <Badge variant="secondary" size="lg">
               {t("available")}
             </Badge>
           </div>
@@ -44,7 +44,8 @@ export const HeroSection = () => {
             <Button
               variant="outline"
               size="lg"
-              className="px-10 rounded-full gap-2"
+              shape="pill"
+              className="px-10"
               onClick={handleCVDownlodad}
             >
               <FileText className="w-4 h-4" />
