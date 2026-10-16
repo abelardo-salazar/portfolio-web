@@ -98,7 +98,11 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
             </div>
           </div>
 
-          <Heading level="h1" className="text-4xl md:text-6xl font-extrabold">
+          {/* lg: repeats the size: otherwise Heading's own lg:text-5xl wins. */}
+          <Heading
+            level="h1"
+            className="text-4xl md:text-6xl lg:text-6xl font-extrabold"
+          >
             {project.title[l]}
           </Heading>
 

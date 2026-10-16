@@ -38,7 +38,8 @@ export const HeroSection = () => {
             {t("title")}
           </Heading>
 
-          <Container size="sm" className="px-0">
+          {/* md:px-0 too: otherwise Container's own md:px-8 wins. */}
+          <Container size="sm" className="px-0 md:px-0">
             <Text size="lead" className="text-base-content leading-relaxed">
               {t("description")}
             </Text>

@@ -13,13 +13,14 @@ import {
 import { routing } from "@/i18n/routing";
 import { siteConfig } from "@/config/site";
 import { SkipToContent, Toast } from "@abelardo-salazar/core-ui-design-system";
-import "@abelardo-salazar/core-ui-design-system/style.css";
 import "../globals.css";
 
 const ubuntu = Ubuntu({
   subsets: ["latin"],
   weight: ["300", "400", "500", "700"], // Ligth, Regular, Medium, Bold
-  variable: "--font-ubuntu", // Ideal si usas Tailwind
+  // Overrides the DS --font-sans token, so the DS base and its components use
+  // this self-hosted font and its metric-matched fallback.
+  variable: "--font-sans",
   display: "swap",
 });
 const baseUrl = siteConfig.url;
@@ -81,10 +82,10 @@ export default async function RootLayout({
   const tToast = await getTranslations({ locale, namespace: "Toast" });
   const tNavbar = await getTranslations({ locale, namespace: "Navbar" });
   return (
-    <html lang={locale} suppressHydrationWarning>
+    <html lang={locale} className={ubuntu.variable} suppressHydrationWarning>
       <body
         suppressHydrationWarning
-        className={`${ubuntu.className} antialiased flex flex-col min-h-screen`}
+        className="antialiased flex flex-col min-h-screen"
       >
         <SkipToContent>{tNavbar("skipToContent")}</SkipToContent>
         <NextIntlClientProvider messages={messages} locale={locale}>

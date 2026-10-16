@@ -20,10 +20,14 @@ export default async function LocaleNotFound() {
   return (
     <div className="min-h-screen flex items-center justify-center pt-32 pb-20">
       <Container size="md" className="text-center space-y-6">
-        <Heading level="h1" className="text-4xl md:text-6xl font-extrabold">
+        {/* lg: repeats each size: otherwise Heading's own lg: size wins. */}
+        <Heading
+          level="h1"
+          className="text-4xl md:text-6xl lg:text-6xl font-extrabold"
+        >
           404
         </Heading>
-        <Heading level="h2" className="text-xl">
+        <Heading level="h2" className="text-xl lg:text-xl">
           {t("title")}
         </Heading>
         <Text size="lg" className="text-base-content">
