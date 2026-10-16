@@ -1,15 +1,18 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 import FsLightbox from "fslightbox-react";
 import { Expand } from "lucide-react";
 
 interface ProjectGalleryProps {
   images: string[];
+  title: string;
 }
 
-export const ProjectGallery = ({ images }: ProjectGalleryProps) => {
+export const ProjectGallery = ({ images, title }: ProjectGalleryProps) => {
+  const t = useTranslations("Projects.gallery");
   const [toggler, setToggler] = useState(false);
   const [productIndex, setProductIndex] = useState(0);
 
@@ -31,7 +34,7 @@ export const ProjectGallery = ({ images }: ProjectGalleryProps) => {
       >
         <Image
           src={mainImage}
-          alt="Project main view"
+          alt={t("mainAlt", { title })}
           fill
           className="object-cover transition-transform duration-500 group-hover:scale-105"
           priority
@@ -52,7 +55,7 @@ export const ProjectGallery = ({ images }: ProjectGalleryProps) => {
             >
               <Image
                 src={img}
-                alt={`Project gallery view ${index + 1}`}
+                alt={t("imageAlt", { title, index: index + 1 })}
                 fill
                 className="object-cover transition-transform duration-300 group-hover:scale-110"
                 sizes="(max-width: 768px) 50vw, 33vw"

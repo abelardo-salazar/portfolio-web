@@ -5,7 +5,8 @@
     "experience": "Experiencia",
     "contact": "Contacto",
     "skills": "Habilidades",
-    "menu": "Menú"
+    "menu": "Menú",
+    "closeMenu": "Cerrar menú"
   },
   "About": {
     "title": "Sobre mí"
@@ -15,7 +16,8 @@
     "title": "Ingeniería de Interfaz de Alto Impacto",
     "description": "Senior Frontend Engineer especializado en React, Next.js y TypeScript. Enfocado en la creación de sistemas de diseño robustos y arquitecturas escalables.",
     "projects": "Ver Proyectos",
-    "cv": "Descargar CV"
+    "cv": "Descargar CV",
+    "scrollToNext": "Ir a la siguiente sección"
   },
   "Experience": {
     "title": "Experiencia Profesional",
@@ -41,6 +43,11 @@
       "title": "Proyectos Destacados",
       "description": "Una selección de trabajo de ingeniería reciente y herramientas escalables.",
       "viewAll": "Ver Todos los Proyectos"
+    },
+    "viewSource": "Ver código en GitHub",
+    "gallery": {
+      "mainAlt": "{title}: vista principal",
+      "imageAlt": "{title}: vista de galería {index}"
     }
   },
   "Metadata": {
@@ -52,12 +59,18 @@
     "preferences": "Preferencias",
     "settingsDescription": "Personaliza tu experiencia visual en mi portafolio",
     "language": "Idioma",
-    "appearance": "Apariencia"
+    "appearance": "Apariencia",
+    "role": "Senior Frontend Engineer",
+    "email": "Correo electrónico",
+    "closeSettings": "Cerrar configuración"
   },
   "ThemeSwitcher": {
     "light": "Modo Claro",
     "dark": "Modo Oscuro",
     "toggle_theme": "Cambiar tema"
+  },
+  "Toast": {
+    "containerLabel": "Notificaciones"
   },
   "Contact": {
     "title": "¿Tienes un proyecto en mente?",

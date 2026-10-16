@@ -37,9 +37,10 @@ export async function generateMetadata({ params }: ProjectPageProps) {
   const { slug, locale } = await params;
   const project = await getProjectBySlug(slug);
   if (!project) return {};
+  const t = await getTranslations({ locale, namespace: "Projects" });
 
   return {
-    title: `${project.title[locale as "es" | "en"]} | Proyectos`,
+    title: `${project.title[locale as "es" | "en"]} | ${t("title")}`,
     description: project.description[locale as "es" | "en"],
   };
 }
@@ -77,6 +78,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                     href={project.github}
                     target="_blank"
                     rel="noopener noreferrer"
+                    aria-label={t("viewSource")}
                   >
                     <Github className="w-5 h-5" />
                   </a>
@@ -109,7 +111,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
           </div>
         </div>
 
-        <ProjectGallery images={project.images} />
+        <ProjectGallery images={project.images} title={project.title[l]} />
         <Separator className="my-10" />
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12">

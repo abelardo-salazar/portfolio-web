@@ -49,7 +49,7 @@ export const MobileMenu = () => {
           <Menu className="w-5 h-5" />
         </Button>
       </SheetTrigger>
-      <SheetContent side="right">
+      <SheetContent side="right" closeLabel={t("closeMenu")}>
         <SheetHeader className="text-left">
           <SheetTitle className="text-xl font-bold tracking-tighter uppercase">
             {t("menu")}

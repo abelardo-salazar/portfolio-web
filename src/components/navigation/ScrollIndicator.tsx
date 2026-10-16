@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { motion } from "framer-motion";
 import { Mouse } from "lucide-react";
 import { scrollToSection } from "@/utils/scroll-to-section";
@@ -9,6 +10,8 @@ interface ScrollIndicatorProps {
 }
 
 export const ScrollIndicator = ({ targetId }: ScrollIndicatorProps) => {
+  const t = useTranslations("Hero");
+
   return (
     <motion.button
       initial={{ opacity: 0 }}
@@ -16,7 +19,7 @@ export const ScrollIndicator = ({ targetId }: ScrollIndicatorProps) => {
       transition={{ delay: 1, duration: 1 }}
       className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-base-content hover:text-primary transition-colors"
       onClick={(e) => scrollToSection(e, `#${targetId}`)}
-      aria-label="Scroll to next section"
+      aria-label={t("scrollToNext")}
     >
       <motion.div
         animate={{ y: [0, 8, 0] }}

@@ -33,7 +33,7 @@ export const Footer = () => {
             {siteConfig.name}
           </Text>
           <Text size="sm" className="text-base-content">
-            © {currentYear} • Senior Frontend Engineer
+            © {currentYear} • {t("Footer.role")}
           </Text>
         </div>
 
@@ -79,7 +79,10 @@ export const Footer = () => {
             shape="pill"
             className="hover:text-primary"
           >
-            <Link href={`mailto:tu-email@ejemplo.com`} aria-label="Email">
+            <Link
+              href={`mailto:tu-email@ejemplo.com`}
+              aria-label={t("Footer.email")}
+            >
               <Mail className="w-5 h-5" />
             </Link>
           </Button>
@@ -98,7 +101,10 @@ export const Footer = () => {
                 {t("Footer.preferences")}
               </Button>
             </SheetTrigger>
-            <SheetContent side="right">
+            <SheetContent
+              side="right"
+              closeLabel={t("Footer.closeSettings")}
+            >
               <SheetHeader>
                 <SheetTitle>{t("Footer.settingsTitle")}</SheetTitle>
                 <SheetDescription>

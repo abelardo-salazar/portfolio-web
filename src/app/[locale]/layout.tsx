@@ -78,6 +78,7 @@ export default async function RootLayout({
   }
   setRequestLocale(locale);
   const messages = await getMessages({ locale });
+  const tToast = await getTranslations({ locale, namespace: "Toast" });
   return (
     <html lang={locale} suppressHydrationWarning>
       <body
@@ -88,7 +89,7 @@ export default async function RootLayout({
           <ThemeProvider>
             <Navbar />
             <main className="flex-grow">{children}</main>
-            <Toast />
+            <Toast containerAriaLabel={tToast("containerLabel")} />
             <Footer />
           </ThemeProvider>
         </NextIntlClientProvider>
