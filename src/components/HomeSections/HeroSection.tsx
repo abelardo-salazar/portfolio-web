@@ -18,9 +18,13 @@ export const HeroSection = () => {
   const handleCVDownlodad = () => {
     downloadCV(locale);
   };
+  // isolate: without its own stacking context, the -z-10 backdrop sinks
+  // behind the page's bg-base-100 wrapper and is never painted.
+  // Element opacity instead of color-mix(): same 6% fade, and no build
+  // fallback that paints full-strength --primary in older browsers.
   return (
-    <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden py-20">
-      <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_50%_50%,rgba(var(--primary-rgb),0.04),transparent_70%)]" />
+    <section className="relative isolate min-h-[85vh] flex items-center justify-center overflow-hidden py-20">
+      <div className="absolute inset-0 -z-10 opacity-[0.06] bg-[radial-gradient(circle_at_50%_50%,var(--primary),transparent_70%)]" />
 
       <Container size="lg">
         <div className="text-center space-y-8">
