@@ -1,30 +1,35 @@
 "use client";
 
-import { Button, Text } from "@abelardo-salazar/core-ui-design-system";
+import { useTranslations } from "next-intl";
+import {
+  ToggleGroup,
+  ToggleGroupItem,
+} from "@abelardo-salazar/core-ui-design-system";
 import { useLocaleManager } from "@/hooks/use-locale-manager";
 
 export const LanguageSwitcher = () => {
+  const t = useTranslations("Footer");
   const { currentLocale, switchLocale, locales } = useLocaleManager();
 
   return (
-    <div className="space-y-3 w-full">
-      <Text size="sm" weight="medium" className="opacity-70">
-        Idioma / Language
-      </Text>
-      <div className=" md:flex mdgap-2 gap-4 grid">
-        {locales.map((locale) => (
-          <Button
-            key={locale.id}
-            variant={currentLocale === locale.id ? "secondary" : "outline"}
-            size="sm"
-            fullWidth
-            onClick={() => switchLocale(locale.id)}
-            className="font-medium"
-          >
-            {locale.label}
-          </Button>
-        ))}
-      </div>
-    </div>
+    <ToggleGroup
+      type="single"
+      value={currentLocale}
+      onValueChange={switchLocale}
+      aria-label={t("language")}
+      className="w-full"
+    >
+      {locales.map((locale) => (
+        // lang lets screen readers pronounce each name in its own language.
+        <ToggleGroupItem
+          key={locale.id}
+          value={locale.id}
+          lang={locale.id}
+          className="flex-1"
+        >
+          {locale.label}
+        </ToggleGroupItem>
+      ))}
+    </ToggleGroup>
   );
 };
