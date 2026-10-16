@@ -5,7 +5,8 @@
     "experience": "Experience",
     "contact": "Contact",
     "skills": "Skills",
-    "menu": "Menu"
+    "menu": "Menu",
+    "closeMenu": "Close menu"
   },
   "About": {
     "title": "About Me"
@@ -15,7 +16,8 @@
     "title": "High-Impact Interface Engineering",
     "description": "Senior Frontend Engineer specializing in the React ecosystem, Next.js, and TypeScript. Focused on building scalable architectures and robust UI design systems.",
     "projects": "See Projects",
-    "cv": "Download CV"
+    "cv": "Download CV",
+    "scrollToNext": "Scroll to next section"
   },
   "Experience": {
     "title": "Professional Experience",
@@ -41,6 +43,11 @@
       "title": "Featured Projects",
       "description": "A selection of recent engineering work and scalable tools.",
       "viewAll": "View All Projects"
+    },
+    "viewSource": "View source on GitHub",
+    "gallery": {
+      "mainAlt": "{title}: main view",
+      "imageAlt": "{title}: gallery view {index}"
     }
   },
   "Metadata": {
@@ -52,12 +59,18 @@
     "preferences": "Preferences",
     "settingsDescription": "Customize your visual experience in my portfolio",
     "language": "Language",
-    "appearance": "Appearance"
+    "appearance": "Appearance",
+    "role": "Senior Frontend Engineer",
+    "email": "Email",
+    "closeSettings": "Close settings"
   },
   "ThemeSwitcher": {
     "light": "Light Theme",
     "dark": "Dark Theme",
     "toggle_theme": "Toggle theme"
+  },
+  "Toast": {
+    "containerLabel": "Notifications"
   },
   "Contact": {
     "title": "Do you have a project in mind?",
