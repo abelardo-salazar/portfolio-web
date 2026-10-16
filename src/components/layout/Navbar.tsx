@@ -9,7 +9,6 @@ import { siteConfig } from "@/config/site";
 import { NavLink } from "../navigation/NavLink";
 import { MobileMenu } from "../navigation/MobileMenu";
 import { useScroll } from "@/hooks/use-scroll";
-import { scrollToSection, isLocalSection } from "@/utils/scroll-to-section";
 import Image from "next/image";
 import { useThemeManager } from "@/hooks/use-theme-manager";
 
@@ -19,16 +18,6 @@ export const Navbar = () => {
   const t = useTranslations("Navbar");
   const isScrolled = useScroll(20);
   const { isDark, isMounted } = useThemeManager();
-
-  const onNavClick = (
-    e: React.MouseEvent<HTMLElement>,
-    href: string,
-    type: string,
-  ) => {
-    if (isLocalSection(pathname, locale, type)) {
-      scrollToSection(e, href);
-    }
-  };
 
   return (
     <nav
@@ -75,7 +64,6 @@ export const Navbar = () => {
               href={link.href}
               pathname={pathname}
               locale={locale}
-              onClick={(e) => onNavClick(e, link.href, link.type)}
             >
               {t(link.labelKey)}
             </NavLink>

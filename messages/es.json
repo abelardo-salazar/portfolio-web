@@ -6,7 +6,8 @@
     "contact": "Contacto",
     "skills": "Habilidades",
     "menu": "Menú",
-    "closeMenu": "Cerrar menú"
+    "closeMenu": "Cerrar menú",
+    "skipToContent": "Saltar al contenido"
   },
   "About": {
     "title": "Sobre mí"

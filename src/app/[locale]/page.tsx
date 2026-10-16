@@ -38,7 +38,7 @@ export default async function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <main className="min-h-screen bg-base-100">
+      <div className="min-h-screen bg-base-100">
         <HeroSection />
         <AboutSection profile={profile} />
         <ExperienceSection experiences={experiences} />
@@ -46,7 +46,7 @@ export default async function Home() {
         <ProjectSection projects={featuredProjects} />
         <CertificationsSection certifications={certifications} />
         <ContactSection />
-      </main>
+      </div>
     </>
   );
 }
