@@ -4,11 +4,6 @@ import { Project } from "@/types/data";
 export const useProjectFilters = (projects: Project[], locale: "es" | "en") => {
   const [search, setSearch] = useState("");
   const [activeTag, setActiveTag] = useState<string | null>(null);
-  // Scaffolding for a future real client-side fetch (server-side search or
-  // pagination). Today `projects` arrives already resolved from the Server
-  // Component and the filtering below is synchronous, so this stays false.
-  // Wire `setIsLoading` to the real async op when that lands.
-  const [isLoading, setIsLoading] = useState(false);
 
   const allTags = useMemo(() => {
     return Array.from(new Set(projects.flatMap((p) => p.tags)));
@@ -31,8 +26,6 @@ export const useProjectFilters = (projects: Project[], locale: "es" | "en") => {
     setSearch,
     activeTag,
     setActiveTag,
-    isLoading,
-    setIsLoading,
     allTags,
     filteredProjects,
     // Keep in sync with clearFilters: every filter counted here must be reset there.

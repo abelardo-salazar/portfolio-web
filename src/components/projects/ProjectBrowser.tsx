@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import {
   Container,
@@ -8,12 +9,18 @@ import {
   Input,
   Chip,
   Button,
+  EmptyState,
+  EmptyStateIcon,
+  EmptyStateTitle,
+  EmptyStateActions,
+  announce,
 } from "@abelardo-salazar/core-ui-design-system";
 import { ProjectCard } from "./ProjectCard";
-import { ProjectCardSkeleton } from "./ProjectCardSkeleton";
-import { Search, X } from "lucide-react";
+import { Search, SearchX, X } from "lucide-react";
 import { useProjectFilters } from "@/hooks/use-project-filters";
 import { Project } from "@/types/data";
+
+const ANNOUNCE_DEBOUNCE_MS = 500;
 
 export const ProjectBrowser = ({ projects }: { projects: Project[] }) => {
   const t = useTranslations("Projects");
@@ -24,12 +31,27 @@ export const ProjectBrowser = ({ projects }: { projects: Project[] }) => {
     setSearch,
     activeTag,
     setActiveTag,
-    isLoading,
     allTags,
     filteredProjects,
     hasFilters,
     clearFilters,
   } = useProjectFilters(projects, locale);
+
+  const resultCount = filteredProjects.length;
+  // Compare against the last announced filters instead of a "first render"
+  // flag: StrictMode's dev double-mount keeps refs, so a flag would announce
+  // on mount. It also skips filters that end up where they started.
+  const lastAnnounced = useRef(JSON.stringify([search, activeTag]));
+
+  useEffect(() => {
+    const key = JSON.stringify([search, activeTag]);
+    if (key === lastAnnounced.current) return;
+    const timer = setTimeout(() => {
+      lastAnnounced.current = key;
+      announce(t("resultsCount", { count: resultCount }));
+    }, ANNOUNCE_DEBOUNCE_MS);
+    return () => clearTimeout(timer);
+  }, [search, activeTag, resultCount, t]);
 
   return (
     <Container size="md" className="py-24">
@@ -44,10 +66,13 @@ export const ProjectBrowser = ({ projects }: { projects: Project[] }) => {
         <div className="flex flex-col gap-4">
           <div className="w-full md:max-w-md">
             <Input
+              aria-label={t("searchLabel")}
               placeholder={t("searchPlaceholder")}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               startIcon={<Search className="w-4 h-4 opacity-50" />}
+              clearable
+              clearLabel={t("clearSearch")}
             />
           </div>
 
@@ -72,11 +97,7 @@ export const ProjectBrowser = ({ projects }: { projects: Project[] }) => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pt-8">
-          {isLoading ? (
-            Array.from({ length: 6 }).map((_, i) => (
-              <ProjectCardSkeleton key={i} />
-            ))
-          ) : filteredProjects.length > 0 ? (
+          {filteredProjects.length > 0 ? (
             filteredProjects.map((project, index) => (
               <ProjectCard
                 key={project.id}
@@ -86,9 +107,17 @@ export const ProjectBrowser = ({ projects }: { projects: Project[] }) => {
               />
             ))
           ) : (
-            <div className="col-span-full py-20 text-center border rounded-xl border-dashed">
-              <Text className="text-base-content">{t("noResults")}</Text>
-            </div>
+            <EmptyState size="md" className="col-span-full">
+              <EmptyStateIcon>
+                <SearchX />
+              </EmptyStateIcon>
+              <EmptyStateTitle as="h2">{t("noResults")}</EmptyStateTitle>
+              <EmptyStateActions>
+                <Button variant="outline" size="md" onClick={clearFilters}>
+                  {t("resetFilters")}
+                </Button>
+              </EmptyStateActions>
+            </EmptyState>
           )}
         </div>
       </div>
