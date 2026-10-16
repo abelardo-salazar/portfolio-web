@@ -1,6 +1,6 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import Link from "next/link";
 import {
   Container,
@@ -20,6 +20,7 @@ import { Settings, Github, Linkedin, Mail } from "lucide-react";
 
 export const Footer = () => {
   const t = useTranslations();
+  const locale = useLocale();
   const currentYear = new Date().getFullYear();
 
   return (
@@ -80,8 +81,8 @@ export const Footer = () => {
             className="hover:text-primary"
           >
             <Link
-              href={`mailto:tu-email@ejemplo.com`}
-              aria-label={t("Footer.email")}
+              href={`/${locale}#contact`}
+              aria-label={t("Footer.contactForm")}
             >
               <Mail className="w-5 h-5" />
             </Link>
