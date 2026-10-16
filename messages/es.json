@@ -52,7 +52,9 @@
     "viewSource": "Ver código en GitHub",
     "gallery": {
       "mainAlt": "{title}: vista principal",
-      "imageAlt": "{title}: vista de galería {index}"
+      "imageAlt": "{title}: vista de galería {index}",
+      "openMain": "Ampliar imagen: {title}, vista principal",
+      "openImage": "Ampliar imagen: {title}, vista de galería {index}"
     }
   },
   "Metadata": {
