@@ -12,7 +12,7 @@ import {
 } from "next-intl/server";
 import { routing } from "@/i18n/routing";
 import { siteConfig } from "@/config/site";
-import { Toast } from "@abelardo-salazar/core-ui-design-system";
+import { SkipToContent, Toast } from "@abelardo-salazar/core-ui-design-system";
 import "@abelardo-salazar/core-ui-design-system/style.css";
 import "../globals.css";
 
@@ -79,16 +79,21 @@ export default async function RootLayout({
   setRequestLocale(locale);
   const messages = await getMessages({ locale });
   const tToast = await getTranslations({ locale, namespace: "Toast" });
+  const tNavbar = await getTranslations({ locale, namespace: "Navbar" });
   return (
     <html lang={locale} suppressHydrationWarning>
       <body
         suppressHydrationWarning
         className={`${ubuntu.className} antialiased flex flex-col min-h-screen`}
       >
+        <SkipToContent>{tNavbar("skipToContent")}</SkipToContent>
         <NextIntlClientProvider messages={messages} locale={locale}>
           <ThemeProvider>
             <Navbar />
-            <main className="flex-grow">{children}</main>
+            {/* tabIndex lets the skip link move focus here, not just scroll. */}
+            <main id="main-content" tabIndex={-1} className="flex-grow">
+              {children}
+            </main>
             <Toast containerAriaLabel={tToast("containerLabel")} />
             <Footer />
           </ThemeProvider>

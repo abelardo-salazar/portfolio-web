@@ -19,8 +19,8 @@ export async function generateMetadata({
 export default async function ProjectsPage() {
   const projects = await getProjects();
   return (
-    <main className="min-h-screen bg-base-100 mt-4">
+    <div className="min-h-screen bg-base-100 mt-4">
       <ProjectBrowser projects={projects} />
-    </main>
+    </div>
   );
 }

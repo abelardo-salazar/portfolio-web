@@ -56,7 +56,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
   const l = locale as "es" | "en";
 
   return (
-    <main className="min-h-screen pt-32 pb-20">
+    <div className="min-h-screen pt-32 pb-20">
       <Container size="md">
         <Link
           href={`/${locale}/projects`}
@@ -163,6 +163,6 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
           </aside>
         </div>
       </Container>
-    </main>
+    </div>
   );
 }

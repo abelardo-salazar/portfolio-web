@@ -3,7 +3,7 @@
 import { Button } from "@abelardo-salazar/core-ui-design-system";
 import Link from "next/link";
 
-interface NavLinkProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+interface NavLinkProps {
   href: string;
   children: React.ReactNode;
   pathname: string;
@@ -22,7 +22,12 @@ export const NavLink = ({ href, children, pathname, locale }: NavLinkProps) => {
       asChild
       className="transition-all duration-200"
     >
-      <Link href={`/${locale}${href}`}>{children}</Link>
+      <Link
+        href={`/${locale}${href}`}
+        aria-current={activePath ? "page" : undefined}
+      >
+        {children}
+      </Link>
     </Button>
   );
 };

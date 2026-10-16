@@ -6,7 +6,8 @@
     "contact": "Contact",
     "skills": "Skills",
     "menu": "Menu",
-    "closeMenu": "Close menu"
+    "closeMenu": "Close menu",
+    "skipToContent": "Skip to content"
   },
   "About": {
     "title": "About Me"
