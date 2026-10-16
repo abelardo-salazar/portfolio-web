@@ -43,6 +43,7 @@ Variables esperadas en `.env.local` (no versionado):
 | `SANITY_WRITE_TOKEN` | Token con permiso de escritura, usado por `npm run sync` para sincronizar `content/` hacia Sanity |
 | `SANITY_REVALIDATE_SECRET` | Secreto compartido con el webhook de Sanity; valida la firma en `/api/revalidate` |
 | `RESEND_API_KEY` | API key de Resend para el envío del formulario de contacto |
+| `CONTACT_EMAIL` | Dirección que recibe los mensajes del formulario de contacto. Solo se lee en el servidor; si falta, el formulario devuelve un error genérico y el servidor registra la causa |
 
 ## Scripts
 

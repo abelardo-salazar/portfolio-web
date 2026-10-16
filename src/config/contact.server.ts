@@ -1,5 +1,6 @@
-// server-only fails the build if a client component imports this, so the
-// recipient never reaches the public JS bundle (siteConfig does).
+// Read per call, not at module scope: a missing variable must surface as a
+// failed send, not break every page that imports the contact action.
 import "server-only";
 
-export const CONTACT_RECIPIENT = "abelardosalazar94@gmail.com";
+export const getContactRecipient = () =>
+  process.env.CONTACT_EMAIL?.trim() || null;
