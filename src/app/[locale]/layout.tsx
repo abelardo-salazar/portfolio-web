@@ -86,12 +86,20 @@ export default async function RootLayout({
         suppressHydrationWarning
         className={`${ubuntu.className} antialiased flex flex-col min-h-screen`}
       >
-        <SkipToContent>{tNavbar("skipToContent")}</SkipToContent>
+        {/* Above the fixed Navbar (z-50), which comes later in the DOM. */}
+        <SkipToContent className="z-[60]">
+          {tNavbar("skipToContent")}
+        </SkipToContent>
         <NextIntlClientProvider messages={messages} locale={locale}>
           <ThemeProvider>
             <Navbar />
-            {/* tabIndex lets the skip link move focus here, not just scroll. */}
-            <main id="main-content" tabIndex={-1} className="flex-grow">
+            {/* tabIndex lets the skip link move focus here, not just scroll.
+                It is a skip target, not a control, so no focus outline. */}
+            <main
+              id="main-content"
+              tabIndex={-1}
+              className="flex-grow focus:outline-none"
+            >
               {children}
             </main>
             <Toast containerAriaLabel={tToast("containerLabel")} />
