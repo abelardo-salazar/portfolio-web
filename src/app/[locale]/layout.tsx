@@ -86,10 +86,7 @@ export default async function RootLayout({
         suppressHydrationWarning
         className={`${ubuntu.className} antialiased flex flex-col min-h-screen`}
       >
-        {/* Above the fixed Navbar (z-50), which comes later in the DOM. */}
-        <SkipToContent className="z-[60]">
-          {tNavbar("skipToContent")}
-        </SkipToContent>
+        <SkipToContent>{tNavbar("skipToContent")}</SkipToContent>
         <NextIntlClientProvider messages={messages} locale={locale}>
           <ThemeProvider>
             <Navbar />
