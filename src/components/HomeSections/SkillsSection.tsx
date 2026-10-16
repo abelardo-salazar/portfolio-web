@@ -52,7 +52,7 @@ export const SkillsSection = ({ skills }: SkillsSectionProps) => {
                       <Text weight="bold" className="text-sm">
                         {skill.name}
                       </Text>
-                      <Badge variant="secondary" className="text-xs">
+                      <Badge variant="secondary">
                         {t(`levels.${skill.level}`)}
                       </Badge>
                     </div>

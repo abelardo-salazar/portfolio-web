@@ -77,11 +77,7 @@ export const ExperienceItem = ({
 
               <div className="flex flex-wrap gap-2">
                 {skills.map((skill) => (
-                  <Badge
-                    key={skill}
-                    variant="secondary"
-                    className="text-[10px]"
-                  >
+                  <Badge key={skill} variant="secondary">
                     {skill}
                   </Badge>
                 ))}

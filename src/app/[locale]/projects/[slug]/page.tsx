@@ -67,12 +67,12 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
 
         <div className="space-y-6 mb-12">
           <div className="flex justify-between items-center">
-            <Badge variant="secondary" className="px-3 py-1 text-xs">
+            <Badge variant="secondary" size="md">
               {project.year}
             </Badge>
             <div className="flex gap-3">
               {project.github && (
-                <Button variant="ghost" size="sm" asChild>
+                <Button variant="ghost" size="icon" asChild>
                   <a
                     href={project.github}
                     target="_blank"
@@ -83,7 +83,7 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                 </Button>
               )}
               {project.link && (
-                <Button variant="outline" size="sm" asChild className="gap-2">
+                <Button variant="outline" size="md" asChild>
                   <a
                     href={project.link}
                     target="_blank"

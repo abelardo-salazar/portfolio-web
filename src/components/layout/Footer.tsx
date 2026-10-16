@@ -10,6 +10,7 @@ import {
   SheetTrigger,
   SheetContent,
   SheetHeader,
+  SheetBody,
   SheetTitle,
   SheetDescription,
 } from "@abelardo-salazar/core-ui-design-system";
@@ -41,7 +42,8 @@ export const Footer = () => {
             variant="ghost"
             size="icon"
             asChild
-            className="rounded-full hover:text-primary"
+            shape="pill"
+            className="hover:text-primary"
           >
             <Link
               href={siteConfig.links.github}
@@ -57,7 +59,8 @@ export const Footer = () => {
             variant="ghost"
             size="icon"
             asChild
-            className="rounded-full hover:text-primary"
+            shape="pill"
+            className="hover:text-primary"
           >
             <Link
               href={siteConfig.links.linkedin}
@@ -73,7 +76,8 @@ export const Footer = () => {
             variant="ghost"
             size="icon"
             asChild
-            className="rounded-full hover:text-primary"
+            shape="pill"
+            className="hover:text-primary"
           >
             <Link href={`mailto:tu-email@ejemplo.com`} aria-label="Email">
               <Mail className="w-5 h-5" />
@@ -87,20 +91,23 @@ export const Footer = () => {
               <Button
                 variant="outline"
                 size="sm"
-                className="gap-2 w-full md:w-auto rounded-full"
+                shape="pill"
+                className="w-full md:w-auto"
               >
                 <Settings className="w-4 h-4" />
                 {t("Footer.preferences")}
               </Button>
             </SheetTrigger>
             <SheetContent side="right">
-              <SheetHeader className="mb-6">
+              <SheetHeader>
                 <SheetTitle>{t("Footer.settingsTitle")}</SheetTitle>
                 <SheetDescription>
                   {t("Footer.settingsDescription")}
                 </SheetDescription>
               </SheetHeader>
-              <SystemSettings />
+              <SheetBody>
+                <SystemSettings />
+              </SheetBody>
             </SheetContent>
           </Sheet>
         </div>
