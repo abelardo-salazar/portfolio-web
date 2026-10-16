@@ -41,7 +41,7 @@ export const ProjectBrowser = ({ projects }: { projects: Project[] }) => {
           </Text>
         </div>
 
-        <div className="flex flex-col md:flex-row gap-4 items-end">
+        <div className="flex flex-col gap-4">
           <div className="w-full md:max-w-md">
             <Input
               placeholder={t("searchPlaceholder")}
