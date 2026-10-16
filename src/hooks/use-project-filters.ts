@@ -35,6 +35,11 @@ export const useProjectFilters = (projects: Project[], locale: "es" | "en") => {
     setIsLoading,
     allTags,
     filteredProjects,
+    // Keep in sync with clearFilters: every filter counted here must be reset there.
     hasFilters: search !== "" || activeTag !== null,
+    clearFilters: () => {
+      setSearch("");
+      setActiveTag(null);
+    },
   };
 };

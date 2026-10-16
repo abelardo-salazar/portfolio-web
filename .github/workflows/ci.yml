@@ -16,6 +16,8 @@ permissions:
 jobs:
   verify:
     runs-on: ubuntu-latest
+    # A hung `next start` or install would otherwise burn the 6h default.
+    timeout-minutes: 15
     env:
       # .npmrc reads this to install the private design system package.
       GITHUB_NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}

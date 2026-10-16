@@ -29,7 +29,22 @@ async function expectStatus(path, expected) {
   return res;
 }
 
+async function expectRedirect(path, pathnamePattern) {
+  const res = await fetch(`${BASE_URL}${path}`, { redirect: "manual" });
+  const location = res.headers.get("location");
+  // Location may be relative or absolute depending on the proxy.
+  const target = location ? new URL(location, BASE_URL).pathname : null;
+  const ok =
+    res.status >= 300 && res.status < 400 && pathnamePattern.test(target ?? "");
+  if (!ok) failures++;
+  console.log(`${ok ? "PASS" : "FAIL"} ${path} -> ${res.status} ${location ?? "(no location)"} (expected 3xx to ${pathnamePattern})`);
+}
+
 await waitForServer();
+
+// "/" has no page (src/app has no root layout): only the src/proxy.ts matcher
+// redirects it, so dropping "/" from that matcher must fail here.
+await expectRedirect("/", /^\/(es|en)\/?$/);
 
 await expectStatus("/es", 200);
 await expectStatus("/en", 200);

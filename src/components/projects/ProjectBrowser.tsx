@@ -6,7 +6,7 @@ import {
   Heading,
   Text,
   Input,
-  Badge,
+  Chip,
   Button,
 } from "@abelardo-salazar/core-ui-design-system";
 import { ProjectCard } from "./ProjectCard";
@@ -28,6 +28,7 @@ export const ProjectBrowser = ({ projects }: { projects: Project[] }) => {
     allTags,
     filteredProjects,
     hasFilters,
+    clearFilters,
   } = useProjectFilters(projects, locale);
 
   return (
@@ -52,22 +53,18 @@ export const ProjectBrowser = ({ projects }: { projects: Project[] }) => {
 
           <div className="flex flex-wrap gap-2">
             {allTags.map((tag) => (
-              <Badge
+              <Chip
                 key={tag}
-                variant={activeTag === tag ? "default" : "outline"}
-                className="cursor-pointer"
-                onClick={() => setActiveTag(activeTag === tag ? null : tag)}
+                variant="outline"
+                size="lg"
+                pressed={activeTag === tag}
+                onPressedChange={(pressed) => setActiveTag(pressed ? tag : null)}
               >
                 {tag}
-              </Badge>
+              </Chip>
             ))}
             {hasFilters && (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={() => setActiveTag(null)}
-                className="h-7"
-              >
+              <Button variant="ghost" size="md" onClick={clearFilters}>
                 <X className="w-3 h-3 mr-1" /> {t("clearFilters")}
               </Button>
             )}
