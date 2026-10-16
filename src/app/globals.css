@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "@abelardo-salazar/core-ui-design-system/tailwind.css";
 @layer base {
   html {
     scroll-behavior: smooth;
