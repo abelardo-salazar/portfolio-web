@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import Image from "next/image";
 import FsLightbox from "fslightbox-react";
@@ -22,8 +22,11 @@ export const ProjectGallery = ({ images, title }: ProjectGalleryProps) => {
   const t = useTranslations("Projects.gallery");
   const [toggler, setToggler] = useState(false);
   const [productIndex, setProductIndex] = useState(0);
+  // FsLightbox drops focus on <body> when it closes; return it to the opener.
+  const openerRef = useRef<HTMLButtonElement | null>(null);
 
-  const openLightboxOnIndex = (index: number) => {
+  const openLightboxOnIndex = (index: number, opener: HTMLButtonElement) => {
+    openerRef.current = opener;
     setProductIndex(index);
     setToggler(!toggler);
   };
@@ -39,7 +42,7 @@ export const ProjectGallery = ({ images, title }: ProjectGalleryProps) => {
         type="button"
         aria-label={t("openMain", { title })}
         className={`relative group cursor-zoom-in overflow-hidden rounded-2xl border border-base-content/10 aspect-video w-full ${buttonReset} ${focusRing}`}
-        onClick={() => openLightboxOnIndex(0)}
+        onClick={(e) => openLightboxOnIndex(0, e.currentTarget)}
       >
         <Image
           src={mainImage}
@@ -62,7 +65,7 @@ export const ProjectGallery = ({ images, title }: ProjectGalleryProps) => {
               key={index}
               aria-label={t("openImage", { title, index: index + 1 })}
               className={`relative group cursor-pointer overflow-hidden rounded-xl border border-base-content/10 aspect-[4/3] w-full ${buttonReset} ${focusRing}`}
-              onClick={() => openLightboxOnIndex(index + 1)}
+              onClick={(e) => openLightboxOnIndex(index + 1, e.currentTarget)}
             >
               <Image
                 src={img}
@@ -81,6 +84,7 @@ export const ProjectGallery = ({ images, title }: ProjectGalleryProps) => {
         sources={images}
         sourceIndex={productIndex}
         type="image"
+        onClose={() => openerRef.current?.focus()}
       />
     </div>
   );
