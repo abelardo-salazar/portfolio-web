@@ -4,15 +4,14 @@ title:
   es: "Frontend con React.js"
   en: "Frontend with React.js"
 issuer: "Platzi"
-date: "2024-02-15"
+date: "2024-02-10"
 startDate: "2024-02"
-credentialId: "PLATZI-REACT-2024"
-url: "https://platzi.com/p/abelardo-salazar/"
+credentialId: "88dfb1d3-dd33-4b62-8090-ee0de31b6641"
+url: "https://platzi.com/p/elsuperabe/ruta/7043-ruta/diploma/detalle/"
 description:
-  es: "Especialización en la creación de interfaces de alto rendimiento. Cubre el ciclo de vida completo de aplicaciones React, desde la gestión de estado compleja hasta estrategias de renderizado en el servidor (SSR) y optimización de bundles."
-  en: "Specialization in building high-performance interfaces. Covers the full lifecycle of React applications, from complex state management to server-side rendering (SSR) strategies and bundle optimization."
+  es: "Programa de formación de la Escuela de Desarrollo Web de Platzi sobre construcción, testing y mantenimiento de aplicaciones React del lado del cliente y del servidor."
+  en: "Platzi Web Development School program on building, testing, and maintaining client- and server-side React applications."
 skills:
   - React Hooks
   - Next.js
-  - Performance Optimization
-  - Component Pattern Design
+  - Component Patterns

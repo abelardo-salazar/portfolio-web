@@ -9,18 +9,17 @@ role:
   es: "Coordinador de Desarrollo Organizacional"
   en: "Organizational Development Coordinator"
 skills:
-  - Process Optimization
+  - Process Design
   - Strategic Planning
-  - Framework Standardization
   - Documentation
 ---
 
 ## es
 
-- Lideré el diseño y estandarización de procesos organizacionales y marcos culturales, lo que mejoró la alineación de equipos y la eficiencia operativa a nivel nacional.
-- Evalué y optimicé estrategias internas mediante la creación de documentación escalable y mejores prácticas, facilitando la adopción de nuevos flujos de trabajo en el comité.
+- Diseñé y estandaricé procesos, estrategias y marcos de cultura organizacional para la organización a nivel nacional.
+- Documenté esos procesos como guías reutilizables para que los comités locales pudieran adoptarlos sin depender de mí.
 
 ## en
 
-- Led the design and standardization of organizational processes and cultural frameworks, improving cross-functional team alignment and operational efficiency at a national level.
-- Evaluated and optimized internal strategies by establishing scalable documentation and best practices, facilitating the adoption of new workflows across the committee.
+- Designed and standardized processes, strategies, and organizational-culture frameworks for the organization at a national level.
+- Documented those processes as reusable guides so local committees could adopt them without depending on me.

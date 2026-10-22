@@ -1,0 +1,18 @@
+_id: cert-platzi-design-systems
+_type: certification
+title:
+  es: "Especialización en Sistemas de Diseño"
+  en: "Design Systems Specialization"
+issuer: "Platzi"
+date: "2024-09-11"
+startDate: "2024-09"
+credentialId: "1ddad9d5-e499-468e-9bec-8724612795a6"
+url: "https://platzi.com/p/elsuperabe/ruta/8964-ruta/diploma/detalle/"
+description:
+  es: "Programa de 9 cursos de Platzi sobre sistemas de diseño de punta a punta: fundamentos, patrones y componentes, Figma, documentación con Storybook, colaboración entre diseño y desarrollo, y gestión de un sistema de diseño como producto."
+  en: "Platzi's 9-course program on design systems end to end: fundamentals, patterns and components, Figma, documentation with Storybook, design–development collaboration, and managing a design system as a product."
+skills:
+  - Design Systems
+  - Component Patterns
+  - Storybook
+  - Design–Development Collaboration
