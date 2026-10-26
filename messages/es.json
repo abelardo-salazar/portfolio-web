@@ -13,22 +13,22 @@
     "title": "Sobre mí"
   },
   "Hero": {
-    "available": "Disponible para nuevos proyectos",
-    "title": "Ingeniería de Interfaz de Alto Impacto",
-    "description": "Senior Frontend Engineer especializado en React, Next.js y TypeScript. Enfocado en la creación de sistemas de diseño robustos y arquitecturas escalables.",
+    "available": "Disponible para roles frontend remotos",
+    "title": "Construyo el tooling del que parten los equipos",
+    "description": "Junior Frontend Developer en React, Next.js y TypeScript. Creador de Core UI, un design system accesible y versionado.",
     "projects": "Ver Proyectos",
     "cv": "Descargar CV",
     "scrollToNext": "Ir a la siguiente sección"
   },
   "Experience": {
     "title": "Experiencia Profesional",
-    "subtitle": "Historial comprobado en la arquitectura de interfaces web y móviles de alto rendimiento."
+    "subtitle": "Trabajo frontend, móvil y con clientes en producción desde 2021."
   },
   "Projects": {
     "title": "Proyectos",
     "featured": "Destacado",
     "more": "Detalles del Proyecto",
-    "description": "Un recorrido por mi trabajo de ingeniería, desde librerías de UI hasta aplicaciones web de nivel empresarial.",
+    "description": "Mis proyectos propios, desde una librería de componentes publicada hasta el sitio con CMS en el que estás.",
     "searchPlaceholder": "Buscar por nombre o tecnología...",
     "clearFilters": "Limpiar",
     "noResults": "No se encontraron proyectos con esos criterios.",
@@ -37,7 +37,7 @@
     "resetFilters": "Limpiar filtros",
     "resultsCount": "{count, plural, =0 {Ningún proyecto encontrado} one {# proyecto encontrado} other {# proyectos encontrados}}",
     "metaTitle": "Mis Proyectos",
-    "metaDescription": "Explora el portafolio de Abelardo Salazar: sistemas de diseño UI, aplicaciones escalables en Next.js y arquitecturas frontend avanzadas.",
+    "metaDescription": "Proyectos de Abelardo Salazar: Core UI, un design system en React, y un portafolio bilingüe en Next.js con Sanity.",
     "backToProjects": "Volver a proyectos",
     "visitLive": "Visitar sitio",
     "overview": "Resumen del proyecto",
@@ -46,7 +46,7 @@
     "technicalChallenges": "Retos técnicos superados",
     "home": {
       "title": "Proyectos Destacados",
-      "description": "Una selección de trabajo de ingeniería reciente y herramientas escalables.",
+      "description": "Proyectos recientes que construí y publiqué.",
       "viewAll": "Ver Todos los Proyectos"
     },
     "viewSource": "Ver código en GitHub",
@@ -58,8 +58,8 @@
     }
   },
   "Metadata": {
-    "title": "Senior Frontend Engineer",
-    "description": "Portafolio profesional de Abelardo Salazar, Senior Frontend Engineer especializado en React, Next.js y arquitecturas web escalables."
+    "title": "Junior Frontend Developer",
+    "description": "Portafolio de Abelardo Salazar, Junior Frontend Developer en React, Next.js y TypeScript, y creador del design system Core UI."
   },
   "Footer": {
     "settingsTitle": "Configuración",
@@ -67,7 +67,7 @@
     "settingsDescription": "Personaliza tu experiencia visual en mi portafolio",
     "language": "Idioma",
     "appearance": "Apariencia",
-    "role": "Senior Frontend Engineer",
+    "role": "Junior Frontend Developer",
     "contactForm": "Ir al formulario de contacto",
     "closeSettings": "Cerrar configuración"
   },
@@ -80,13 +80,13 @@
     "containerLabel": "Notificaciones"
   },
   "Contact": {
-    "title": "¿Tienes un proyecto en mente?",
-    "subtitle": "Hablemos sobre cómo mi experiencia en arquitectura frontend puede impulsar tu próximo producto digital.",
+    "title": "¿Estás contratando o tienes un proyecto en mente?",
+    "subtitle": "Escríbeme sobre el rol o el proyecto y te respondo.",
     "label_name": "Nombre",
     "placeholder_name": "Tu nombre completo",
     "label_email": "Correo electrónico",
     "label_message": "Mensaje",
-    "placeholder_message": "¿En qué te puedo ayudar a construir?",
+    "placeholder_message": "Cuéntame sobre el rol o el proyecto",
     "submit_button": "Enviar mensaje",
     "success_title": "¡Mensaje enviado!",
     "success_message": "Gracias por escribir. Me pondré en contacto contigo lo antes posible.",
@@ -99,18 +99,18 @@
   },
   "Certifications": {
     "title": "Certificaciones",
-    "subtitle": "Aprendizaje continuo y validación de la industria",
+    "subtitle": "Cursos y programas que he completado",
     "verify": "Verificar credencial"
   },
   "Skills": {
     "title": "Habilidades",
-    "subtitle": "Mi caja de herramientas de ingeniería y competencias",
+    "subtitle": "Las herramientas y prácticas con las que trabajo",
     "technical": "Técnicas",
     "soft": "Transversales",
     "languages": "Idiomas",
     "levels": {
       "expert": "Experto",
-      "proficient": "Proficiente",
+      "proficient": "Sólido",
       "competent": "Competente",
       "beginner": "Principiante Avanzado",
       "novice": "Novato"
@@ -126,7 +126,7 @@
   },
   "NotFound": {
     "title": "Página no encontrada",
-    "description": "El contenido que buscás no existe o fue movido.",
+    "description": "El contenido que buscas no existe o fue movido.",
     "backHome": "Volver al inicio"
   }
 }
