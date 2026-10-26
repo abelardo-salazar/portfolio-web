@@ -28,6 +28,35 @@ const parseMarkdownList = (text) => {
 
 const parseMarkdownText = (text) => (text ? text.trim() : "");
 
+// The GROQ queries sort lists by these fields, so they must exist and share
+// one format: "2022-09" and "2022-09-01" don't compare as the same month.
+const DATE_FIELDS = {
+  experience: ["startDate"],
+  project: ["startDate"],
+  certification: ["date"],
+};
+
+const normalizeDate = (value) => {
+  // YAML parses unquoted dates into Date objects.
+  const str = value instanceof Date ? value.toISOString() : String(value ?? "");
+  const match = str.match(/^(\d{4})-(\d{2})(?:-(\d{2}))?/);
+  if (!match) return null;
+  const [, year, month, day = "01"] = match;
+  return `${year}-${month}-${day}`;
+};
+
+const normalizeDates = (doc) => {
+  for (const field of DATE_FIELDS[doc._type] ?? []) {
+    const date = normalizeDate(doc[field]);
+    if (!date) {
+      throw new Error(
+        `"${field}" falta o es inválido (formato YYYY-MM o YYYY-MM-DD)`,
+      );
+    }
+    doc[field] = date;
+  }
+};
+
 async function processFile(filePath) {
   const ext = path.extname(filePath);
   const fileContent = fs.readFileSync(filePath, "utf-8");
@@ -107,6 +136,7 @@ async function processFile(filePath) {
   }
 
   try {
+    normalizeDates(sanityDoc);
     const result = await client.createOrReplace(sanityDoc);
     console.log(
       `✅ [${result._type}] Sincronizado correctamente: ${result.title?.en || result.title || result._id}`,

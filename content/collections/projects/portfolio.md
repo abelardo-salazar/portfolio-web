@@ -3,6 +3,7 @@ _id: project-portfolio-2026
 _type: project
 slug: portfolio-personal-2026
 year: "2026"
+startDate: "2026-01-18"
 featured: true
 link: "https://portfolio-web-rouge-tau.vercel.app"
 tags:

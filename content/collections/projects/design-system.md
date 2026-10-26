@@ -3,6 +3,7 @@ _id: project-core-ui-design-system
 _type: project
 slug: core-ui-design-system
 year: "2026"
+startDate: "2026-01-04"
 featured: true
 tags:
   - React 19
