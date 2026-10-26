@@ -1,6 +1,6 @@
 import { groq } from "next-sanity";
 
-export const projectsQuery = groq`*[_type == "project"] | order(year desc) {
+export const projectsQuery = groq`*[_type == "project"] | order(startDate desc, year desc) {
   "id": _id,
   "slug": slug.current,
   year,
@@ -15,7 +15,7 @@ export const projectsQuery = groq`*[_type == "project"] | order(year desc) {
   challenges
 }`;
 
-export const experiencesQuery = groq`*[_type == "experience"] | order(period desc, startDate desc) {
+export const experiencesQuery = groq`*[_type == "experience"] | order(current desc, startDate desc) {
   "id": _id,
   company,
   role,
