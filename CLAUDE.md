@@ -15,7 +15,7 @@ Guía para trabajar en este repo. El contexto general (stack, instalación, vari
 ## Comandos
 
 ```bash
-npm ci                          # instalar (requiere GITHUB_NPM_TOKEN, ver README)
+npm ci                          # instalar
 npm run dev                     # desarrollo
 npm run lint                    # eslint
 npx tsc --noEmit                # typecheck

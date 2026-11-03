@@ -1,30 +1,23 @@
 # Portfolio Web
 
-Portafolio personal de Abelardo Salazar. Next.js 16 (App Router, Server Components), i18n (es/en) con `next-intl`, contenido gestionado en Sanity CMS con un flujo "content-as-code" (`content/`), y UI construida sobre el design system privado `@abelardo-salazar/core-ui-design-system`.
+Portafolio personal de Abelardo Salazar. Next.js 16 (App Router, Server Components), i18n (es/en) con `next-intl`, contenido gestionado en Sanity CMS con un flujo "content-as-code" (`content/`), y UI construida sobre el design system `@abelardo-salazar/core-ui-design-system`.
 
 ## Stack
 
 - **Next.js 16** (App Router, Turbopack)
 - **next-intl** — i18n, locales `es`/`en`
 - **Sanity CMS** (`sanity`, `next-sanity`, `@sanity/client`) — Studio embebido en `/studio`
-- **@abelardo-salazar/core-ui-design-system** — paquete privado (GitHub Packages)
+- **@abelardo-salazar/core-ui-design-system** — paquete público en npm
 - **Resend** — envío del formulario de contacto
 
 ## Requisitos previos
 
 - Node.js (LTS)
-- Un [Personal Access Token de GitHub](https://github.com/settings/tokens) con permiso `read:packages`, para instalar el paquete privado del design system.
 
 ## Instalación
 
 1. Cloná el repo.
-2. Configurá el token de GitHub Packages como variable de entorno antes de instalar — `.npmrc` ya apunta `@abelardo-salazar` al registro de GitHub y espera `GITHUB_NPM_TOKEN`:
-
-   ```bash
-   export GITHUB_NPM_TOKEN=ghp_xxxxxxxxxxxx   # o el equivalente en tu shell
-   ```
-
-3. Instalá dependencias:
+2. Instalá dependencias:
 
    ```bash
    npm install
