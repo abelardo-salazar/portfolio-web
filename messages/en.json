@@ -7,7 +7,9 @@
     "skills": "Skills",
     "menu": "Menu",
     "closeMenu": "Close menu",
-    "skipToContent": "Skip to content"
+    "skipToContent": "Skip to content",
+    "mainNavLabel": "Main",
+    "mobileNavLabel": "Mobile menu"
   },
   "About": {
     "title": "About Me"

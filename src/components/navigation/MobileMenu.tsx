@@ -59,7 +59,7 @@ export const MobileMenu = () => {
         <Separator />
 
         <SheetBody className="space-y-8">
-          <nav className="flex flex-col gap-2">
+          <nav aria-label={t("mobileNavLabel")} className="flex flex-col gap-2">
             {navLinks.map((link) => (
               <Button
                 key={link.href}

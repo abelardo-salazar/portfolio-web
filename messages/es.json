@@ -7,7 +7,9 @@
     "skills": "Habilidades",
     "menu": "Menú",
     "closeMenu": "Cerrar menú",
-    "skipToContent": "Saltar al contenido"
+    "skipToContent": "Saltar al contenido",
+    "mainNavLabel": "Principal",
+    "mobileNavLabel": "Menú móvil"
   },
   "About": {
     "title": "Sobre mí"

@@ -21,6 +21,7 @@ export const Navbar = () => {
 
   return (
     <nav
+      aria-label={t("mainNavLabel")}
       className={`fixed top-0 w-full z-50 transition-all duration-300 border-b ${
         isScrolled
           ? "bg-base-100/80 backdrop-blur-md border-base-content/10 py-3"
