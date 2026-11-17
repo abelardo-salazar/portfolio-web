@@ -1,11 +1,9 @@
 "use client";
 
 import {
-  Switch,
-  Text,
+  SwitchField,
   Skeleton,
 } from "@abelardo-salazar/core-ui-design-system";
-import { Moon, Sun } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useThemeManager } from "@/hooks/use-theme-manager";
 
@@ -14,26 +12,16 @@ export const ThemeSwitcher = () => {
   const { isDark, toggleTheme, isMounted } = useThemeManager();
 
   if (!isMounted) {
-    return <Skeleton className="w-40 h-8 rounded-full" />;
+    // Same footprint as the SwitchField row, so hydration doesn't shift the layout.
+    return <Skeleton className="h-12 w-full" />;
   }
 
+  // Fixed label: the switch itself announces on/off, a changing name would confuse.
   return (
-    <div className="flex items-center gap-3">
-      <Sun
-        className={`w-4 h-4 transition-colors ${!isDark ? "text-primary" : "text-base-content"}`}
-      />
-      <Switch
-        checked={isDark}
-        onCheckedChange={toggleTheme}
-        aria-label={t("toggle_theme")}
-      />
-      <Moon
-        className={`w-4 h-4 transition-colors ${isDark ? "text-primary" : "text-base-content"}`}
-      />
-
-      <Text size="sm" className="ml-2 font-medium">
-        {isDark ? t("dark") : t("light")}
-      </Text>
-    </div>
+    <SwitchField
+      label={t("dark_mode")}
+      checked={isDark}
+      onCheckedChange={toggleTheme}
+    />
   );
 };
