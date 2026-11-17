@@ -77,9 +77,11 @@ export const ProjectBrowser = ({ projects }: { projects: Project[] }) => {
           </Text>
         </div>
 
-        {/* items-start: the combobox grows as tags wrap; the rest stays on top. */}
-        <div className="flex flex-col gap-4 md:flex-row md:items-start">
-          <div className="w-full md:max-w-sm">
+        {/* items-start: the combobox grows as tags wrap; the rest stays on top.
+            Below lg the clear button wraps to its own line, so showing it
+            doesn't shrink the fields while they're in use. */}
+        <div className="flex flex-col gap-4 md:flex-row md:flex-wrap md:items-start">
+          <div className="w-full md:flex-1 md:max-w-sm">
             <Input
               aria-label={t("searchLabel")}
               placeholder={t("searchPlaceholder")}
@@ -96,7 +98,7 @@ export const ProjectBrowser = ({ projects }: { projects: Project[] }) => {
             multiple
             mode="popover"
             size="md"
-            className="w-full md:max-w-sm"
+            className="w-full md:flex-1 md:max-w-sm"
             options={tagOptions}
             value={activeTags}
             onValueChange={setActiveTags}
@@ -107,9 +109,11 @@ export const ProjectBrowser = ({ projects }: { projects: Project[] }) => {
           />
 
           {hasFilters && (
-            <Button variant="ghost" size="md" onClick={clearFilters}>
-              <X className="w-3 h-3 mr-1" /> {t("clearFilters")}
-            </Button>
+            <div className="flex flex-col md:flex-row md:basis-full lg:basis-auto">
+              <Button variant="ghost" size="md" onClick={clearFilters}>
+                <X className="w-3 h-3 mr-1" /> {t("clearFilters")}
+              </Button>
+            </div>
           )}
         </div>
 
