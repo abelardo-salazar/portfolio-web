@@ -7,7 +7,8 @@ import {
   Heading,
   Text,
   Input,
-  Chip,
+  Combobox,
+  type ComboboxOption,
   Button,
   EmptyState,
   EmptyStateIcon,
@@ -29,29 +30,42 @@ export const ProjectBrowser = ({ projects }: { projects: Project[] }) => {
   const {
     search,
     setSearch,
-    activeTag,
-    setActiveTag,
+    activeTags,
+    setActiveTags,
     allTags,
+    availableTags,
     filteredProjects,
     hasFilters,
     clearFilters,
   } = useProjectFilters(projects, locale);
 
+  const tagOptions: ComboboxOption[] = allTags.map((tag) => {
+    const available = availableTags.has(tag);
+    return {
+      value: tag,
+      label: tag,
+      disabled: !available,
+      description: available ? undefined : t("tagUnavailable"),
+    };
+  });
+
   const resultCount = filteredProjects.length;
+  // Sorted copy: selection order doesn't change the filter, so it must not
+  // change the key. The state itself keeps its order for the chips.
+  const filterKey = JSON.stringify([search, [...activeTags].sort()]);
   // Compare against the last announced filters instead of a "first render"
   // flag: StrictMode's dev double-mount keeps refs, so a flag would announce
   // on mount. It also skips filters that end up where they started.
-  const lastAnnounced = useRef(JSON.stringify([search, activeTag]));
+  const lastAnnounced = useRef(filterKey);
 
   useEffect(() => {
-    const key = JSON.stringify([search, activeTag]);
-    if (key === lastAnnounced.current) return;
+    if (filterKey === lastAnnounced.current) return;
     const timer = setTimeout(() => {
-      lastAnnounced.current = key;
+      lastAnnounced.current = filterKey;
       announce(t("resultsCount", { count: resultCount }));
     }, ANNOUNCE_DEBOUNCE_MS);
     return () => clearTimeout(timer);
-  }, [search, activeTag, resultCount, t]);
+  }, [filterKey, resultCount, t]);
 
   return (
     <Container size="md" className="py-24">
@@ -63,8 +77,9 @@ export const ProjectBrowser = ({ projects }: { projects: Project[] }) => {
           </Text>
         </div>
 
-        <div className="flex flex-col gap-4">
-          <div className="w-full md:max-w-md">
+        {/* items-start: the combobox grows as tags wrap; the rest stays on top. */}
+        <div className="flex flex-col gap-4 md:flex-row md:items-start">
+          <div className="w-full md:max-w-sm">
             <Input
               aria-label={t("searchLabel")}
               placeholder={t("searchPlaceholder")}
@@ -76,24 +91,26 @@ export const ProjectBrowser = ({ projects }: { projects: Project[] }) => {
             />
           </div>
 
-          <div className="flex flex-wrap gap-2">
-            {allTags.map((tag) => (
-              <Chip
-                key={tag}
-                variant="outline"
-                size="lg"
-                pressed={activeTag === tag}
-                onPressedChange={(pressed) => setActiveTag(pressed ? tag : null)}
-              >
-                {tag}
-              </Chip>
-            ))}
-            {hasFilters && (
-              <Button variant="ghost" size="md" onClick={clearFilters}>
-                <X className="w-3 h-3 mr-1" /> {t("clearFilters")}
-              </Button>
-            )}
-          </div>
+          <Combobox
+            aria-label={t("tagsLabel")}
+            multiple
+            mode="popover"
+            size="md"
+            className="w-full md:max-w-sm"
+            options={tagOptions}
+            value={activeTags}
+            onValueChange={setActiveTags}
+            placeholder={t("tagsPlaceholder")}
+            searchPlaceholder={t("tagsSearchPlaceholder")}
+            emptyLabel={t("tagsEmpty")}
+            removeLabel={(tag) => t("removeTag", { tag })}
+          />
+
+          {hasFilters && (
+            <Button variant="ghost" size="md" onClick={clearFilters}>
+              <X className="w-3 h-3 mr-1" /> {t("clearFilters")}
+            </Button>
+          )}
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pt-8">
