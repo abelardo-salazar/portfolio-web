@@ -28,17 +28,16 @@ export const ProjectSection = ({ projects }: { projects: Project[] }) => {
         </MotionReveal>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {projects.map(
-            (project, index) =>
-              project.featured && (
-                <ProjectCard
-                  key={index}
-                  project={project}
-                  index={index}
-                  locale={locale}
-                />
-              ),
-          )}
+          {projects
+            .filter((project) => project.featured)
+            .map((project, index) => (
+              <ProjectCard
+                key={project.id}
+                project={project}
+                index={index}
+                locale={locale}
+              />
+            ))}
         </div>
         <div className="flex justify-center pt-8">
           <Button variant="outline" size="lg" className="px-8" asChild>
