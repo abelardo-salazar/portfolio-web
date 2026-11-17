@@ -22,7 +22,7 @@ npx tsc --noEmit                # typecheck
 npm run build                   # build de producción
 npm run start                   # sirve el build (puerto 3000)
 node scripts/smoke-test.mjs     # smoke test contra un servidor ya levantado (default http://localhost:3000)
-npm audit --audit-level=critical
+npm audit --audit-level=critical # umbral critical: ver issue #39
 npm run sync                    # sincroniza content/ hacia Sanity
 ```
 
@@ -39,7 +39,3 @@ El CI (`.github/workflows/ci.yml`) corre exactamente esta secuencia: `npm ci` �
 - Los textos que exponen los componentes (props `xxxLabel`) salen de next-intl, nunca hardcodeados.
 - Los locales de `/locale` del DS solo se pasan dentro de un componente cliente, nunca como prop desde un Server Component.
 - Para filtros táctiles de conjuntos pequeños y fijos usar `Chip size="lg"`, no `Badge`. Para tags que crecen con el catálogo (como los de proyectos), usar `Combobox` con `multiple`.
-
-## Deuda conocida
-
-- `npm audit` usa umbral `critical` porque las vulnerabilidades high vienen de `sanity` v4 y solo se arreglan con Sanity 6. **Al migrar a Sanity 6, subir el umbral a `high`** en el CI y en esta guía.
