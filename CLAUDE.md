@@ -38,7 +38,7 @@ El CI (`.github/workflows/ci.yml`) corre exactamente esta secuencia: `npm ci` �
 - No ajustar alturas con `className`. Usar las props `size` y `shape` del componente.
 - Los textos que exponen los componentes (props `xxxLabel`) salen de next-intl, nunca hardcodeados.
 - Los locales de `/locale` del DS solo se pasan dentro de un componente cliente, nunca como prop desde un Server Component.
-- Para filtros táctiles usar `Chip size="lg"`, no `Badge`.
+- Para filtros táctiles de conjuntos pequeños y fijos usar `Chip size="lg"`, no `Badge`. Para tags que crecen con el catálogo (como los de proyectos), usar `Combobox` con `multiple`.
 
 ## Deuda conocida
 
