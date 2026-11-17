@@ -78,9 +78,7 @@
     "closeSettings": "Close settings"
   },
   "ThemeSwitcher": {
-    "light": "Light Theme",
-    "dark": "Dark Theme",
-    "toggle_theme": "Toggle theme"
+    "dark_mode": "Dark mode"
   },
   "Toast": {
     "containerLabel": "Notifications"
