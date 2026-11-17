@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback } from "react";
+import { useState, useMemo } from "react";
 import { Project } from "@/types/data";
 
 export const useProjectFilters = (projects: Project[], locale: "es" | "en") => {
@@ -22,14 +22,17 @@ export const useProjectFilters = (projects: Project[], locale: "es" | "en") => {
   }, [projects, search, activeTags, locale]);
 
   // Ignores the text search on purpose, so options don't toggle while typing.
-  const isTagAvailable = useCallback(
-    (tag: string) =>
-      activeTags.includes(tag) ||
-      projects.some((project) =>
-        [...activeTags, tag].every((t) => project.tags.includes(t)),
-      ),
-    [projects, activeTags],
-  );
+  // A tag can join the selection only if a project already matching the
+  // selection carries it; selected tags always stay available.
+  const availableTags = useMemo(() => {
+    const available = new Set(activeTags);
+    for (const project of projects) {
+      if (activeTags.every((tag) => project.tags.includes(tag))) {
+        project.tags.forEach((tag) => available.add(tag));
+      }
+    }
+    return available;
+  }, [projects, activeTags]);
 
   return {
     search,
@@ -37,7 +40,7 @@ export const useProjectFilters = (projects: Project[], locale: "es" | "en") => {
     activeTags,
     setActiveTags,
     allTags,
-    isTagAvailable,
+    availableTags,
     filteredProjects,
     // Keep in sync with clearFilters: every filter counted here must be reset there.
     hasFilters: search !== "" || activeTags.length > 0,

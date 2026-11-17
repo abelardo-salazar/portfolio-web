@@ -33,14 +33,14 @@ export const ProjectBrowser = ({ projects }: { projects: Project[] }) => {
     activeTags,
     setActiveTags,
     allTags,
-    isTagAvailable,
+    availableTags,
     filteredProjects,
     hasFilters,
     clearFilters,
   } = useProjectFilters(projects, locale);
 
   const tagOptions: ComboboxOption[] = allTags.map((tag) => {
-    const available = isTagAvailable(tag);
+    const available = availableTags.has(tag);
     return {
       value: tag,
       label: tag,
@@ -50,20 +50,22 @@ export const ProjectBrowser = ({ projects }: { projects: Project[] }) => {
   });
 
   const resultCount = filteredProjects.length;
+  // Sorted copy: selection order doesn't change the filter, so it must not
+  // change the key. The state itself keeps its order for the chips.
+  const filterKey = JSON.stringify([search, [...activeTags].sort()]);
   // Compare against the last announced filters instead of a "first render"
   // flag: StrictMode's dev double-mount keeps refs, so a flag would announce
   // on mount. It also skips filters that end up where they started.
-  const lastAnnounced = useRef(JSON.stringify([search, activeTags]));
+  const lastAnnounced = useRef(filterKey);
 
   useEffect(() => {
-    const key = JSON.stringify([search, activeTags]);
-    if (key === lastAnnounced.current) return;
+    if (filterKey === lastAnnounced.current) return;
     const timer = setTimeout(() => {
-      lastAnnounced.current = key;
+      lastAnnounced.current = filterKey;
       announce(t("resultsCount", { count: resultCount }));
     }, ANNOUNCE_DEBOUNCE_MS);
     return () => clearTimeout(timer);
-  }, [search, activeTags, resultCount, t]);
+  }, [filterKey, resultCount, t]);
 
   return (
     <Container size="md" className="py-24">
