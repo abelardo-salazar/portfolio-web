@@ -76,7 +76,12 @@ export const SkillsSection = ({ skills }: SkillsSectionProps) => {
                       key={index}
                       className="flex items-start gap-3 text-base-content"
                     >
-                      <span className="text-secondary shrink-0 mt-0.5">✓</span>
+                      <span
+                        aria-hidden="true"
+                        className="text-secondary shrink-0 mt-0.5"
+                      >
+                        ✓
+                      </span>
                       <Text className="text-sm md:text-base leading-snug">
                         {skill[locale]}
                       </Text>
