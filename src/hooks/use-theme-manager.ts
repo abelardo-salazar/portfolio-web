@@ -4,7 +4,7 @@ import { useSyncExternalStore } from "react";
 const noopSubscribe = () => () => {};
 
 export const useThemeManager = () => {
-  const { theme, setTheme, resolvedTheme } = useTheme();
+  const { setTheme, resolvedTheme } = useTheme();
   // false during SSR and hydration, true afterwards: resolvedTheme is only
   // known on the client, so callers must not render theme-dependent markup
   // until then.

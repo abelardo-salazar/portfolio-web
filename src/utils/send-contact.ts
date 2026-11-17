@@ -37,7 +37,7 @@ export async function sendContactAction(data: ContactFormData) {
     // Created per call: the constructor throws without an API key, and at
     // module scope that breaks page loads and builds, not just sending.
     const resend = new Resend(process.env.RESEND_API_KEY);
-    const { data: resendData, error } = await resend.emails.send({
+    const { error } = await resend.emails.send({
       from: "Portfolio Contact <onboarding@resend.dev>",
       to: [recipient],
       subject: `Nuevo mensaje de contacto de ${name}`,
