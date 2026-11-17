@@ -10,6 +10,7 @@ import {
   Badge,
   Button,
 } from "@abelardo-salazar/core-ui-design-system";
+import Link from "next/link";
 import { MotionReveal } from "../ui/MotionReveal";
 
 interface ProjectCardProps {
@@ -45,12 +46,12 @@ export const ProjectCard = ({ project, index, locale }: ProjectCardProps) => {
             ))}
           </div>
           <Button variant="primary" size="sm" fullWidth asChild>
-            <a
+            <Link
               aria-label={`${t("more")} ${project.title[locale]}`}
               href={`/${locale}/projects/${project.slug}`}
             >
               {t("more")}
-            </a>
+            </Link>
           </Button>
         </CardContent>
       </Card>
