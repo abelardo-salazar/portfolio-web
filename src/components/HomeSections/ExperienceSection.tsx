@@ -1,10 +1,9 @@
-"use client";
-
 import { useTranslations, useLocale } from "next-intl";
 import {
   Container,
   Heading,
   Text,
+  Timeline,
 } from "@abelardo-salazar/core-ui-design-system";
 import { ExperienceItem } from "../experience/ExperienceItem";
 import { Experience } from "@/types/data";
@@ -21,7 +20,7 @@ export const ExperienceSection = ({
     <section id="experience" className="py-10 md:py-32 scroll-mt-20">
       <Container size="md">
         <div className="mb-16 text-center md:text-left">
-          <Heading level="h2" className="mb-4">
+          <Heading level="h2" id="experience-title" className="mb-4">
             {t("title")}
           </Heading>
           <Text size="lead" className="text-base-content">
@@ -29,12 +28,14 @@ export const ExperienceSection = ({
           </Text>
         </div>
 
-        <div className="max-w-3xl mx-auto md:mx-0">
+        <Timeline
+          aria-labelledby="experience-title"
+          className="max-w-3xl mx-auto md:mx-0"
+        >
           {experiences.map((exp, index) => (
             <ExperienceItem
               key={exp.id}
               index={index}
-              isLast={index === experiences.length - 1}
               role={exp.role[locale]}
               company={exp.company}
               period={exp.period}
@@ -43,7 +44,7 @@ export const ExperienceSection = ({
               skills={exp.skills}
             />
           ))}
-        </div>
+        </Timeline>
       </Container>
     </section>
   );
