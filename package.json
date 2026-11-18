@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "lighthouse": "node scripts/lighthouse.mjs",
     "sync": "node --env-file=.env.local scripts/sync-content.mjs"
   },
   "dependencies": {
@@ -50,6 +51,7 @@
     "zod": "^4.6.7"
   },
   "devDependencies": {
+    "@lhci/cli": "0.16.1",
     "@tailwindcss/postcss": "^4",
     "@types/fslightbox-react": "^2.0.1",
     "@types/node": "^20",

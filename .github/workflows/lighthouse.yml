@@ -1,0 +1,66 @@
+name: Lighthouse
+
+# Separate from ci.yml so it never changes the duration or result of `verify`.
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+concurrency:
+  group: lighthouse-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  lighthouse:
+    name: lighthouse (${{ matrix.group }})
+    runs-on: ubuntu-latest
+    # The informative group (36 runs) takes ~9 min locally; leave headroom.
+    timeout-minutes: 25
+    strategy:
+      # Each group reports on its own: a blocking failure must not cancel the
+      # informative report, and vice versa.
+      fail-fast: false
+      matrix:
+        include:
+          # Only this job grows with the catalog (2 URLs per project).
+          - group: blocking
+            groups: blocking-mobile,notfound-mobile
+          # Assertions here are warn-only: it fails only if collection breaks.
+          - group: informative
+            groups: informative-mobile,informative-desktop
+    env:
+      NEXT_PUBLIC_SANITY_PROJECT_ID: ${{ vars.NEXT_PUBLIC_SANITY_PROJECT_ID }}
+      NEXT_PUBLIC_SANITY_DATASET: ${{ vars.NEXT_PUBLIC_SANITY_DATASET }}
+      NEXT_TELEMETRY_DISABLED: 1
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      # Production build: next dev is unminified and would skew every score.
+      - run: npm run build
+
+      - name: Lighthouse (next start)
+        run: |
+          npx next start -p 3000 > next.log 2>&1 &
+          npm run lighthouse -- http://localhost:3000 --only=${{ matrix.groups }} || { tail -50 next.log; exit 1; }
+
+      - name: Job summary
+        if: always()
+        run: cat .lighthouseci/summary.md >> "$GITHUB_STEP_SUMMARY" || true
+
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: lighthouse-${{ matrix.group }}
+          path: .lighthouseci/
+          include-hidden-files: true
+          retention-days: 14
