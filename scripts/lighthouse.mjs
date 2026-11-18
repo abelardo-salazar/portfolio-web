@@ -18,14 +18,27 @@ const READY_TIMEOUT_MS = 60_000;
 
 // Collection lives here rather than in rc files: URLs are derived at runtime,
 // and LHCI merges array settings from rc files and flags unpredictably.
+// Every group pins its color scheme: the site follows prefers-color-scheme,
+// so otherwise the audited theme would depend on the machine running it.
 const groups = (urls) => [
   {
     // A11y and SEO read the DOM and are deterministic: one run is enough, and
     // skipping the performance trace keeps the per-slug cost low.
-    name: "blocking-mobile",
+    name: "blocking-mobile-light",
     urls: urls.blocking,
     runs: 1,
+    colorScheme: "light",
     settings: { onlyCategories: ["accessibility", "seo"] },
+    assert: "blocking.mjs",
+  },
+  {
+    // Both themes ship, and contrast differs between them. SEO doesn't depend
+    // on the theme, so it only runs in the light group.
+    name: "blocking-mobile-dark",
+    urls: urls.blocking,
+    runs: 1,
+    colorScheme: "dark",
+    settings: { onlyCategories: ["accessibility"] },
     assert: "blocking.mjs",
   },
   {
@@ -35,6 +48,7 @@ const groups = (urls) => [
     name: "notfound-mobile",
     urls: urls.notFound,
     runs: 1,
+    colorScheme: "light",
     settings: { onlyCategories: ["accessibility", "best-practices"], ignoreStatusCode: true },
     assert: "blocking.mjs",
   },
@@ -43,6 +57,7 @@ const groups = (urls) => [
     name: "informative-mobile",
     urls: urls.informative,
     runs: 3,
+    colorScheme: "light",
     settings: { onlyCategories: ["performance", "best-practices"] },
     assert: "informative.mjs",
   },
@@ -50,6 +65,7 @@ const groups = (urls) => [
     name: "informative-desktop",
     urls: urls.informative,
     runs: 3,
+    colorScheme: "light",
     settings: { preset: "desktop", onlyCategories: ["performance", "best-practices"] },
     assert: "informative.mjs",
   },
@@ -98,6 +114,8 @@ function runGroup(group) {
     `--numberOfRuns=${group.runs}`,
     ...group.urls.map((u) => `--url=${u}`),
     ...settingsFlags(group.settings),
+    // Blink's PreferredColorScheme enum: 0 = dark, 1 = light.
+    `--settings.chromeFlags=--blink-settings=preferredColorScheme=${group.colorScheme === "dark" ? 0 : 1}`,
   ]);
   if (collectStatus !== 0) return { group, failed: "collect" };
 
@@ -127,7 +145,12 @@ function runGroup(group) {
   const assertStatus = lhci(
     cwd,
     ["assert", `--config=${path.resolve("lighthouse", group.assert)}`],
-    { LH_FORM_FACTOR: group.settings.preset === "desktop" ? "desktop" : "mobile" },
+    // Configs can't tell groups apart by URL, so they read the group here.
+    {
+      LH_FORM_FACTOR: group.settings.preset === "desktop" ? "desktop" : "mobile",
+      LH_COLOR_SCHEME: group.colorScheme,
+      LH_CATEGORIES: group.settings.onlyCategories.join(","),
+    },
   );
   const resultsFile = path.join(cwd, ".lighthouseci", "assertion-results.json");
   // Missing when assert crashes before evaluating; its exit code still counts.

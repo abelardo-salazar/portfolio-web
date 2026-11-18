@@ -27,7 +27,7 @@ jobs:
         include:
           # Only this job grows with the catalog (2 URLs per project).
           - group: blocking
-            groups: blocking-mobile,notfound-mobile
+            groups: blocking-mobile-light,blocking-mobile-dark,notfound-mobile
           # Assertions here are warn-only: it fails only if collection breaks.
           - group: informative
             groups: informative-mobile,informative-desktop
