@@ -17,6 +17,9 @@
 /.next/
 /out/
 
+# lighthouse ci reports
+/.lighthouseci/
+
 # production
 /build
 
