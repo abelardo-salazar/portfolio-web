@@ -199,7 +199,8 @@ const meta = {
   measuredAt: new Date().toISOString(),
   // In a PR, actions/checkout measures the merge commit, not the PR head.
   commit: git("rev-parse", "HEAD"),
-  dirty: Boolean(git("status", "--porcelain")),
+  // Untracked files are ignored: CI writes next.log into the checkout.
+  dirty: Boolean(git("status", "--porcelain", "--untracked-files=no")),
   ci: Boolean(process.env.GITHUB_ACTIONS),
   prNumber: process.env.LH_PR_NUMBER || undefined,
   prHead: process.env.LH_PR_HEAD || undefined,
