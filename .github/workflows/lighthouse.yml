@@ -76,7 +76,7 @@ jobs:
       # Small copy of the summary alone, so the report job doesn't download
       # every HTML/JSON report just to read it.
       - uses: actions/upload-artifact@v7
-        if: always() && matrix.group != 'informative' # TEMP: force a missing artifact, revert before merge
+        if: always()
         with:
           name: lighthouse-summary-${{ matrix.group }}
           path: .lighthouseci/summary.json
