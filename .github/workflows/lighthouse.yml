@@ -17,7 +17,7 @@ permissions:
 
 jobs:
   lighthouse:
-    # Required check in branch protection: renaming it breaks the rule.
+    # If branch protection marks this check as required, renaming the job breaks the rule.
     name: lighthouse (blocking)
     runs-on: ubuntu-latest
     # Grows with the catalog (2 URLs per project).
