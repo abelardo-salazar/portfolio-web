@@ -1,8 +1,8 @@
-// Full local Lighthouse report, never run in CI: builds if needed, serves the
-// build with next start on a free port, measures every group (informative
-// included) and prints the PDF.
-// Usage: npm run report:lighthouse [-- --build]
-//   --build  force next build even when the current one looks up to date
+// Full local Lighthouse report, never run in CI: builds, serves the build with
+// next start on a free port, measures every group (informative included) and
+// prints the PDF.
+// Usage: npm run report:lighthouse [-- --no-build]
+//   --no-build  skip next build and measure the existing .next as is
 // Result: .lighthouse-report/lighthouse-report.pdf plus the raw reports. Only
 // the last report is kept, and it's replaced only when a run completes.
 
@@ -13,7 +13,7 @@ import net from "node:net";
 import path from "node:path";
 import { groupDefinitions, OUTPUT_DIRS, outputDir, removeOutputDir, REPO_ROOT } from "./lighthouse-groups.mjs";
 
-const FLAGS = ["--build"];
+const FLAGS = ["--no-build"];
 const args = process.argv.slice(2);
 // Validated before anything is built, deleted or replaced.
 const unknownArgs = args.filter((a) => !FLAGS.includes(a));
@@ -21,7 +21,13 @@ if (unknownArgs.length) {
   console.error(`Unknown argument(s): ${unknownArgs.join(" ")}. Allowed: ${FLAGS.join(" ")}`);
   process.exit(2);
 }
-const FORCE_BUILD = args.includes("--build");
+const SKIP_BUILD = args.includes("--no-build");
+const BUILD_ID = path.join(REPO_ROOT, ".next", "BUILD_ID");
+if (SKIP_BUILD && !existsSync(BUILD_ID)) {
+  console.error("--no-build needs an existing build, but .next/BUILD_ID is missing. Run without --no-build.");
+  console.error(`Nothing was touched; the previous report in ${OUTPUT_DIRS.report}/ is intact.`);
+  process.exit(2);
+}
 
 const REPORT_DIR = outputDir(OUTPUT_DIRS.report);
 const STAGING_DIR = outputDir(OUTPUT_DIRS.staging);
@@ -34,9 +40,6 @@ const READY_TIMEOUT_MS = 60_000;
 const STOP_TIMEOUT_MS = 5_000;
 const LOG_TAIL_LINES = 40;
 const IS_WINDOWS = process.platform === "win32";
-
-// Changes here never reach the build output, so they don't force a rebuild.
-const BUILD_IRRELEVANT = [/^scripts\//, /^lighthouse\//, /^\.github\//, /\.md$/i];
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -119,28 +122,6 @@ async function runNode(nodeArgs) {
 }
 
 // --- Steps ------------------------------------------------------------------
-
-function buildStaleReason() {
-  const buildId = path.join(REPO_ROOT, ".next", "BUILD_ID");
-  if (!existsSync(buildId)) return "no build found";
-  const builtAt = statSync(buildId).mtimeMs;
-  const res = spawnSync("git", ["ls-files", "-z", "--cached", "--others", "--exclude-standard"], {
-    cwd: REPO_ROOT,
-    encoding: "utf8",
-  });
-  if (res.status !== 0) return "could not list files with git";
-  const files = res.stdout.split("\0").filter((f) => f && !BUILD_IRRELEVANT.some((re) => re.test(f)));
-  // Gitignored, but next build inlines its NEXT_PUBLIC_* values.
-  files.push(".env.local");
-  const changed = files.find((f) => {
-    try {
-      return statSync(path.join(REPO_ROOT, f)).mtimeMs > builtAt;
-    } catch {
-      return false;
-    }
-  });
-  return changed && `${changed} changed after the last build`;
-}
 
 function freePort() {
   return new Promise((resolve, reject) => {
@@ -230,13 +211,15 @@ let exitCode = 0;
 try {
   recoverInterruptedSwap();
 
-  const staleReason = FORCE_BUILD ? "--build" : buildStaleReason();
-  if (staleReason) {
-    console.log(`Building (${staleReason})...`);
-    if ((await runNode([NEXT_BIN, "build"])) !== 0) throw new Error("next build failed");
+  if (SKIP_BUILD) {
+    console.log("Reusing the existing build (--no-build).");
   } else {
-    console.log("Reusing the current build (.next is newer than every source file).");
+    console.log("Building...");
+    if ((await runNode([NEXT_BIN, "build"])) !== 0) throw new Error("next build failed");
   }
+  // Inherited by scripts/lighthouse.mjs, which records them in summary.json.
+  process.env.LH_BUILD_MODE = SKIP_BUILD ? "reused" : "fresh";
+  process.env.LH_BUILD_TIME = statSync(BUILD_ID).mtime.toISOString();
 
   const port = await freePort();
   const baseUrl = `http://${HOST}:${port}`;

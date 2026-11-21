@@ -30,7 +30,7 @@ npm run report:lighthouse       # informe PDF completo, solo local (ver abajo)
 
 El CI (`.github/workflows/ci.yml`) corre exactamente esta secuencia: `npm ci` → lint → tsc → build → `next start` + smoke test → audit.
 
-`.github/workflows/lighthouse.yml` corre en paralelo a `verify` un único job, `lighthouse (blocking)`, que es check requerido: solo los grupos `blocking-*` y `notfound-mobile` (a11y, SEO y best practices del 404). Rendimiento y best practices de las páginas (`informative-*`) no corren en CI: se miden con `npm run report:lighthouse`, que compila si el build está desactualizado (`-- --build` lo fuerza), levanta `next start` en un puerto libre, corre todos los grupos y deja el PDF en `.lighthouse-report/lighthouse-report.pdf`. Solo se conserva el último informe, y se reemplaza únicamente si la corrida termina. Los grupos están en `scripts/lighthouse-groups.mjs`.
+`.github/workflows/lighthouse.yml` corre en paralelo a `verify` un único job, `lighthouse (blocking)`, que es check requerido: solo los grupos `blocking-*` y `notfound-mobile` (a11y, SEO y best practices del 404). Rendimiento y best practices de las páginas (`informative-*`) no corren en CI: se miden con `npm run report:lighthouse`, que siempre compila (`-- --no-build` reutiliza el `.next` existente), levanta `next start` en un puerto libre, corre todos los grupos y deja el PDF en `.lighthouse-report/lighthouse-report.pdf`. Solo se conserva el último informe, y se reemplaza únicamente si la corrida termina. Los grupos están en `scripts/lighthouse-groups.mjs`.
 
 ## Estructura relevante
 

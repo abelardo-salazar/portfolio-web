@@ -142,6 +142,12 @@ function header() {
     ? `<code>${shortSha(m.commit)}</code>${m.dirty ? " con cambios sin commitear" : ""}`
     : "desconocido";
 
+  // Missing when scripts/lighthouse.mjs ran on its own, as in CI.
+  const BUILD_MODES = { fresh: "nuevo", reused: "reutilizado (<code>--no-build</code>)" };
+  const buildText = BUILD_MODES[m.build?.mode]
+    ? `${BUILD_MODES[m.build.mode]}, compilado el ${fmtDate(m.build.builtAt)}`
+    : "desconocido";
+
   const where = local
     ? "Build de producción servido con <code>next start</code> en localhost."
     : `URL medida: ${baseUrls.map((u) => `<code>${esc(u)}</code>`).join(", ") || "desconocida"}. No es el build local servido con <code>next start</code>.`;
@@ -152,6 +158,7 @@ function header() {
     <dl class="meta">
       <dt>Medido</dt><dd>${fmtDate(m.measuredAt)}</dd>
       <dt>Commit</dt><dd>${commitText}</dd>
+      <dt>Build</dt><dd>${buildText}</dd>
       <dt>Entorno</dt><dd>${where} Red y CPU con throttling ${env?.throttlingMethod === "simulate" ? "simulado" : esc(env?.throttlingMethod ?? "desconocido")} de Lighthouse. Cada grupo indica su dispositivo, tema y número de corridas.</dd>
       <dt>Versiones</dt><dd>Lighthouse ${esc(env?.lighthouseVersion ?? "?")}, Chrome ${esc(chrome ?? "?")}</dd>
       <dt>Generado</dt><dd>${fmtDate(new Date().toISOString())}</dd>
@@ -174,7 +181,7 @@ function legend() {
     <span class="score fail">${SHAPE.fail} 0-49 mal</span>
     <span class="score na">— no se mide en este grupo</span>
   </p>
-  <p class="legend-text">Bajo cada nota, los audits de esa categoría: <strong>✓</strong> aprobados (90 o más, el mismo umbral que usa Lighthouse), <strong>✗</strong> no aprobados y <strong>n/a</strong> no aplicables a esa página. Los audits manuales e informativos no tienen nota y no se cuentan. En los grupos de rendimiento, la segunda tabla muestra las métricas; su color es la nota que Lighthouse da a cada valor.</p>`;
+  <p class="legend-text">Bajo cada nota, los audits de esa categoría que pesan en la nota: <strong>✓</strong> aprobados (90 o más, el mismo umbral que usa Lighthouse) y <strong>✗</strong> no aprobados; cada ✗ aparece en el detalle. Los diagnósticos sin peso, los manuales y los informativos no se cuentan. <strong>n/a</strong> son los audits que no aplican a esa página (Lighthouse les quita el peso). En los grupos de rendimiento, la segunda tabla muestra las métricas; su color es la nota que Lighthouse da a cada valor.</p>`;
 }
 
 const scoreCell = (score, text, extra = "") =>

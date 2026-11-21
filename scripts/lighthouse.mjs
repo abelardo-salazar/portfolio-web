@@ -64,18 +64,20 @@ function settingsFlags(settings) {
   );
 }
 
-// Same pass threshold the Lighthouse report uses for its "Passed audits".
-// Manual and informative audits have no score and are left out.
+// Audits that move the category score. Shared by the counts and the failing
+// list so every ✗ in the PDF also shows up in its detail section.
+const weightedAudits = (lhr, category) =>
+  category.auditRefs.map((ref) => ({ ref, audit: lhr.audits[ref.id] })).filter(({ ref, audit }) => ref.weight > 0 && audit.score !== null);
+
+// Pass threshold as in the Lighthouse report's "Passed audits". Lighthouse
+// sets weight 0 on not-applicable audits, so those are counted apart.
 function auditCounts(lhr, category) {
-  const counts = { passed: 0, failed: 0, notApplicable: 0 };
-  for (const ref of category.auditRefs) {
-    const audit = lhr.audits[ref.id];
-    if (audit.scoreDisplayMode === "notApplicable") counts.notApplicable++;
-    else if (audit.score === null) continue;
-    else if (audit.score >= 0.9) counts.passed++;
-    else counts.failed++;
-  }
-  return counts;
+  const weighted = weightedAudits(lhr, category);
+  return {
+    passed: weighted.filter(({ audit }) => audit.score >= 0.9).length,
+    failed: weighted.filter(({ audit }) => audit.score < 0.9).length,
+    notApplicable: category.auditRefs.filter((ref) => lhr.audits[ref.id].scoreDisplayMode === "notApplicable").length,
+  };
 }
 
 function perfMetrics(lhr) {
@@ -118,10 +120,10 @@ function runGroup(group) {
         formFactor: lhr.configSettings.formFactor,
         throttlingMethod: lhr.configSettings.throttlingMethod,
       };
-      const failing = Object.entries(lhr.categories).flatMap(([, category]) =>
-        category.auditRefs
-          .filter((ref) => ref.weight > 0 && lhr.audits[ref.id].score !== null && lhr.audits[ref.id].score < 1)
-          .map((ref) => ref.id),
+      const failing = Object.values(lhr.categories).flatMap((category) =>
+        weightedAudits(lhr, category)
+          .filter(({ audit }) => audit.score < 1)
+          .map(({ ref }) => ref.id),
       );
       const ids = [...new Set(failing)];
       return {
@@ -228,6 +230,10 @@ const meta = {
   // Untracked files are ignored: CI writes next.log into the checkout.
   dirty: Boolean(git("status", "--porcelain", "--untracked-files=no")),
   executedGroups: selected.map((g) => g.name),
+  // Only set by scripts/lighthouse-report.mjs; absent when run on its own (CI).
+  build: process.env.LH_BUILD_MODE
+    ? { mode: process.env.LH_BUILD_MODE, builtAt: process.env.LH_BUILD_TIME || undefined }
+    : undefined,
 };
 
 writeFileSync(path.join(OUT_DIR, "summary.json"), JSON.stringify({ meta, urls, results }, null, 2));
