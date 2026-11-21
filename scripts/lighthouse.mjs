@@ -93,17 +93,24 @@ function perfMetrics(lhr) {
   );
 }
 
+// Expected failure: reported as a plain message at the top level, no stack.
+class VersionGuardError extends Error {}
+
 // Reads the raw LHRs collect just wrote, before upload/assert/summary.
 function checkLighthouseVersion(cwd) {
   const lhrDir = path.join(cwd, ".lighthouseci");
-  const measured = new Set(
-    readdirSync(lhrDir)
-      .filter((f) => /^lhr-.*\.json$/.test(f))
-      .map((f) => JSON.parse(readFileSync(path.join(lhrDir, f), "utf8")).lighthouseVersion),
-  );
+  const files = existsSync(lhrDir) ? readdirSync(lhrDir).filter((f) => /^lhr-.*\.json$/.test(f)) : [];
+  // A guard that checked nothing must not pass.
+  if (!files.length) {
+    throw new VersionGuardError(
+      `Lighthouse version check: no LHCI results (lhr-*.json) found to verify in ${lhrDir}. ` +
+        `@lhci/cli may have changed its result file naming.`,
+    );
+  }
+  const measured = new Set(files.map((f) => JSON.parse(readFileSync(path.join(lhrDir, f), "utf8")).lighthouseVersion));
   const mismatched = [...measured].filter((v) => v !== EXPECTED_LH_VERSION);
   if (mismatched.length) {
-    throw new Error(
+    throw new VersionGuardError(
       `Lighthouse version mismatch: LHCI measured with ${mismatched.join(", ")} but the root "lighthouse" package is ${EXPECTED_LH_VERSION}. ` +
         `@lhci/cli probably nested its own copy (see node_modules/@lhci/cli/node_modules/lighthouse); ` +
         `align the root "lighthouse" pin with the version @lhci/cli requires.`,
@@ -242,7 +249,14 @@ const urls = await getLighthouseUrls(BASE_URL);
 const selected = groups(urls).filter((g) => !only || only.includes(g.name));
 
 cleanOutDir();
-const results = selected.map(runGroup);
+let results;
+try {
+  results = selected.map(runGroup);
+} catch (err) {
+  if (!(err instanceof VersionGuardError)) throw err;
+  console.error(`\n${err.message}`);
+  process.exit(1);
+}
 
 const meta = {
   baseUrl: BASE_URL,
