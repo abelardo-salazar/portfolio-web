@@ -5,7 +5,7 @@
 // group. The folder is wiped on every run, so it only ever holds the groups
 // just run. --out only accepts the folders in OUTPUT_DIRS.
 
-import { spawnSync } from "node:child_process";
+import { spawn, spawnSync } from "node:child_process";
 import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { createRequire } from "node:module";
 import path from "node:path";
@@ -50,14 +50,101 @@ async function waitForServer() {
   throw new Error(`Server at ${BASE_URL} not ready after ${READY_TIMEOUT_MS}ms`);
 }
 
-function lhci(cwd, lhciArgs, env = {}) {
-  const res = spawnSync(process.execPath, [LHCI, ...lhciArgs], {
-    cwd,
-    stdio: "inherit",
-    env: { ...process.env, ...env },
+const IS_WINDOWS = process.platform === "win32";
+const STOP_TIMEOUT_MS = 5_000;
+const running = new Set();
+// Set once any group throws, so siblings between lhci steps spawn nothing new.
+let aborted = false;
+
+// Whole lines only, so parallel groups never interleave within a line.
+function pipePrefixed(stream, out, prefix) {
+  let pending = "";
+  stream.setEncoding("utf8");
+  stream.on("data", (chunk) => {
+    const lines = (pending + chunk).split(/\r?\n/);
+    pending = lines.pop();
+    for (const line of lines) out.write(`${prefix}${line}\n`);
   });
-  return res.status ?? 1;
+  stream.on("end", () => pending && out.write(`${prefix}${pending}\n`));
 }
+
+function lhci(group, cwd, lhciArgs, env = {}) {
+  if (aborted) return Promise.resolve(1);
+  // Not detached: children stay in this process group, so a terminal Ctrl-C
+  // and lighthouse-report.mjs's group kill still reach them.
+  const child = spawn(process.execPath, [LHCI, ...lhciArgs], {
+    cwd,
+    stdio: ["ignore", "pipe", "pipe"],
+    env: { ...process.env, ...env },
+    windowsHide: true,
+  });
+  running.add(child);
+  const prefix = `[${group.name}] `;
+  pipePrefixed(child.stdout, process.stdout, prefix);
+  pipePrefixed(child.stderr, process.stderr, prefix);
+  return new Promise((resolve) => {
+    child.once("error", (err) => {
+      process.stderr.write(`${prefix}${err.message}\n`);
+      resolve(1);
+    });
+    child.once("close", (code) => resolve(code ?? 1));
+  }).finally(() => running.delete(child));
+}
+
+// lhci -> lighthouse CLI -> Chrome: killing only the direct child would
+// orphan Chrome, so the whole subtree goes.
+function descendantsOf(pid) {
+  const res = spawnSync("ps", ["-A", "-o", "pid=,ppid="], { encoding: "utf8" });
+  const children = new Map();
+  for (const line of (res.stdout ?? "").trim().split("\n")) {
+    const [p, pp] = line.trim().split(/\s+/).map(Number);
+    if (!children.has(pp)) children.set(pp, []);
+    children.get(pp).push(p);
+  }
+  const out = [];
+  const stack = [pid];
+  while (stack.length) {
+    const next = children.get(stack.pop()) ?? [];
+    out.push(...next);
+    stack.push(...next);
+  }
+  return out;
+}
+
+function signalAll(pids, signal) {
+  for (const pid of pids) {
+    try {
+      process.kill(pid, signal);
+    } catch {}
+  }
+}
+
+async function stopTree(child) {
+  if (child.exitCode !== null || child.signalCode !== null) return;
+  const exited = new Promise((resolve) => child.once("close", resolve));
+  if (IS_WINDOWS) {
+    spawnSync("taskkill", ["/pid", String(child.pid), "/T", "/F"], { stdio: "ignore" });
+    await exited;
+    return;
+  }
+  // Snapshot before signalling: once a parent dies its children get reparented.
+  const tree = [child.pid, ...descendantsOf(child.pid)];
+  signalAll(tree, "SIGTERM");
+  await Promise.race([exited, sleep(STOP_TIMEOUT_MS)]);
+  // Chrome may outlive lhci's exit; kill whatever in the snapshot survived.
+  signalAll(tree.filter(isAlive), "SIGKILL");
+}
+
+function isAlive(pid) {
+  try {
+    process.kill(pid, 0);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+const stopAll = () => Promise.all([...running].map(stopTree));
 
 function settingsFlags(settings) {
   return Object.entries(settings).flatMap(([key, value]) =>
@@ -118,12 +205,12 @@ function checkLighthouseVersion(cwd) {
   }
 }
 
-function runGroup(group) {
+async function runGroup(group) {
   // Each group gets its own folder: lhci collect wipes .lighthouseci on start.
   const cwd = path.join(OUT_DIR, group.name);
   mkdirSync(cwd, { recursive: true });
 
-  const collectStatus = lhci(cwd, [
+  const collectStatus = await lhci(group, cwd, [
     "collect",
     `--numberOfRuns=${group.runs}`,
     ...group.urls.map((u) => `--url=${u}`),
@@ -135,7 +222,7 @@ function runGroup(group) {
   checkLighthouseVersion(cwd);
 
   // The filesystem manifest marks the median run of each URL.
-  lhci(cwd, ["upload", "--target=filesystem", "--outputDir=reports"]);
+  await lhci(group, cwd, ["upload", "--target=filesystem", "--outputDir=reports"]);
   const manifest = JSON.parse(readFileSync(path.join(cwd, "reports", "manifest.json"), "utf8"));
   let environment;
   const rows = manifest
@@ -172,7 +259,8 @@ function runGroup(group) {
       };
     });
 
-  const assertStatus = lhci(
+  const assertStatus = await lhci(
+    group,
     cwd,
     ["assert", `--config=${path.join(REPO_ROOT, "lighthouse", group.assert)}`],
     // Configs can't tell groups apart by URL, so they read the group here.
@@ -248,11 +336,27 @@ await waitForServer();
 const urls = await getLighthouseUrls(BASE_URL);
 const selected = groups(urls).filter((g) => !only || only.includes(g.name));
 
+// Performance depends on CPU, so those groups never share the machine. The
+// rest read the DOM and are deterministic, so they can run side by side.
+const measuresPerformance = (g) => g.settings.onlyCategories.includes("performance");
+
+async function runAll() {
+  const byName = new Map();
+  const parallel = selected.filter((g) => !measuresPerformance(g));
+  (await Promise.all(parallel.map(runGroup))).forEach((r) => byName.set(r.group.name, r));
+  for (const g of selected.filter(measuresPerformance)) byName.set(g.name, await runGroup(g));
+  // Definition order, not completion order.
+  return selected.map((g) => byName.get(g.name));
+}
+
 cleanOutDir();
 let results;
 try {
-  results = selected.map(runGroup);
+  results = await runAll();
 } catch (err) {
+  // Promise.all rejecting doesn't stop the siblings' processes; do it here.
+  aborted = true;
+  await stopAll();
   if (!(err instanceof VersionGuardError)) throw err;
   console.error(`\n${err.message}`);
   process.exit(1);
