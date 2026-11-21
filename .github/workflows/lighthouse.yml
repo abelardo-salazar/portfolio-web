@@ -13,6 +13,11 @@ concurrency:
 permissions:
   contents: read
 
+# PR artifacts only matter during review and every push replaces them; main
+# keeps a month of baselines to compare regressions against.
+env:
+  RETENTION_DAYS: ${{ github.event_name == 'push' && 30 || 5 }}
+
 jobs:
   lighthouse:
     name: lighthouse (${{ matrix.group }})
@@ -35,6 +40,9 @@ jobs:
       NEXT_PUBLIC_SANITY_PROJECT_ID: ${{ vars.NEXT_PUBLIC_SANITY_PROJECT_ID }}
       NEXT_PUBLIC_SANITY_DATASET: ${{ vars.NEXT_PUBLIC_SANITY_DATASET }}
       NEXT_TELEMETRY_DISABLED: 1
+      # Recorded in summary.json: on pull_request, checkout measures the merge commit.
+      LH_PR_NUMBER: ${{ github.event.pull_request.number }}
+      LH_PR_HEAD: ${{ github.event.pull_request.head.sha }}
     steps:
       - uses: actions/checkout@v5
 
@@ -63,4 +71,50 @@ jobs:
           name: lighthouse-${{ matrix.group }}
           path: .lighthouseci/
           include-hidden-files: true
-          retention-days: 14
+          retention-days: ${{ env.RETENTION_DAYS }}
+
+      # Small copy of the summary alone, so the report job doesn't download
+      # every HTML/JSON report just to read it.
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: lighthouse-summary-${{ matrix.group }}
+          path: .lighthouseci/summary.json
+          include-hidden-files: true
+          if-no-files-found: ignore
+          retention-days: ${{ env.RETENTION_DAYS }}
+
+  report:
+    name: lighthouse (PDF report)
+    needs: lighthouse
+    # Runs when a group fails too (the PDF marks it); skipped only when the
+    # run is cancelled, e.g. superseded by a newer push.
+    if: ${{ !cancelled() }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+
+      # Needed for lighthouse (audit titles, exceptions) and its chrome-launcher.
+      - run: npm ci
+
+      # One folder per artifact. A missing artifact must not stop the PDF,
+      # which reports that group as not available instead.
+      - uses: actions/download-artifact@v8
+        continue-on-error: true
+        with:
+          pattern: lighthouse-summary-*
+          path: lighthouse-summaries
+
+      - run: npm run lighthouse:pdf -- --in=lighthouse-summaries --out=lighthouse-report.pdf
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: lighthouse-report-pdf
+          path: lighthouse-report.pdf
+          retention-days: ${{ env.RETENTION_DAYS }}

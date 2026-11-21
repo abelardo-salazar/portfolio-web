@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "lighthouse": "node scripts/lighthouse.mjs",
+    "lighthouse:pdf": "node scripts/lighthouse-pdf.mjs",
     "sync": "node --env-file=.env.local scripts/sync-content.mjs"
   },
   "dependencies": {
