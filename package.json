@@ -9,7 +9,8 @@
     "lint": "eslint",
     "lighthouse": "node scripts/lighthouse.mjs",
     "lighthouse:pdf": "node scripts/lighthouse-pdf.mjs",
-    "sync": "node --env-file=.env.local scripts/sync-content.mjs"
+    "sync": "node --env-file=.env.local scripts/sync-content.mjs",
+    "report:lighthouse": "node scripts/lighthouse-report.mjs"
   },
   "dependencies": {
     "@abelardo-salazar/core-ui-design-system": "^0.14.0",
@@ -58,8 +59,10 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "chrome-launcher": "1.2.3",
     "eslint": "^9",
     "eslint-config-next": "16.4.6",
+    "lighthouse": "13.6.0",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

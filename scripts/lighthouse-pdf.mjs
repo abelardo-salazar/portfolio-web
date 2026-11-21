@@ -1,29 +1,29 @@
 // Builds a one-file PDF summary of the Lighthouse results for people who
 // don't know Lighthouse. It prints an HTML page with the Chrome that
 // Lighthouse already uses, so it needs no PDF library.
-// Usage: node scripts/lighthouse-pdf.mjs [--in=dir ...] [--out=file.pdf]
-//   --in   folder holding a summary.json, or a folder of such folders (the
-//          CI downloads one per job). Repeatable. Default: .lighthouseci
-//   --out  default: .lighthouseci/lighthouse-report.pdf
+// Usage: node scripts/lighthouse-pdf.mjs [--in=dir] [--out=file.pdf]
+//   --in   folder holding the summary.json of scripts/lighthouse.mjs.
+//          Default: .lighthouseci
+//   --out  default: <in>/lighthouse-report.pdf
+// npm run report:lighthouse measures every group and calls this script; run
+// it directly only to rebuild a PDF from existing results.
 // Groups with no results are reported as "no disponible", never omitted.
 // Text is Spanish on purpose: this is a dev tool, not site UI (no next-intl).
 
 import { spawnSync } from "node:child_process";
-import { existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
-import { createRequire } from "node:module";
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import os from "node:os";
 import path from "node:path";
-import { fileURLToPath, pathToFileURL } from "node:url";
+import { pathToFileURL } from "node:url";
+import { getChromePath } from "chrome-launcher";
 import { knownExceptions, scopes } from "../lighthouse/blocking.mjs";
-import { groupDefinitions } from "./lighthouse-groups.mjs";
+import { groupDefinitions, OUTPUT_DIRS, REPO_ROOT } from "./lighthouse-groups.mjs";
 
-const REPO_ROOT = path.resolve(fileURLToPath(new URL("..", import.meta.url)));
 const args = process.argv.slice(2);
-const inputs = args.filter((a) => a.startsWith("--in=")).map((a) => path.resolve(a.slice(5)));
-if (!inputs.length) inputs.push(path.join(REPO_ROOT, ".lighthouseci"));
-const OUT = path.resolve(
-  args.find((a) => a.startsWith("--out="))?.slice(6) ?? path.join(REPO_ROOT, ".lighthouseci", "lighthouse-report.pdf"),
-);
+const IN_DIR = path.resolve(args.find((a) => a.startsWith("--in="))?.slice(5) ?? path.join(REPO_ROOT, OUTPUT_DIRS.ci));
+const OUT = path.resolve(args.find((a) => a.startsWith("--out="))?.slice(6) ?? path.join(IN_DIR, "lighthouse-report.pdf"));
+// Validated before anything is written: OUT is deleted below.
+if (path.extname(OUT).toLowerCase() !== ".pdf") throw new Error(`--out must be a .pdf file: ${OUT}`);
 
 const CATEGORIES = {
   performance: { label: "Rendimiento", help: "Qué tan rápido carga y responde la página." },
@@ -33,36 +33,31 @@ const CATEGORIES = {
 };
 const CATEGORY_ORDER = Object.keys(CATEGORIES);
 
-// --- Load and merge -------------------------------------------------------
+// Keys match what scripts/lighthouse.mjs extracts into row.metrics.
+const METRICS = [
+  ["fcp", "FCP", "First Contentful Paint: cuándo aparece el primer contenido."],
+  ["lcp", "LCP", "Largest Contentful Paint: cuándo aparece el elemento principal."],
+  ["tbt", "TBT", "Total Blocking Time: cuánto tiempo la página no responde a la interacción mientras carga."],
+  ["cls", "CLS", "Cumulative Layout Shift: cuánto se mueve el contenido mientras carga."],
+  ["si", "Speed Index", "Qué tan rápido se ve el contenido completo."],
+];
 
-function findSummaries(dir) {
-  if (!existsSync(dir)) return [];
-  if (existsSync(path.join(dir, "summary.json"))) return [path.join(dir, "summary.json")];
-  return readdirSync(dir, { withFileTypes: true })
-    .filter((d) => d.isDirectory())
-    .map((d) => path.join(dir, d.name, "summary.json"))
-    .filter((f) => existsSync(f));
-}
+const DESKTOP_NOTE =
+  "Escritorio no mide Accesibilidad ni SEO: el DOM es el mismo que en móvil, así que esas notas salen de los grupos móviles.";
+
+// --- Load -------------------------------------------------------------------
 
 const sources = [];
 const resultsByGroup = new Map();
 const notes = [];
-for (const file of inputs.flatMap(findSummaries)) {
-  let summary;
+const summaryFile = path.join(IN_DIR, "summary.json");
+if (existsSync(summaryFile)) {
   try {
-    summary = JSON.parse(readFileSync(file, "utf8"));
+    const summary = JSON.parse(readFileSync(summaryFile, "utf8"));
+    sources.push({ file: path.relative(REPO_ROOT, summaryFile), meta: summary.meta ?? {} });
+    for (const result of summary.results ?? []) resultsByGroup.set(result.group.name, result);
   } catch (err) {
-    notes.push(`No se pudo leer ${path.relative(process.cwd(), file)}: ${err.message}`);
-    continue;
-  }
-  sources.push({ file: path.relative(process.cwd(), file), meta: summary.meta ?? {} });
-  for (const result of summary.results ?? []) {
-    const name = result.group.name;
-    if (resultsByGroup.has(name)) {
-      notes.push(`El grupo ${name} aparece en más de un resumen; se usa el primero.`);
-      continue;
-    }
-    resultsByGroup.set(name, { ...result, meta: summary.meta ?? {} });
+    notes.push(`No se pudo leer ${path.relative(REPO_ROOT, summaryFile)}: ${err.message}`);
   }
 }
 
@@ -96,7 +91,8 @@ const isLocalhost = (url) => {
   }
 };
 
-const device = (g) => (g.settings.preset === "desktop" ? "Escritorio" : "Móvil simulado");
+const isDesktop = (g) => g.settings.preset === "desktop";
+const device = (g) => (isDesktop(g) ? "Escritorio" : "Móvil simulado");
 const theme = (g) => (g.colorScheme === "dark" ? "tema oscuro" : "tema claro");
 // Same matching LHCI does: the scope's URL pattern plus the group's theme.
 const isKnownException = (def, pagePath, auditId) =>
@@ -115,12 +111,10 @@ function groupStatus(name) {
   const r = resultsByGroup.get(name);
   if (!r) {
     const reason = executedAnywhere.has(name)
-      ? "Se ejecutó pero su resumen no llegó."
+      ? "Se ejecutó pero su resultado no llegó."
       : !sources.length
         ? "No llegó ningún resultado."
-        : sources.some((s) => s.meta.ci)
-          ? "Su artefacto no llegó: el job falló antes de subirlo o no se ejecutó."
-          : "No se ejecutó en esta corrida (--only).";
+        : "No se ejecutó en esta corrida (--only).";
     return { key: "missing", label: "No disponible", reason };
   }
   if (r.failed === "collect") return { key: "fail", label: "Falló la medición", reason: "Lighthouse no pudo medir las páginas." };
@@ -139,23 +133,23 @@ function groupStatus(name) {
 function header() {
   const metas = sources.map((s) => s.meta);
   const m = metas[0] ?? {};
-  const commits = [...new Set(metas.map((x) => x.commit).filter(Boolean))];
   const baseUrls = [...new Set(metas.map((x) => x.baseUrl).filter(Boolean))];
   const local = baseUrls.length > 0 && baseUrls.every(isLocalhost);
   const env = [...resultsByGroup.values()].find((r) => r.environment)?.environment;
   const chrome = env?.userAgent?.match(/Chrome\/([\d.]+)/)?.[1];
 
-  const commitText = commits.length
-    ? commits
-        .map((c) => {
-          const pr = m.prNumber ? ` (merge del PR #${esc(m.prNumber)}: head <code>${shortSha(m.prHead)}</code> sobre main)` : "";
-          return `<code>${shortSha(c)}</code>${pr}${metas.some((x) => x.commit === c && x.dirty) ? " con cambios sin commitear" : ""}`;
-        })
-        .join(", ") + (commits.length > 1 ? " — <strong>atención: los grupos vienen de commits distintos</strong>" : "")
+  const commitText = m.commit
+    ? `<code>${shortSha(m.commit)}</code>${m.dirty ? " con cambios sin commitear" : ""}`
+    : "desconocido";
+
+  // Missing when scripts/lighthouse.mjs ran on its own, as in CI.
+  const BUILD_MODES = { fresh: "nuevo", reused: "reutilizado (<code>--no-build</code>)" };
+  const buildText = BUILD_MODES[m.build?.mode]
+    ? `${BUILD_MODES[m.build.mode]}, compilado el ${fmtDate(m.build.builtAt)}`
     : "desconocido";
 
   const where = local
-    ? `Build de producción servido con <code>next start</code> en localhost${metas.some((x) => x.ci) ? " del runner de GitHub Actions" : " de una máquina local"}.`
+    ? "Build de producción servido con <code>next start</code> en localhost."
     : `URL medida: ${baseUrls.map((u) => `<code>${esc(u)}</code>`).join(", ") || "desconocida"}. No es el build local servido con <code>next start</code>.`;
 
   return `
@@ -164,6 +158,7 @@ function header() {
     <dl class="meta">
       <dt>Medido</dt><dd>${fmtDate(m.measuredAt)}</dd>
       <dt>Commit</dt><dd>${commitText}</dd>
+      <dt>Build</dt><dd>${buildText}</dd>
       <dt>Entorno</dt><dd>${where} Red y CPU con throttling ${env?.throttlingMethod === "simulate" ? "simulado" : esc(env?.throttlingMethod ?? "desconocido")} de Lighthouse. Cada grupo indica su dispositivo, tema y número de corridas.</dd>
       <dt>Versiones</dt><dd>Lighthouse ${esc(env?.lighthouseVersion ?? "?")}, Chrome ${esc(chrome ?? "?")}</dd>
       <dt>Generado</dt><dd>${fmtDate(new Date().toISOString())}</dd>
@@ -185,7 +180,34 @@ function legend() {
     <span class="score average">${SHAPE.average} 50-89 mejorable</span>
     <span class="score fail">${SHAPE.fail} 0-49 mal</span>
     <span class="score na">— no se mide en este grupo</span>
-  </p>`;
+  </p>
+  <p class="legend-text">Bajo cada nota, los audits de esa categoría que pesan en la nota: <strong>✓</strong> aprobados (90 o más, el mismo umbral que usa Lighthouse) y <strong>✗</strong> no aprobados; cada ✗ aparece en el detalle. Los diagnósticos sin peso, los manuales y los informativos no se cuentan. <strong>n/a</strong> son los audits que no aplican a esa página (Lighthouse les quita el peso). En los grupos de rendimiento, la segunda tabla muestra las métricas; su color es la nota que Lighthouse da a cada valor.</p>`;
+}
+
+const scoreCell = (score, text, extra = "") =>
+  score == null
+    ? `<td class="score na">${esc(text ?? "—")}</td>`
+    : `<td class="score ${band(score)}">${SHAPE[band(score)]} ${esc(text ?? score)}${extra}</td>`;
+
+const countsText = (n) => (n ? `<span class="counts">${n.passed} ✓ · ${n.failed} ✗ · ${n.notApplicable} n/a</span>` : "");
+
+function metricsTable(rows) {
+  const withMetrics = rows.filter((row) => row.metrics);
+  if (!withMetrics.length) return "";
+  const body = withMetrics
+    .map(
+      (row) =>
+        `<tr><td class="path">${esc(row.path)}</td>${METRICS.map(([key]) => {
+          const m = row.metrics[key];
+          return scoreCell(m?.score == null ? null : Math.round(m.score * 100), m?.display);
+        }).join("")}</tr>`,
+    )
+    .join("");
+  return `
+    <table class="metrics">
+      <thead><tr><th>Página</th>${METRICS.map(([, label]) => `<th class="num">${label}</th>`).join("")}</tr></thead>
+      <tbody>${body}</tbody>
+    </table>`;
 }
 
 function groupTable(def) {
@@ -198,23 +220,21 @@ function groupTable(def) {
       <h3>${esc(def.name)}</h3>
       <span class="status ${status.key}">${status.label}</span>
     </div>
-    <p class="caption">${caption}.${status.reason ? ` ${esc(status.reason)}` : ""}</p>`;
+    <p class="caption">${caption}.${status.reason ? ` ${esc(status.reason)}` : ""}${isDesktop(def) ? ` ${DESKTOP_NOTE}` : ""}</p>`;
   if (!r?.rows?.length) return `<section class="group">${head}</section>`;
   const rows = r.rows
     .map(
-      (row) => `<tr><td class="path">${esc(row.path)}</td>${cats
-        .map((c) => {
-          const s = row.scores[c];
-          return s == null ? `<td class="score na">—</td>` : `<td class="score ${band(s)}">${SHAPE[band(s)]} ${s}</td>`;
-        })
-        .join("")}</tr>`,
+      (row) =>
+        `<tr><td class="path">${esc(row.path)}</td>${cats
+          .map((c) => scoreCell(row.scores[c], undefined, countsText(row.counts?.[c])))
+          .join("")}</tr>`,
     )
     .join("");
   return `<section class="group">${head}
     <table>
       <thead><tr><th>Página</th>${cats.map((c) => `<th class="num">${CATEGORIES[c].label}</th>`).join("")}</tr></thead>
       <tbody>${rows}</tbody>
-    </table></section>`;
+    </table>${metricsTable(r.rows)}</section>`;
 }
 
 function overview() {
@@ -227,12 +247,12 @@ function overview() {
   ${missing.length ? `<p class="warning-line"><strong>Grupos no disponibles:</strong> ${missing.map((d) => esc(d.name)).join(", ")}. Este informe no los cubre.</p>` : ""}
   <div class="tier blocking">
     <h2 class="tier-title">Bloquea el PR</h2>
-    <p class="tier-help">Si alguna comprobación de estos grupos no llega a su mínimo, el check de Lighthouse falla y el PR no debería mergearse.</p>
+    <p class="tier-help">Son los grupos que corre el CI. Si alguna comprobación no llega a su mínimo, el check <code>lighthouse (blocking)</code> falla y el PR no debería mergearse.</p>
     ${blocking.map(groupTable).join("")}
   </div>
   <div class="tier informative">
     <h2 class="tier-title">Solo informa</h2>
-    <p class="tier-help">Rendimiento y buenas prácticas varían entre corridas. Sus mínimos solo generan avisos; nunca bloquean.</p>
+    <p class="tier-help">Rendimiento y buenas prácticas varían entre corridas. Solo se miden en este informe local, no en el CI; sus mínimos generan avisos y nunca bloquean.</p>
     ${informative.map(groupTable).join("")}
   </div>`;
 }
@@ -274,7 +294,7 @@ function details() {
     .join("");
   return `
   <h2 class="page-break">Detalle: qué falta para 100</h2>
-  <p>Por página, los audits que no puntúan al máximo, con el nombre que les da Lighthouse y su id técnico. En Rendimiento, una métrica por debajo de 100 no es un error: indica margen de mejora. Las comprobaciones de la tabla son las que no llegaron a su mínimo configurado. Lo marcado como <span class="known">excepción conocida</span> está apagado a propósito y no bloquea (ver la sección final).</p>
+  <p>Por página, los audits que pesan en la nota y no puntúan al máximo, con el nombre que les da Lighthouse y su id técnico. Incluye audits entre 90 y 99, que la vista general cuenta como aprobados. En Rendimiento, una métrica por debajo de 100 no es un error: indica margen de mejora. Las comprobaciones de la tabla son las que no llegaron a su mínimo configurado. Lo marcado como <span class="known">excepción conocida</span> está apagado a propósito y no bloquea (ver la sección final).</p>
   ${blocks || "<p>No hay resultados disponibles.</p>"}`;
 }
 
@@ -303,7 +323,9 @@ function howToRead() {
   <h2>Cómo leer este informe</h2>
   <p>Lighthouse es la herramienta de Google que audita una página y da una nota de 0 a 100 por categoría:</p>
   <ul>${CATEGORY_ORDER.map((c) => `<li><strong>${CATEGORIES[c].label}:</strong> ${CATEGORIES[c].help}</li>`).join("")}</ul>
-  <p>Cada categoría se calcula a partir de varios <em>audits</em> (comprobaciones concretas). "Móvil simulado" significa que Lighthouse emula un teléfono de gama media con una red lenta, lo que suele dar notas más bajas que escritorio.</p>
+  <p>Cada categoría se calcula a partir de varios <em>audits</em> (comprobaciones concretas). "Móvil simulado" significa que Lighthouse emula un teléfono de gama media con una red lenta, lo que suele dar notas más bajas que escritorio. ${DESKTOP_NOTE}</p>
+  <p>La nota de Rendimiento sale de estas métricas:</p>
+  <ul>${METRICS.map(([, label, help]) => `<li><strong>${label}:</strong> ${help}</li>`).join("")}</ul>
   ${sources.length ? `<p class="caption">Datos leídos de: ${sources.map((s) => `<code>${esc(s.file)}</code>`).join(", ")}.</p>` : ""}
   ${notes.length ? `<p class="caption">${notes.map(esc).join("<br>")}</p>` : ""}`;
 }
@@ -322,13 +344,18 @@ const CSS = `
   .meta dd { margin: 0; }
   .callout { border-left: 4px solid var(--average); background: var(--average-bg); padding: 8px 12px; border-radius: 4px; }
   .legend { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center; color: var(--muted); }
+  .legend-text { color: var(--muted); font-size: 9.5pt; }
   .warning-line { background: var(--fail-bg); color: var(--fail); padding: 6px 10px; border-radius: 4px; }
   .tier { border: 1px solid var(--line); border-radius: 6px; padding: 10px 12px 2px; margin: 12px 0; }
   .tier.blocking { border-top: 5px solid #1c2128; }
-  .tier.informative { border-top: 5px solid #9aa3ad; }
+  .tier.informative { border-top: 5px solid #9aa3ad; break-before: page; }
   .tier-title { margin: 0 0 2px; font-size: 13pt; }
   .tier-help { margin: 0 0 8px; color: var(--muted); }
-  .group { margin: 0 0 12px; break-inside: avoid; }
+  /* Groups with a metrics table are too tall to keep whole; keep each table
+     whole instead, and never strand a heading at the bottom of a page. */
+  .group { margin: 0 0 12px; }
+  .group table { break-inside: avoid; }
+  .group-head, .group .caption { break-after: avoid; }
   .group-head { display: flex; align-items: center; gap: 8px; }
   .caption { color: var(--muted); margin: 2px 0 6px; font-size: 9.5pt; }
   .status { font-size: 9pt; font-weight: 600; padding: 1px 8px; border-radius: 10px; border: 1px solid currentColor; }
@@ -347,6 +374,8 @@ const CSS = `
   .score.average { color: var(--average); background: var(--average-bg); }
   .score.fail { color: var(--fail); background: var(--fail-bg); }
   .score.na { color: var(--muted); font-weight: 400; }
+  .counts { display: block; font-size: 7.5pt; font-weight: 400; color: var(--muted); }
+  table.metrics { margin-top: 6px; }
   .legend .score { padding: 1px 6px; border-radius: 3px; }
   .page-break { break-before: page; }
   .detail { margin: 0 0 14px; }
@@ -369,15 +398,6 @@ const html = `<!doctype html>
 
 // --- Print ------------------------------------------------------------------
 
-// Lighthouse's own chrome-launcher finds the same Chrome it audits with; it
-// honors CHROME_PATH. Resolved through lighthouse because it's not a direct
-// dependency of this repo.
-async function chromePath() {
-  const req = createRequire(createRequire(import.meta.url).resolve("lighthouse/package.json"));
-  const { getChromePath } = await import(pathToFileURL(req.resolve("chrome-launcher")).href);
-  return getChromePath();
-}
-
 mkdirSync(path.dirname(OUT), { recursive: true });
 // Removed first so the existence check below proves this run wrote it.
 rmSync(OUT, { force: true });
@@ -387,7 +407,9 @@ try {
   writeFileSync(htmlFile, html);
   // Own profile dir: otherwise Chrome may hand the job to a running instance.
   const res = spawnSync(
-    await chromePath(),
+    // Same chrome-launcher major as lighthouse, so it finds the Chrome that
+    // audited the pages; honors CHROME_PATH.
+    getChromePath(),
     [
       "--headless",
       "--disable-gpu",
