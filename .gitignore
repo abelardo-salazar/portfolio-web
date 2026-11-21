@@ -17,8 +17,11 @@
 /.next/
 /out/
 
-# lighthouse ci reports
+# lighthouse reports (keep in sync with OUTPUT_DIRS in scripts/lighthouse-groups.mjs)
 /.lighthouseci/
+/.lighthouse-report/
+/.lighthouse-report.tmp/
+/.lighthouse-report.bak/
 
 # production
 /build

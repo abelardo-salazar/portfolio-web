@@ -1,28 +1,36 @@
 // Runs Lighthouse CI against a running production server (next start), never
 // next dev: dev builds are unminified and would skew every category.
-// Usage: node scripts/lighthouse.mjs [baseUrl] [--only=group1,group2]
-// Reports land in .lighthouseci/ (gitignored), one folder per group. The
-// folder is wiped on every run, so it only ever holds the groups just run.
+// Usage: node scripts/lighthouse.mjs [baseUrl] [--only=group1,group2] [--out=folder]
+// Reports land in --out (default .lighthouseci/, gitignored), one folder per
+// group. The folder is wiped on every run, so it only ever holds the groups
+// just run. --out only accepts the folders in OUTPUT_DIRS.
 
 import { spawnSync } from "node:child_process";
-import { existsSync, lstatSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { createRequire } from "node:module";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
 import { swapLocale } from "lighthouse/shared/localization/swap-locale.js";
-import { groupDefinitions, groups } from "./lighthouse-groups.mjs";
+import { groupDefinitions, groups, OUTPUT_DIRS, outputDir, removeOutputDir, REPO_ROOT } from "./lighthouse-groups.mjs";
 import { getLighthouseUrls } from "./lighthouse-urls.mjs";
 
 const args = process.argv.slice(2);
 const BASE_URL = args.find((a) => !a.startsWith("--")) ?? "http://localhost:3000";
 const only = args.find((a) => a.startsWith("--only="))?.slice(7).split(",");
-// Anchored to the repo, not the cwd: the cleanup below deletes this folder.
-const REPO_ROOT = path.resolve(fileURLToPath(new URL("..", import.meta.url)));
-const OUT_DIR = path.join(REPO_ROOT, ".lighthouseci");
+// Throws on anything outside OUTPUT_DIRS, before the cleanup below runs.
+const OUT_DIR = outputDir(args.find((a) => a.startsWith("--out="))?.slice(6) ?? OUTPUT_DIRS.ci);
 const LHCI = createRequire(import.meta.url).resolve("@lhci/cli/src/cli.js");
 const READY_TIMEOUT_MS = 60_000;
 // Audit titles go to the PDF report, whose text is Spanish.
 const REPORT_LOCALE = "es";
+
+// Lighthouse's own audit ids for the metrics the PDF shows.
+const PERF_METRICS = {
+  fcp: "first-contentful-paint",
+  lcp: "largest-contentful-paint",
+  tbt: "total-blocking-time",
+  cls: "cumulative-layout-shift",
+  si: "speed-index",
+};
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -53,6 +61,30 @@ function settingsFlags(settings) {
     Array.isArray(value)
       ? value.map((v) => `--settings.${key}=${v}`)
       : [`--settings.${key}=${value}`],
+  );
+}
+
+// Same pass threshold the Lighthouse report uses for its "Passed audits".
+// Manual and informative audits have no score and are left out.
+function auditCounts(lhr, category) {
+  const counts = { passed: 0, failed: 0, notApplicable: 0 };
+  for (const ref of category.auditRefs) {
+    const audit = lhr.audits[ref.id];
+    if (audit.scoreDisplayMode === "notApplicable") counts.notApplicable++;
+    else if (audit.score === null) continue;
+    else if (audit.score >= 0.9) counts.passed++;
+    else counts.failed++;
+  }
+  return counts;
+}
+
+function perfMetrics(lhr) {
+  if (!lhr.categories.performance) return undefined;
+  return Object.fromEntries(
+    Object.entries(PERF_METRICS).map(([key, id]) => {
+      const { numericValue, displayValue, score } = lhr.audits[id] ?? {};
+      return [key, { value: numericValue, display: displayValue, score }];
+    }),
   );
 }
 
@@ -97,6 +129,8 @@ function runGroup(group) {
         scores: Object.fromEntries(
           Object.entries(lhr.categories).map(([id, c]) => [id, Math.round(c.score * 100)]),
         ),
+        counts: Object.fromEntries(Object.entries(lhr.categories).map(([id, c]) => [id, auditCounts(lhr, c)])),
+        metrics: perfMetrics(lhr),
         failing: ids,
         audits: ids.map((id) => {
           const { title, displayValue, score } = lhr.audits[id];
@@ -164,16 +198,8 @@ function toMarkdown(urls, results) {
   return lines.join("\n");
 }
 
-// Only ever deletes <repo>/.lighthouseci, and refuses if that path is a
-// symlink, so a crafted link can't redirect the delete elsewhere.
 function cleanOutDir() {
-  if (path.basename(OUT_DIR) !== ".lighthouseci" || path.dirname(OUT_DIR) !== REPO_ROOT) {
-    throw new Error(`Refusing to clean unexpected path: ${OUT_DIR}`);
-  }
-  if (existsSync(OUT_DIR)) {
-    if (lstatSync(OUT_DIR).isSymbolicLink()) throw new Error(`Refusing to clean symlink: ${OUT_DIR}`);
-    rmSync(OUT_DIR, { recursive: true, force: true });
-  }
+  removeOutputDir(OUT_DIR);
   mkdirSync(OUT_DIR, { recursive: true });
 }
 
@@ -201,9 +227,6 @@ const meta = {
   commit: git("rev-parse", "HEAD"),
   // Untracked files are ignored: CI writes next.log into the checkout.
   dirty: Boolean(git("status", "--porcelain", "--untracked-files=no")),
-  ci: Boolean(process.env.GITHUB_ACTIONS),
-  prNumber: process.env.LH_PR_NUMBER || undefined,
-  prHead: process.env.LH_PR_HEAD || undefined,
   executedGroups: selected.map((g) => g.name),
 };
 
