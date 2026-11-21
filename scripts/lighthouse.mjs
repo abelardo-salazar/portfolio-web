@@ -6,7 +6,7 @@
 // just run. --out only accepts the folders in OUTPUT_DIRS.
 
 import { spawnSync } from "node:child_process";
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { createRequire } from "node:module";
 import path from "node:path";
 import { swapLocale } from "lighthouse/shared/localization/swap-locale.js";
@@ -19,6 +19,9 @@ const only = args.find((a) => a.startsWith("--only="))?.slice(7).split(",");
 // Throws on anything outside OUTPUT_DIRS, before the cleanup below runs.
 const OUT_DIR = outputDir(args.find((a) => a.startsWith("--out="))?.slice(6) ?? OUTPUT_DIRS.ci);
 const LHCI = createRequire(import.meta.url).resolve("@lhci/cli/src/cli.js");
+// lighthouse/blocking.mjs builds its audit lists from this root copy; LHCI
+// must measure with the same one or assertions drift silently.
+const EXPECTED_LH_VERSION = createRequire(import.meta.url)("lighthouse/package.json").version;
 const READY_TIMEOUT_MS = 60_000;
 // Audit titles go to the PDF report, whose text is Spanish.
 const REPORT_LOCALE = "es";
@@ -90,6 +93,31 @@ function perfMetrics(lhr) {
   );
 }
 
+// Expected failure: reported as a plain message at the top level, no stack.
+class VersionGuardError extends Error {}
+
+// Reads the raw LHRs collect just wrote, before upload/assert/summary.
+function checkLighthouseVersion(cwd) {
+  const lhrDir = path.join(cwd, ".lighthouseci");
+  const files = existsSync(lhrDir) ? readdirSync(lhrDir).filter((f) => /^lhr-.*\.json$/.test(f)) : [];
+  // A guard that checked nothing must not pass.
+  if (!files.length) {
+    throw new VersionGuardError(
+      `Lighthouse version check: no LHCI results (lhr-*.json) found to verify in ${lhrDir}. ` +
+        `@lhci/cli may have changed its result file naming.`,
+    );
+  }
+  const measured = new Set(files.map((f) => JSON.parse(readFileSync(path.join(lhrDir, f), "utf8")).lighthouseVersion));
+  const mismatched = [...measured].filter((v) => v !== EXPECTED_LH_VERSION);
+  if (mismatched.length) {
+    throw new VersionGuardError(
+      `Lighthouse version mismatch: LHCI measured with ${mismatched.join(", ")} but the root "lighthouse" package is ${EXPECTED_LH_VERSION}. ` +
+        `@lhci/cli probably nested its own copy (see node_modules/@lhci/cli/node_modules/lighthouse); ` +
+        `align the root "lighthouse" pin with the version @lhci/cli requires.`,
+    );
+  }
+}
+
 function runGroup(group) {
   // Each group gets its own folder: lhci collect wipes .lighthouseci on start.
   const cwd = path.join(OUT_DIR, group.name);
@@ -104,6 +132,7 @@ function runGroup(group) {
     `--settings.chromeFlags=--blink-settings=preferredColorScheme=${group.colorScheme === "dark" ? 0 : 1}`,
   ]);
   if (collectStatus !== 0) return { group, failed: "collect" };
+  checkLighthouseVersion(cwd);
 
   // The filesystem manifest marks the median run of each URL.
   lhci(cwd, ["upload", "--target=filesystem", "--outputDir=reports"]);
@@ -220,7 +249,14 @@ const urls = await getLighthouseUrls(BASE_URL);
 const selected = groups(urls).filter((g) => !only || only.includes(g.name));
 
 cleanOutDir();
-const results = selected.map(runGroup);
+let results;
+try {
+  results = selected.map(runGroup);
+} catch (err) {
+  if (!(err instanceof VersionGuardError)) throw err;
+  console.error(`\n${err.message}`);
+  process.exit(1);
+}
 
 const meta = {
   baseUrl: BASE_URL,
