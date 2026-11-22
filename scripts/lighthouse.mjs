@@ -146,9 +146,9 @@ function isAlive(pid) {
 
 const stopAll = () => Promise.all([...running].map(stopTree));
 
-// Without this, a signal kills only this process: Chrome runs in its own
-// process group on POSIX, so neither a terminal Ctrl-C nor
-// lighthouse-report.mjs's group kill reaches it. A second signal exits at once.
+// A signal sent only to this process (e.g. `kill <pid>`) would orphan lhci and
+// Chrome, which runs in its own process group on POSIX. Group signals are fine:
+// lhci and the Lighthouse CLI close their Chrome. A second signal exits at once.
 let shutdown;
 for (const signal of ["SIGINT", "SIGTERM", "SIGHUP"]) {
   process.on(signal, () => {
