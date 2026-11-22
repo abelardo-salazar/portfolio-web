@@ -9,10 +9,13 @@ Portafolio personal de Abelardo Salazar. Next.js 16 (App Router, Server Componen
 - **Sanity CMS** (`sanity`, `next-sanity`, `@sanity/client`) — Studio embebido en `/studio`
 - **@abelardo-salazar/core-ui-design-system** — paquete público en npm
 - **Resend** — envío del formulario de contacto
+- **Tailwind CSS** — estilado de la app
+- **styled-components** — solo para Sanity Studio; ver [por qué es dependencia directa](#styled-components-por-qué-es-dependencia-directa)
+- **react-hook-form + zod** — formulario de contacto; el mismo esquema de zod valida en cliente y servidor
 
 ## Requisitos previos
 
-- Node.js (LTS)
+- Node.js 22.19 o superior (lo exigen `lighthouse` y `@lhci/cli`, que usan los scripts de Lighthouse)
 
 ## Instalación
 
@@ -33,6 +36,7 @@ Variables esperadas en `.env.local` (no versionado):
 |---|---|
 | `NEXT_PUBLIC_SANITY_PROJECT_ID` | ID del proyecto de Sanity (cliente de la app y Studio) |
 | `NEXT_PUBLIC_SANITY_DATASET` | Dataset de Sanity a consultar |
+| `NEXT_PUBLIC_SANITY_API_VERSION` | Opcional. Versión de la API por defecto de la herramienta Vision del Studio; si falta, usa la de `src/sanity/env.ts`. El cliente de la app no la lee |
 | `SANITY_WRITE_TOKEN` | Token con permiso de escritura, usado por `npm run sync` para sincronizar `content/` hacia Sanity |
 | `SANITY_REVALIDATE_SECRET` | Secreto compartido con el webhook de Sanity; valida la firma en `/api/revalidate` |
 | `RESEND_API_KEY` | API key de Resend para el envío del formulario de contacto |
@@ -41,12 +45,17 @@ Variables esperadas en `.env.local` (no versionado):
 ## Scripts
 
 ```bash
-npm run dev     # servidor de desarrollo
-npm run build   # build de producción
-npm run start   # sirve el build de producción
-npm run lint    # eslint
-npm run sync    # sincroniza content/ (Markdown/YAML) hacia el dataset de Sanity
+npm run dev               # servidor de desarrollo
+npm run build             # build de producción
+npm run start             # sirve el build de producción
+npm run lint              # eslint
+npm run sync              # sincroniza content/ (Markdown/YAML) hacia el dataset de Sanity
+npm run lighthouse        # Lighthouse CI contra un servidor ya levantado (por defecto http://localhost:3000)
+npm run report:lighthouse # informe PDF completo de Lighthouse
+npm run lighthouse:pdf    # genera un PDF a partir de resultados ya medidos (por defecto, los de .lighthouseci/)
 ```
+
+`report:lighthouse` compila por defecto (`npm run report:lighthouse -- --no-build` reutiliza el `.next` existente), sirve el build con `next start` en un puerto libre, mide todos los grupos y escribe el informe en `.lighthouse-report/`. Solo se conserva el último informe, y se reemplaza únicamente si la corrida termina. `lighthouse:pdf` es el paso interno que genera ese PDF; a mano solo hace falta para rehacer un PDF sin volver a medir.
 
 ## `styled-components`: por qué es dependencia directa
 
