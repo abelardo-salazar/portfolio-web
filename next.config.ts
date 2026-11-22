@@ -3,12 +3,12 @@ import type { NextConfig } from "next";
 
 const withNextIntl = createNextIntlPlugin();
 
-// Dominios que /studio (Sanity Studio embebido) necesita en runtime, según
-// https://www.sanity.io/docs/studio/system-requirements. Sin nonce por
-// request (headers() es estático, no corre por middleware), así que
-// script-src/style-src necesitan 'unsafe-inline' para no romper el
-// hydration payload de Next ni los estilos runtime de styled-components
-// que usa Studio - ver nota en el commit sobre esta limitación.
+// Domains /studio (embedded Sanity Studio) needs at runtime, per
+// https://www.sanity.io/docs/studio/system-requirements. There's no
+// per-request nonce (headers() is static, it doesn't run through middleware),
+// so script-src/style-src need 'unsafe-inline' to avoid breaking Next's
+// hydration payload and the runtime styles of the styled-components Studio
+// uses - see the commit note on this limitation.
 const sanityConnectSrc = [
   "https://*.api.sanity.io",
   "https://*.apicdn.sanity.io",

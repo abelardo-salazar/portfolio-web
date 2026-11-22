@@ -15,7 +15,7 @@ const client = createClient({
 
 const CONTENT_DIR = path.join(process.cwd(), "content");
 
-// Generador de _keys únicos obligatorios para Sanity
+// Sanity requires a unique _key on every item of an array of objects.
 const generateKey = () => crypto.randomBytes(8).toString("hex");
 
 const parseMarkdownList = (text) => {
@@ -50,7 +50,7 @@ const normalizeDates = (doc) => {
     const date = normalizeDate(doc[field]);
     if (!date) {
       throw new Error(
-        `"${field}" falta o es inválido (formato YYYY-MM o YYYY-MM-DD)`,
+        `"${field}" is missing or invalid (format YYYY-MM or YYYY-MM-DD)`,
       );
     }
     doc[field] = date;
@@ -70,13 +70,13 @@ const validateLighthouse = (doc) => {
   if (doc._type !== "project" || doc.lighthouse === undefined) return;
   const lh = doc.lighthouse;
   if (!doc.link) {
-    throw new Error(`"lighthouse" requiere "link": las puntuaciones describen esa URL`);
+    throw new Error(`"lighthouse" requires "link": the scores describe that URL`);
   }
   if (!lh || typeof lh !== "object" || Array.isArray(lh)) {
-    throw new Error(`"lighthouse" debe ser un objeto con ${LIGHTHOUSE_KEYS.join(", ")}`);
+    throw new Error(`"lighthouse" must be an object with ${LIGHTHOUSE_KEYS.join(", ")}`);
   }
   const extra = unknownKeys(lh, LIGHTHOUSE_KEYS);
-  if (extra.length) throw new Error(`"lighthouse" tiene claves desconocidas: ${extra.join(", ")}`);
+  if (extra.length) throw new Error(`"lighthouse" has unknown keys: ${extra.join(", ")}`);
 
   // YAML parses an unquoted date into a Date at UTC midnight.
   const measuredAt = lh.measuredAt instanceof Date ? lh.measuredAt.toISOString().slice(0, 10) : lh.measuredAt;
@@ -85,26 +85,26 @@ const validateLighthouse = (doc) => {
     /^\d{4}-\d{2}-\d{2}$/.test(measuredAt) &&
     new Date(`${measuredAt}T00:00:00Z`).toISOString().startsWith(measuredAt);
   if (!isRealDate) {
-    throw new Error(`"lighthouse.measuredAt" falta o es inválido (formato YYYY-MM-DD): ${lh.measuredAt}`);
+    throw new Error(`"lighthouse.measuredAt" is missing or invalid (format YYYY-MM-DD): ${lh.measuredAt}`);
   }
   lh.measuredAt = measuredAt;
 
   if (!FORM_FACTORS.includes(lh.formFactor)) {
-    throw new Error(`"lighthouse.formFactor" debe ser ${FORM_FACTORS.join(" o ")}: ${lh.formFactor}`);
+    throw new Error(`"lighthouse.formFactor" must be ${FORM_FACTORS.join(" or ")}: ${lh.formFactor}`);
   }
 
   const scores = lh.scores;
   if (!scores || typeof scores !== "object" || Array.isArray(scores)) {
-    throw new Error(`"lighthouse.scores" debe ser un objeto con ${LIGHTHOUSE_SCORES.join(", ")}`);
+    throw new Error(`"lighthouse.scores" must be an object with ${LIGHTHOUSE_SCORES.join(", ")}`);
   }
   const extraScores = unknownKeys(scores, LIGHTHOUSE_SCORES);
   if (extraScores.length) {
-    throw new Error(`"lighthouse.scores" tiene claves desconocidas: ${extraScores.join(", ")}`);
+    throw new Error(`"lighthouse.scores" has unknown keys: ${extraScores.join(", ")}`);
   }
   for (const key of LIGHTHOUSE_SCORES) {
     const score = scores[key];
     if (!Number.isInteger(score) || score < 0 || score > 100) {
-      throw new Error(`"lighthouse.scores.${key}" debe ser un entero entre 0 y 100: ${score}`);
+      throw new Error(`"lighthouse.scores.${key}" must be an integer between 0 and 100: ${score}`);
     }
   }
 };
@@ -117,7 +117,7 @@ async function processFile(filePath) {
   if (ext === ".yaml" || ext === ".yml") {
     sanityDoc = yaml.parse(fileContent);
 
-    // SOLUCIÓN 1: Inyectar _key en los arrays de objetos (Obligatorio en Sanity)
+    // Sanity rejects arrays of objects whose items have no _key.
     if (sanityDoc._type === "skills") {
       ["technical", "soft", "languages"].forEach((field) => {
         if (Array.isArray(sanityDoc[field])) {
@@ -132,7 +132,8 @@ async function processFile(filePath) {
     const { data, content } = matter(fileContent);
     sanityDoc = { ...data };
 
-    // SOLUCIÓN 2: Re-mapear variables planas a objetos anidados para Proyectos
+    // Project frontmatter keeps per-locale values flat (title_es, title_en...);
+    // the schema expects them nested as { es, en }.
     if (sanityDoc._type === "project") {
       sanityDoc.title = {
         es: sanityDoc.title_es || "",
@@ -157,7 +158,7 @@ async function processFile(filePath) {
     }
 
     if (content.trim()) {
-      // SOLUCIÓN 3: Regex más robusto para que soporte saltos de línea sin romperse
+      // [\s\S] spans line breaks; each section ends at the other locale's heading.
       const esMatch = content.match(/## es\s*([\s\S]*?)(?=## en|$)/);
       const enMatch = content.match(/## en\s*([\s\S]*?)(?=## es|$)/);
 
@@ -170,12 +171,12 @@ async function processFile(filePath) {
           en: parseMarkdownList(enContent),
         };
       } else if (sanityDoc._type === "profile") {
-        // Lógica estricta SOLO para el Perfil
+        // Profile only: each blank-line-separated paragraph is one bio entry.
         sanityDoc.bio = sanityDoc.bio || {};
         sanityDoc.bio.es = esContent ? esContent.trim().split(/\n{2,}/) : [];
         sanityDoc.bio.en = enContent ? enContent.trim().split(/\n{2,}/) : [];
       } else if (sanityDoc._type === "project") {
-        // Lógica estricta SOLO para los Proyectos
+        // Projects only: the description is a single text per locale.
         sanityDoc.description = sanityDoc.description || {};
         sanityDoc.description.es = parseMarkdownText(esContent);
         sanityDoc.description.en = parseMarkdownText(enContent);
@@ -192,18 +193,18 @@ async function processFile(filePath) {
     validateLighthouse(sanityDoc);
     const result = await client.createOrReplace(sanityDoc);
     console.log(
-      `✅ [${result._type}] Sincronizado correctamente: ${result.title?.en || result.title || result._id}`,
+      `✅ [${result._type}] Synced: ${result.title?.en || result.title || result._id}`,
     );
   } catch (error) {
     console.error(
-      `❌ Error validando/sincronizando ${path.basename(filePath)}:`,
+      `❌ Error validating/syncing ${path.basename(filePath)}:`,
       error.message,
     );
   }
 }
 
 async function runSync() {
-  console.log("🚀 Iniciando sincronización Content-as-Code...");
+  console.log("🚀 Starting content-as-code sync...");
 
   const singletonsDir = path.join(CONTENT_DIR, "singletons");
   if (fs.existsSync(singletonsDir)) {
@@ -224,7 +225,7 @@ async function runSync() {
     }
   }
 
-  console.log("🎉 Sincronización completada.");
+  console.log("🎉 Sync complete.");
 }
 
 runSync();

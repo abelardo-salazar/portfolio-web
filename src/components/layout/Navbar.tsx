@@ -34,7 +34,7 @@ export const Navbar = () => {
           className="hover:opacity-80 transition-opacity"
         >
           {!isMounted ? (
-            <div className="h-10 w-[192px]" /> // Placeholder invisible para evitar Layout Shift
+            <div className="h-10 w-[192px]" /> // Invisible placeholder to avoid layout shift
           ) : isDark ? (
             <Image
               src="/logo-dark.png"

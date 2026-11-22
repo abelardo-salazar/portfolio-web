@@ -59,10 +59,10 @@ export const ContactSection = () => {
         <Card>
           <CardContent className="pt-8">
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-              {/* Honeypot anti-spam: invisible para personas, tentador para
-                  bots que autocompletan cualquier input que encuentran. No
-                  renderizar visible ni sacarlo del DOM (display:none es lo
-                  primero que chequean los scrapers un poco más cuidadosos). */}
+              {/* Anti-spam honeypot: invisible to people, tempting to bots
+                  that autofill every input they find. Don't render it visible
+                  or remove it from the DOM (display:none is the first thing
+                  slightly more careful scrapers check for). */}
               <div
                 aria-hidden="true"
                 style={{ position: "absolute", left: "-9999px", top: "-9999px" }}
