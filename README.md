@@ -1,62 +1,62 @@
 # Portfolio Web
 
-Portafolio personal de Abelardo Salazar. Next.js 16 (App Router, Server Components), i18n (es/en) con `next-intl`, contenido gestionado en Sanity CMS con un flujo "content-as-code" (`content/`), y UI construida sobre el design system `@abelardo-salazar/core-ui-design-system`.
+Abelardo Salazar's personal portfolio. Next.js 16 (App Router, Server Components), i18n (es/en) with `next-intl`, content managed in Sanity CMS through a "content-as-code" workflow (`content/`), and a UI built on the `@abelardo-salazar/core-ui-design-system` design system.
 
 ## Stack
 
 - **Next.js 16** (App Router, Turbopack)
-- **next-intl** — i18n, locales `es`/`en`
-- **Sanity CMS** (`sanity`, `next-sanity`, `@sanity/client`) — Studio embebido en `/studio`
-- **@abelardo-salazar/core-ui-design-system** — paquete público en npm
-- **Resend** — envío del formulario de contacto
-- **Tailwind CSS** — estilado de la app
-- **styled-components** — solo para Sanity Studio; ver [por qué es dependencia directa](#styled-components-por-qué-es-dependencia-directa)
-- **react-hook-form + zod** — formulario de contacto; el mismo esquema de zod valida en cliente y servidor
+- **next-intl** — i18n, `es`/`en` locales
+- **Sanity CMS** (`sanity`, `next-sanity`, `@sanity/client`) — Studio embedded at `/studio`
+- **@abelardo-salazar/core-ui-design-system** — public package on npm
+- **Resend** — sends the contact form
+- **Tailwind CSS** — app styling
+- **styled-components** — for Sanity Studio only; see [why it is a direct dependency](#styled-components-why-it-is-a-direct-dependency)
+- **react-hook-form + zod** — contact form; the same zod schema validates on the client and the server
 
-## Requisitos previos
+## Prerequisites
 
-- Node.js 22.19 o superior (lo exigen `lighthouse` y `@lhci/cli`, que usan los scripts de Lighthouse)
+- Node.js 22.19 or later (required by `lighthouse` and `@lhci/cli`, which the Lighthouse scripts use)
 
-## Instalación
+## Installation
 
-1. Cloná el repo.
-2. Instalá dependencias:
+1. Clone the repo.
+2. Install dependencies:
 
    ```bash
    npm install
    ```
 
-   > `.npmrc` incluye `legacy-peer-deps=true`. Es necesario porque el árbol de `peerDependencies` de Sanity (`sanity`, `next-sanity`, `@sanity/ui`, `@sanity/vision`, `@sanity/visual-editing`) no resuelve limpio con el resolver estricto de npm 7+ tal como está versionado hoy — sin esta bandera, `npm install` falla con `ERESOLVE`.
+   > `.npmrc` includes `legacy-peer-deps=true`. It's needed because Sanity's `peerDependencies` tree (`sanity`, `next-sanity`, `@sanity/ui`, `@sanity/vision`, `@sanity/visual-editing`) doesn't resolve cleanly with npm 7+'s strict resolver as it's versioned today — without this flag, `npm install` fails with `ERESOLVE`.
 
-## Variables de entorno
+## Environment variables
 
-Variables esperadas en `.env.local` (no versionado):
+Variables expected in `.env.local` (not versioned):
 
-| Variable | Uso |
+| Variable | Use |
 |---|---|
-| `NEXT_PUBLIC_SANITY_PROJECT_ID` | ID del proyecto de Sanity (cliente de la app y Studio) |
-| `NEXT_PUBLIC_SANITY_DATASET` | Dataset de Sanity a consultar |
-| `NEXT_PUBLIC_SANITY_API_VERSION` | Opcional. Versión de la API por defecto de la herramienta Vision del Studio; si falta, usa la de `src/sanity/env.ts`. El cliente de la app no la lee |
-| `SANITY_WRITE_TOKEN` | Token con permiso de escritura, usado por `npm run sync` para sincronizar `content/` hacia Sanity |
-| `SANITY_REVALIDATE_SECRET` | Secreto compartido con el webhook de Sanity; valida la firma en `/api/revalidate` |
-| `RESEND_API_KEY` | API key de Resend para el envío del formulario de contacto |
-| `CONTACT_EMAIL` | Dirección que recibe los mensajes del formulario de contacto. Solo se lee en el servidor; si falta, el formulario devuelve un error genérico y el servidor registra la causa |
+| `NEXT_PUBLIC_SANITY_PROJECT_ID` | Sanity project ID (app client and Studio) |
+| `NEXT_PUBLIC_SANITY_DATASET` | Sanity dataset to query |
+| `NEXT_PUBLIC_SANITY_API_VERSION` | Optional. Default API version for the Studio's Vision tool; if missing, it uses the one in `src/sanity/env.ts`. The app client doesn't read it |
+| `SANITY_WRITE_TOKEN` | Token with write permission, used by `npm run sync` to sync `content/` to Sanity |
+| `SANITY_REVALIDATE_SECRET` | Secret shared with the Sanity webhook; validates the signature at `/api/revalidate` |
+| `RESEND_API_KEY` | Resend API key for sending the contact form |
+| `CONTACT_EMAIL` | Address that receives the contact form messages. Only read on the server; if missing, the form returns a generic error and the server logs the cause |
 
 ## Scripts
 
 ```bash
-npm run dev               # servidor de desarrollo
-npm run build             # build de producción
-npm run start             # sirve el build de producción
+npm run dev               # development server
+npm run build             # production build
+npm run start             # serves the production build
 npm run lint              # eslint
-npm run sync              # sincroniza content/ (Markdown/YAML) hacia el dataset de Sanity
-npm run lighthouse        # Lighthouse CI contra un servidor ya levantado (por defecto http://localhost:3000)
-npm run report:lighthouse # informe PDF completo de Lighthouse
-npm run lighthouse:pdf    # genera un PDF a partir de resultados ya medidos (por defecto, los de .lighthouseci/)
+npm run sync              # syncs content/ (Markdown/YAML) to the Sanity dataset
+npm run lighthouse        # Lighthouse CI against an already running server (default http://localhost:3000)
+npm run report:lighthouse # full Lighthouse PDF report
+npm run lighthouse:pdf    # builds a PDF from results already measured (by default, those in .lighthouseci/)
 ```
 
-`report:lighthouse` compila por defecto (`npm run report:lighthouse -- --no-build` reutiliza el `.next` existente), sirve el build con `next start` en un puerto libre, mide todos los grupos y escribe el informe en `.lighthouse-report/`. Solo se conserva el último informe, y se reemplaza únicamente si la corrida termina. `lighthouse:pdf` es el paso interno que genera ese PDF; a mano solo hace falta para rehacer un PDF sin volver a medir.
+`report:lighthouse` builds by default (`npm run report:lighthouse -- --no-build` reuses the existing `.next`), serves the build with `next start` on a free port, measures every group and writes the report to `.lighthouse-report/`. Only the last report is kept, and it's replaced only when the run completes. `lighthouse:pdf` is the internal step that generates that PDF; you only need to run it by hand to rebuild a PDF without measuring again.
 
-## `styled-components`: por qué es dependencia directa
+## `styled-components`: why it is a direct dependency
 
-`styled-components` está en `dependencies` aunque la app **no** usa CSS-in-JS — todo el estilado de la app pasa por Tailwind y el design system. Es **peer dependency obligatoria** de la pila de Sanity Studio embebido en `/studio`: `next-sanity`, `sanity`, `@sanity/ui`, `@sanity/vision` y `@sanity/visual-editing` la requieren para renderizar la UI del Studio. Al no declararla explícita, `npm install` la resolvería solo como transitiva — lo cual, combinado con `legacy-peer-deps=true` (ver arriba), puede dejarla en una versión que el resolver eligió por conveniencia y no una que el equipo controla. Se fija explícita en `package.json` para tener control de versión directo sobre algo de lo que `/studio` depende en runtime.
+`styled-components` is in `dependencies` even though the app does **not** use CSS-in-JS — all of the app's styling goes through Tailwind and the design system. It's a **required peer dependency** of the Sanity Studio stack embedded at `/studio`: `next-sanity`, `sanity`, `@sanity/ui`, `@sanity/vision` and `@sanity/visual-editing` need it to render the Studio UI. Without declaring it explicitly, `npm install` would resolve it only as a transitive dependency — which, combined with `legacy-peer-deps=true` (see above), can leave it at a version the resolver picked for convenience rather than one the team controls. It's pinned explicitly in `package.json` to have direct version control over something `/studio` depends on at runtime.
