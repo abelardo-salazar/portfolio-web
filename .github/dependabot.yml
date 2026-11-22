@@ -1,0 +1,43 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    # Security updates only: 0 disables version updates. Security updates still use
+    # commit-message and the security-updates groups below.
+    open-pull-requests-limit: 0
+    commit-message:
+      prefix: fix
+      prefix-development: chore
+    # A security group only bundles members that have advisories at the same time;
+    # members without one aren't bumped. An advisory against one member of an
+    # exact-pinned family (e.g. react-dom) can leave the family misaligned: CI
+    # (build, smoke test, the Lighthouse version guard) is the safety net.
+    groups:
+      next:
+        applies-to: security-updates
+        patterns:
+          - 'next'
+          - 'eslint-config-next'
+      react:
+        applies-to: security-updates
+        patterns:
+          - 'react'
+          - 'react-dom'
+      radix:
+        applies-to: security-updates
+        patterns:
+          - '@radix-ui/*'
+      sanity:
+        applies-to: security-updates
+        patterns:
+          - 'sanity'
+          - '@sanity/vision'
+      # scripts/lighthouse.mjs fails if the root lighthouse differs from the one @lhci/cli uses.
+      lighthouse:
+        applies-to: security-updates
+        patterns:
+          - 'lighthouse'
+          - '@lhci/cli'
+          - 'chrome-launcher'

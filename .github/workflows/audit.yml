@@ -1,0 +1,29 @@
+name: Audit
+
+# Weekly audit of main, outside the required CI check: a new advisory against an
+# unchanged dependency must not fail an unrelated PR. It doesn't block; a failed
+# run notifies by email.
+on:
+  schedule:
+    - cron: '0 9 * * 1' # Mondays 09:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: main
+
+      # npm audit only reads package-lock.json: no npm ci needed.
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+
+      # Threshold is critical until the Sanity 6 migration clears the highs (issue #39).
+      - run: npm audit --audit-level=critical
