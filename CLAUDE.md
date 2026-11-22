@@ -22,13 +22,13 @@ npx tsc --noEmit                # typecheck
 npm run build                   # build de producción
 npm run start                   # sirve el build (puerto 3000)
 node scripts/smoke-test.mjs     # smoke test contra un servidor ya levantado (default http://localhost:3000)
-npm audit --audit-level=critical # umbral critical: ver issue #39
+npm audit --audit-level=critical # umbral critical: ver issue #39. En CI corre semanalmente en audit.yml
 npm run sync                    # sincroniza content/ hacia Sanity
 npm run lighthouse -- <url> --only=<grupos> # Lighthouse contra un servidor ya levantado (reportes en .lighthouseci/)
 npm run report:lighthouse       # informe PDF completo, solo local (ver abajo)
 ```
 
-El CI (`.github/workflows/ci.yml`) corre exactamente esta secuencia: `npm ci` → lint → tsc → build → `next start` + smoke test → audit.
+El CI (`.github/workflows/ci.yml`) corre exactamente esta secuencia: `npm ci` → lint → tsc → build → `next start` + smoke test. `npm audit` no forma parte del check obligatorio: corre cada semana sobre `main` en `.github/workflows/audit.yml` (también a mano), avisa y no bloquea; un aviso nuevo contra una dependencia que no cambió no debe hacer fallar un PR sin relación. Dependabot (`.github/dependabot.yml`) solo propone actualizaciones de seguridad.
 
 `.github/workflows/lighthouse.yml` corre en paralelo a `verify` un único job, `lighthouse (blocking)`: solo los grupos `blocking-*` y `notfound-mobile` (a11y, SEO y best practices del 404). Rendimiento y best practices de las páginas (`informative-*`) no corren en CI: se miden con `npm run report:lighthouse`, que siempre compila (`-- --no-build` reutiliza el `.next` existente), levanta `next start` en un puerto libre, corre todos los grupos y deja el PDF en `.lighthouse-report/lighthouse-report.pdf`. Solo se conserva el último informe, y se reemplaza únicamente si la corrida termina. Los grupos están en `scripts/lighthouse-groups.mjs`.
 

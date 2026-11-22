@@ -1,0 +1,41 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    # Security updates only: 0 disables version updates. Security updates still use
+    # commit-message and the security-updates groups below.
+    open-pull-requests-limit: 0
+    commit-message:
+      prefix: fix
+      prefix-development: chore
+    # Families released together or pinned to exact versions in package.json: a
+    # fix bumping only one of them would break its peers.
+    groups:
+      next:
+        applies-to: security-updates
+        patterns:
+          - 'next'
+          - 'eslint-config-next'
+      react:
+        applies-to: security-updates
+        patterns:
+          - 'react'
+          - 'react-dom'
+      radix:
+        applies-to: security-updates
+        patterns:
+          - '@radix-ui/*'
+      sanity:
+        applies-to: security-updates
+        patterns:
+          - 'sanity'
+          - '@sanity/vision'
+      # scripts/lighthouse.mjs fails if the root lighthouse differs from the one @lhci/cli uses.
+      lighthouse:
+        applies-to: security-updates
+        patterns:
+          - 'lighthouse'
+          - '@lhci/cli'
+          - 'chrome-launcher'

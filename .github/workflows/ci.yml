@@ -41,6 +41,3 @@ jobs:
         run: |
           npx next start -p 3000 > next.log 2>&1 &
           node scripts/smoke-test.mjs http://localhost:3000 || { cat next.log; exit 1; }
-
-      # Threshold is critical until the Sanity 6 migration clears the highs.
-      - run: npm audit --audit-level=critical
