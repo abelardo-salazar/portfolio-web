@@ -1,45 +1,45 @@
 # CLAUDE.md
 
-Guía para trabajar en este repo. El contexto general (stack, instalación, variables de entorno) está en `README.md`.
+Guide for working in this repo. The general context (stack, installation, environment variables) is in `README.md`.
 
-## Flujo de trabajo
+## Workflow
 
-- Ramas `feat/...` o `fix/...` desde `main`. Nunca commitear ni pushear directo a `main`.
-- Todo cambio entra por PR, con **Squash & Merge**.
-- Mensajes y títulos de PR con **Conventional Commits** (`feat:`, `fix:`, `chore:`, `docs:`...).
-- No deployar. El deploy no se hace desde aquí.
-- No se mergea sin el CI (`verify`) en verde.
-- **Un build verde no prueba que las páginas funcionen.** El fetching a Sanity, el routing de locales y los `notFound()` corren en cada request. Antes de dar un cambio por bueno: `npm run build`, `npm run start` y pedir las páginas afectadas (o correr el smoke test).
-- Comentarios de código en inglés, mínimos, explicando el porqué y no el qué.
+- `feat/...` or `fix/...` branches from `main`. Never commit or push directly to `main`.
+- Every change goes in through a PR, with **Squash & Merge**.
+- Commit messages and PR titles follow **Conventional Commits** (`feat:`, `fix:`, `chore:`, `docs:`...).
+- Don't deploy. Deploys aren't done from here.
+- Nothing is merged without CI (`verify`) green.
+- **A green build doesn't prove the pages work.** Sanity fetching, locale routing and the `notFound()` calls run on every request. Before considering a change done: `npm run build`, `npm run start` and request the affected pages (or run the smoke test).
+- Code comments in English, minimal, explaining the why and not the what.
 
-## Comandos
+## Commands
 
 ```bash
-npm ci                          # instalar
-npm run dev                     # desarrollo
+npm ci                          # install
+npm run dev                     # development
 npm run lint                    # eslint
 npx tsc --noEmit                # typecheck
-npm run build                   # build de producción
-npm run start                   # sirve el build (puerto 3000)
-node scripts/smoke-test.mjs     # smoke test contra un servidor ya levantado (default http://localhost:3000)
-npm audit --audit-level=critical # umbral critical: ver issue #39. En CI corre semanalmente en audit.yml
-npm run sync                    # sincroniza content/ hacia Sanity
-npm run lighthouse -- <url> --only=<grupos> # Lighthouse contra un servidor ya levantado (reportes en .lighthouseci/)
-npm run report:lighthouse       # informe PDF completo, solo local (ver abajo)
+npm run build                   # production build
+npm run start                   # serves the build (port 3000)
+node scripts/smoke-test.mjs     # smoke test against an already running server (default http://localhost:3000)
+npm audit --audit-level=critical # critical threshold: see issue #39. In CI it runs weekly in audit.yml
+npm run sync                    # syncs content/ to Sanity
+npm run lighthouse -- <url> --only=<groups> # Lighthouse against an already running server (reports in .lighthouseci/)
+npm run report:lighthouse       # full PDF report, local only (see below)
 ```
 
-El CI (`.github/workflows/ci.yml`) corre exactamente esta secuencia: `npm ci` → lint → tsc → build → `next start` + smoke test. `npm audit` no forma parte del check obligatorio: corre cada semana sobre `main` en `.github/workflows/audit.yml` (también a mano), avisa y no bloquea; un aviso nuevo contra una dependencia que no cambió no debe hacer fallar un PR sin relación. Dependabot (`.github/dependabot.yml`) solo propone actualizaciones de seguridad.
+CI (`.github/workflows/ci.yml`) runs exactly this sequence: `npm ci` → lint → tsc → build → `next start` + smoke test. `npm audit` is not part of the required check: it runs every week on `main` in `.github/workflows/audit.yml` (also by hand), warns and doesn't block; a new advisory against a dependency that didn't change must not fail an unrelated PR. Dependabot (`.github/dependabot.yml`) only proposes security updates.
 
-`.github/workflows/lighthouse.yml` corre en paralelo a `verify` un único job, `lighthouse (blocking)`: solo los grupos `blocking-*` y `notfound-mobile` (a11y, SEO y best practices del 404). Rendimiento y best practices de las páginas (`informative-*`) no corren en CI: se miden con `npm run report:lighthouse`, que siempre compila (`-- --no-build` reutiliza el `.next` existente), levanta `next start` en un puerto libre, corre todos los grupos y deja el PDF en `.lighthouse-report/lighthouse-report.pdf`. Solo se conserva el último informe, y se reemplaza únicamente si la corrida termina. Los grupos están en `scripts/lighthouse-groups.mjs`.
+`.github/workflows/lighthouse.yml` runs a single job in parallel with `verify`, `lighthouse (blocking)`: only the `blocking-*` and `notfound-mobile` groups (a11y, SEO and best practices of the 404). Page performance and best practices (`informative-*`) don't run in CI: they're measured with `npm run report:lighthouse`, which always builds (`-- --no-build` reuses the existing `.next`), starts `next start` on a free port, runs every group and leaves the PDF at `.lighthouse-report/lighthouse-report.pdf`. Only the last report is kept, and it's replaced only when the run completes. The groups are in `scripts/lighthouse-groups.mjs`.
 
-## Estructura relevante
+## Relevant structure
 
-- `src/app` no tiene root layout: cada árbol (`[locale]`, `studio`) tiene su propio layout con `<html>`. No añadir páginas sueltas en `src/app`, porque desde Next 16.4 el build falla sin root layout. `/` lo redirige `src/proxy.ts` (next-intl), no una página.
-- Los locales válidos salen de `src/i18n/routing.ts`.
+- `src/app` has no root layout: each tree (`[locale]`, `studio`) has its own layout with `<html>`. Don't add standalone pages in `src/app`, because since Next 16.4 the build fails without a root layout. `/` is redirected by `src/proxy.ts` (next-intl), not by a page.
+- The valid locales come from `src/i18n/routing.ts`.
 
-## Consumo del design system (`@abelardo-salazar/core-ui-design-system`)
+## Consuming the design system (`@abelardo-salazar/core-ui-design-system`)
 
-- No ajustar alturas con `className`. Usar las props `size` y `shape` del componente.
-- Los textos que exponen los componentes (props `xxxLabel`) salen de next-intl, nunca hardcodeados.
-- Los locales de `/locale` del DS solo se pasan dentro de un componente cliente, nunca como prop desde un Server Component.
-- Para filtros táctiles de conjuntos pequeños y fijos usar `Chip size="lg"`, no `Badge`. Para tags que crecen con el catálogo (como los de proyectos), usar `Combobox` con `multiple`.
+- Don't adjust heights with `className`. Use the component's `size` and `shape` props.
+- The text the components expose (`xxxLabel` props) comes from next-intl, never hardcoded.
+- The DS locales from `/locale` are only passed inside a client component, never as a prop from a Server Component.
+- For touch filters over small, fixed sets use `Chip size="lg"`, not `Badge`. For tags that grow with the catalog (like the project tags), use `Combobox` with `multiple`.
