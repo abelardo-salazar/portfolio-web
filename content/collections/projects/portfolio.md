@@ -6,6 +6,14 @@ year: "2026"
 startDate: "2026-01-18"
 featured: true
 link: "https://portfolio-web-rouge-tau.vercel.app"
+lighthouse:
+  measuredAt: "2026-11-22"
+  formFactor: mobile
+  scores:
+    performance: 98
+    accessibility: 100
+    bestPractices: 96
+    seo: 100
 tags:
   - Next.js 16
   - React 19
