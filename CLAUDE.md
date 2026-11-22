@@ -10,8 +10,8 @@ Guide for working in this repo. The general context (stack, installation, enviro
 - Don't deploy. Deploys aren't done from here.
 - Nothing is merged without CI (`verify`) green.
 - **A green build doesn't prove the pages work.** Sanity fetching, locale routing and the `notFound()` calls run on every request. Before considering a change done: `npm run build`, `npm run start` and request the affected pages (or run the smoke test).
-- Code comments in English, minimal, explaining the why and not the what.
-- Language: code, comments and docs in English; user-facing text in both locales (next-intl). Exception: the Lighthouse PDF report (`scripts/lighthouse-pdf.mjs` and `lighthouse/blocking.mjs`) is in Spanish on purpose, since it's a development tool.
+- Code comments: minimal, explaining the why and not the what.
+- Language: code, comments and docs in English; user-facing text in both locales (next-intl). Exception: the Lighthouse PDF report is in Spanish on purpose, since it's a development tool.
 
 ## Commands
 
