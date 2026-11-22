@@ -25,5 +25,5 @@ jobs:
         with:
           node-version: 22
 
-      # Threshold is critical until the Sanity 6 migration clears the highs (issue #39).
+      # Threshold: see issue #39.
       - run: npm audit --audit-level=critical
