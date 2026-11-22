@@ -10,16 +10,16 @@ export async function POST(req: NextRequest) {
     );
 
     if (!isValidSignature) {
-      return new Response("Firma inválida", { status: 401 });
+      return new Response("Invalid signature", { status: 401 });
     }
 
     if (!body?._type) {
-      return new Response("Bad Request: Falta el _type", { status: 400 });
+      return new Response("Bad Request: missing _type", { status: 400 });
     }
 
     revalidateTag(body._type as string, "max");
 
-    console.log(`✅ Caché revalidada para el tag: ${body._type}`);
+    console.log(`✅ Cache revalidated for tag: ${body._type}`);
 
     return NextResponse.json({
       status: 200,
@@ -28,10 +28,10 @@ export async function POST(req: NextRequest) {
       type: body._type,
     });
   } catch (err: unknown) {
-    console.error("Error en el Webhook:", err);
+    console.error("Webhook error:", err);
 
     const errorMessage =
-      err instanceof Error ? err.message : "Error interno desconocido";
+      err instanceof Error ? err.message : "Unknown internal error";
 
     return new Response(errorMessage, { status: 500 });
   }

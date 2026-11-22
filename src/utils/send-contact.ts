@@ -4,10 +4,10 @@ import { Resend } from "resend";
 import { contactSchema, ContactFormData } from "@/schemas/contact";
 import { getContactRecipient } from "@/config/contact.server";
 
-// name/message llegan del formulario público y se interpolan directo en el
-// HTML del correo enviado a CONTACT_EMAIL - sin esto, un remitente podía
-// inyectar markup arbitrario (links falsos, imágenes de tracking) en el
-// correo que recibe el dueño del sitio.
+// name/message come from the public form and are interpolated straight into
+// the HTML of the email sent to CONTACT_EMAIL - without this, a sender could
+// inject arbitrary markup (fake links, tracking images) into the email the
+// site owner receives.
 const escapeHtml = (value: string) =>
   value
     .replace(/&/g, "&amp;")
@@ -21,7 +21,7 @@ export async function sendContactAction(data: ContactFormData) {
   if (!validatedFields.success) {
     return {
       success: false,
-      error: "Datos de formulario inválidos.",
+      error: "Invalid form data.",
     };
   }
 
@@ -30,7 +30,7 @@ export async function sendContactAction(data: ContactFormData) {
   const recipient = getContactRecipient();
   if (!recipient) {
     console.error("Contact form: CONTACT_EMAIL is not set, cannot send.");
-    return { success: false, error: "Error interno del servidor." };
+    return { success: false, error: "Internal server error." };
   }
 
   try {
@@ -55,13 +55,13 @@ export async function sendContactAction(data: ContactFormData) {
     });
 
     if (error) {
-      console.error("Error de Resend:", error);
-      return { success: false, error: "No se pudo enviar el correo." };
+      console.error("Resend error:", error);
+      return { success: false, error: "Could not send the email." };
     }
 
     return { success: true };
   } catch (e) {
     console.error("Server Action Error:", e);
-    return { success: false, error: "Error interno del servidor." };
+    return { success: false, error: "Internal server error." };
   }
 }

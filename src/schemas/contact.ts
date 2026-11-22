@@ -4,11 +4,11 @@ export const contactSchema = z.object({
   name: z.string().min(2, "name_min"),
   email: z.string().email("email_invalid"),
   message: z.string().min(10, "message_min"),
-  // Honeypot: campo real registrado en el form pero escondido visualmente y
-  // fuera del tab order (ver ContactSection.tsx). Un usuario real nunca lo
-  // toca, así que siempre llega vacío. Un bot que autocompleta todos los
-  // inputs sí lo llena, y eso alcanza para que safeParse() rechace el envío
-  // en sendContactAction - no necesita lógica de detección aparte.
+  // Honeypot: a real field registered in the form but visually hidden and
+  // out of the tab order (see ContactSection.tsx). A real user never touches
+  // it, so it always arrives empty. A bot that autofills every input does
+  // fill it, and that's enough for safeParse() to reject the submission in
+  // sendContactAction - no separate detection logic needed.
   website: z.string().max(0).optional(),
 });
 
