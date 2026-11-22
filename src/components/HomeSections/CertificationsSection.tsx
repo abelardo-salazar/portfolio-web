@@ -8,7 +8,7 @@ import {
 } from "@abelardo-salazar/core-ui-design-system";
 import { MotionReveal } from "../ui/MotionReveal";
 import { CertificationData } from "@/types/data";
-import { CertificationCard } from "../certifications/CertificatiionCard";
+import { CertificationCard } from "../certifications/CertificationCard";
 
 interface CertificationsSectionProps {
   certifications: CertificationData[];
