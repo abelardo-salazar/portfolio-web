@@ -57,6 +57,58 @@ const normalizeDates = (doc) => {
   }
 };
 
+// The only write path into Sanity skips the Studio's schema rules, so the
+// project's Lighthouse snapshot is checked here. Unknown keys are rejected so
+// a typo can't silently drop a score.
+const LIGHTHOUSE_KEYS = ["measuredAt", "formFactor", "scores"];
+const LIGHTHOUSE_SCORES = ["performance", "accessibility", "bestPractices", "seo"];
+const FORM_FACTORS = ["mobile", "desktop"];
+
+const unknownKeys = (obj, allowed) => Object.keys(obj).filter((k) => !allowed.includes(k));
+
+const validateLighthouse = (doc) => {
+  if (doc._type !== "project" || doc.lighthouse === undefined) return;
+  const lh = doc.lighthouse;
+  if (!doc.link) {
+    throw new Error(`"lighthouse" requiere "link": las puntuaciones describen esa URL`);
+  }
+  if (!lh || typeof lh !== "object" || Array.isArray(lh)) {
+    throw new Error(`"lighthouse" debe ser un objeto con ${LIGHTHOUSE_KEYS.join(", ")}`);
+  }
+  const extra = unknownKeys(lh, LIGHTHOUSE_KEYS);
+  if (extra.length) throw new Error(`"lighthouse" tiene claves desconocidas: ${extra.join(", ")}`);
+
+  // YAML parses an unquoted date into a Date at UTC midnight.
+  const measuredAt = lh.measuredAt instanceof Date ? lh.measuredAt.toISOString().slice(0, 10) : lh.measuredAt;
+  const isRealDate =
+    typeof measuredAt === "string" &&
+    /^\d{4}-\d{2}-\d{2}$/.test(measuredAt) &&
+    new Date(`${measuredAt}T00:00:00Z`).toISOString().startsWith(measuredAt);
+  if (!isRealDate) {
+    throw new Error(`"lighthouse.measuredAt" falta o es inválido (formato YYYY-MM-DD): ${lh.measuredAt}`);
+  }
+  lh.measuredAt = measuredAt;
+
+  if (!FORM_FACTORS.includes(lh.formFactor)) {
+    throw new Error(`"lighthouse.formFactor" debe ser ${FORM_FACTORS.join(" o ")}: ${lh.formFactor}`);
+  }
+
+  const scores = lh.scores;
+  if (!scores || typeof scores !== "object" || Array.isArray(scores)) {
+    throw new Error(`"lighthouse.scores" debe ser un objeto con ${LIGHTHOUSE_SCORES.join(", ")}`);
+  }
+  const extraScores = unknownKeys(scores, LIGHTHOUSE_SCORES);
+  if (extraScores.length) {
+    throw new Error(`"lighthouse.scores" tiene claves desconocidas: ${extraScores.join(", ")}`);
+  }
+  for (const key of LIGHTHOUSE_SCORES) {
+    const score = scores[key];
+    if (!Number.isInteger(score) || score < 0 || score > 100) {
+      throw new Error(`"lighthouse.scores.${key}" debe ser un entero entre 0 y 100: ${score}`);
+    }
+  }
+};
+
 async function processFile(filePath) {
   const ext = path.extname(filePath);
   const fileContent = fs.readFileSync(filePath, "utf-8");
@@ -137,6 +189,7 @@ async function processFile(filePath) {
 
   try {
     normalizeDates(sanityDoc);
+    validateLighthouse(sanityDoc);
     const result = await client.createOrReplace(sanityDoc);
     console.log(
       `✅ [${result._type}] Sincronizado correctamente: ${result.title?.en || result.title || result._id}`,

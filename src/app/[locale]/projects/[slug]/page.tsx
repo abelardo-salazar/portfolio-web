@@ -16,6 +16,7 @@ import {
   ProjectFeatures,
 } from "@/components/projects/ProjectDetails";
 import { ProjectGallery } from "@/components/projects/ProjectGallery";
+import { ProjectLighthouse } from "@/components/projects/ProjectLighthouse";
 import { getProjects, getProjectBySlug } from "@/sanity/lib/api";
 
 interface ProjectPageProps {
@@ -164,6 +165,11 @@ export default async function ProjectPage({ params }: ProjectPageProps) {
                 ))}
               </ul>
             </div>
+
+            {/* The scores describe the live site: without a link there's nothing measured. */}
+            {project.link && project.lighthouse && (
+              <ProjectLighthouse lighthouse={project.lighthouse} locale={locale} />
+            )}
           </aside>
         </div>
       </Container>

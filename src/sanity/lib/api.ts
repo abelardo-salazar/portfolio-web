@@ -1,5 +1,9 @@
 import { client } from "./client";
-import { experiencesQuery, projectsQuery } from "./queries";
+import {
+  experiencesQuery,
+  projectBySlugQuery,
+  projectsQuery,
+} from "./queries";
 import { groq } from "next-sanity";
 import {
   Project,
@@ -29,23 +33,8 @@ export const getFeaturedProjects = async (): Promise<Project[]> => {
 export const getProjectBySlug = async (
   slug: string,
 ): Promise<Project | null> => {
-  const query = groq`*[_type == "project" && slug.current == $slug][0] {
-    "id": _id,
-    "slug": slug.current,
-    year,
-    title,
-    description,
-    tags,
-    link,
-    github,
-    "images": images[].asset->url,
-    featured,
-    features,
-    challenges
-  }`;
-
   return await client.fetch(
-    query,
+    projectBySlugQuery,
     { slug },
     { next: { tags: ["project", `project-${slug}`] } },
   );

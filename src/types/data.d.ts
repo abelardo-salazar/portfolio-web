@@ -11,6 +11,19 @@ export interface Project {
   featured: boolean;
   features?: Record<"es" | "en", string[]>;
   challenges?: Record<"es" | "en", string[]>;
+  lighthouse?: ProjectLighthouseData | null;
+}
+
+// Hand-entered snapshot of a Lighthouse run against `link`, not a live measurement.
+export interface ProjectLighthouseData {
+  measuredAt: string; // YYYY-MM-DD
+  formFactor: "mobile" | "desktop";
+  scores: {
+    performance: number;
+    accessibility: number;
+    bestPractices: number;
+    seo: number;
+  };
 }
 
 export interface Experience {

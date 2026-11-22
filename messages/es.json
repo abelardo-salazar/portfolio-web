@@ -63,6 +63,20 @@
       "imageAlt": "{title}: vista de galería {index}",
       "openMain": "Ampliar imagen: {title}, vista principal",
       "openImage": "Ampliar imagen: {title}, vista de galería {index}"
+    },
+    "lighthouse": {
+      "title": "Lighthouse",
+      "categories": {
+        "performance": "Rendimiento",
+        "accessibility": "Accesibilidad",
+        "bestPractices": "Buenas prácticas",
+        "seo": "SEO"
+      },
+      "measuredAt": "Medido el {date}",
+      "formFactor": {
+        "mobile": "Móvil",
+        "desktop": "Escritorio"
+      }
     }
   },
   "Metadata": {
