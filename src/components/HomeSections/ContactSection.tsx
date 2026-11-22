@@ -62,7 +62,9 @@ export const ContactSection = () => {
               {/* Anti-spam honeypot: invisible to people, tempting to bots
                   that autofill every input they find. Don't render it visible
                   or remove it from the DOM (display:none is the first thing
-                  slightly more careful scrapers check for). */}
+                  slightly more careful scrapers check for). sendContactAction
+                  detects it and fakes a success; the neutral name keeps
+                  browser autofill away from it. */}
               <div
                 aria-hidden="true"
                 style={{ position: "absolute", left: "-9999px", top: "-9999px" }}
@@ -71,7 +73,7 @@ export const ContactSection = () => {
                   type="text"
                   tabIndex={-1}
                   autoComplete="off"
-                  {...register("website")}
+                  {...register("contact_ref")}
                 />
               </div>
               <Input

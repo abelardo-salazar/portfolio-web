@@ -25,7 +25,17 @@ export async function sendContactAction(data: ContactFormData) {
     };
   }
 
-  const { name, email, message } = validatedFields.data;
+  const { name, email, message, contact_ref } = validatedFields.data;
+
+  // Honeypot filled: fake a success so the bot has no signal to retry or
+  // adapt. Spam matters more than the odd lost message, so the drop is logged
+  // (sender and length only, never the body) to spot false positives.
+  if (contact_ref) {
+    console.warn(
+      `Contact form: honeypot filled, message dropped (from ${email}, ${message.length} chars).`,
+    );
+    return { success: true };
+  }
 
   const recipient = getContactRecipient();
   if (!recipient) {

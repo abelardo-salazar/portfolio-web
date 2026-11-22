@@ -113,8 +113,10 @@
     "error_generic": "Hubo un error al enviar. Por favor, intenta de nuevo.",
     "errors": {
       "name_min": "El nombre debe tener al menos 2 caracteres.",
+      "name_max": "El nombre puede tener como máximo 100 caracteres.",
       "email_invalid": "Introduce un correo electrónico válido.",
-      "message_min": "El mensaje debe tener al menos 10 caracteres."
+      "message_min": "El mensaje debe tener al menos 10 caracteres.",
+      "message_max": "El mensaje puede tener como máximo 5000 caracteres."
     }
   },
   "Certifications": {

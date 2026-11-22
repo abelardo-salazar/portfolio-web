@@ -113,8 +113,10 @@
     "error_generic": "There was an error sending your message. Please try again.",
     "errors": {
       "name_min": "The name must be at least 2 characters long.",
+      "name_max": "The name must be at most 100 characters long.",
       "email_invalid": "Please enter a valid email address.",
-      "message_min": "The message must be at least 10 characters long."
+      "message_min": "The message must be at least 10 characters long.",
+      "message_max": "The message must be at most 5,000 characters long."
     }
   },
   "Certifications": {
