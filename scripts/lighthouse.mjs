@@ -146,6 +146,19 @@ function isAlive(pid) {
 
 const stopAll = () => Promise.all([...running].map(stopTree));
 
+// Without this, a signal kills only this process: Chrome runs in its own
+// process group on POSIX, so neither a terminal Ctrl-C nor
+// lighthouse-report.mjs's group kill reaches it. A second signal exits at once.
+let shutdown;
+for (const signal of ["SIGINT", "SIGTERM", "SIGHUP"]) {
+  process.on(signal, () => {
+    if (shutdown) process.exit(130);
+    aborted = true;
+    console.error(`\n${signal} received: stopping Lighthouse and Chrome...`);
+    shutdown = stopAll().then(() => process.exit(130));
+  });
+}
+
 function settingsFlags(settings) {
   return Object.entries(settings).flatMap(([key, value]) =>
     Array.isArray(value)
@@ -354,6 +367,8 @@ let results;
 try {
   results = await runAll();
 } catch (err) {
+  // Killed children surface as errors here; let the signal handler finish and exit.
+  await shutdown;
   // Promise.all rejecting doesn't stop the siblings' processes; do it here.
   aborted = true;
   await stopAll();
@@ -361,6 +376,8 @@ try {
   console.error(`\n${err.message}`);
   process.exit(1);
 }
+// Groups whose children were killed return "collect failed"; that's no summary.
+await shutdown;
 
 const meta = {
   baseUrl: BASE_URL,
