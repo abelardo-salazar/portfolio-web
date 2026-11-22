@@ -10,8 +10,10 @@ updates:
     commit-message:
       prefix: fix
       prefix-development: chore
-    # Families released together or pinned to exact versions in package.json: a
-    # fix bumping only one of them would break its peers.
+    # A security group only bundles members that have advisories at the same time;
+    # members without one aren't bumped. An advisory against one member of an
+    # exact-pinned family (e.g. react-dom) can leave the family misaligned: CI
+    # (build, smoke test, the Lighthouse version guard) is the safety net.
     groups:
       next:
         applies-to: security-updates
